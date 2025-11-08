@@ -129,6 +129,7 @@ namespace Kampose.Commands
             Console.WriteLine($"  {nameof(Kampose)} {Name}                      Use the default configuration file '{DefaultConfigFile}' in the current directory.");
             Console.WriteLine($"  {nameof(Kampose)} {Name} custom-config.json   Use 'custom-config.json' as the configuration file.");
             Console.WriteLine($"  {nameof(Kampose)} {Name} --debug              Generate documentation with debug output.");
+            Console.WriteLine();
         }
 
         /// <summary>

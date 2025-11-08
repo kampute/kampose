@@ -56,6 +56,7 @@ namespace Kampose.Commands
             Console.WriteLine();
             Console.WriteLine("EXAMPLES:");
             Console.WriteLine($"  {nameof(Kampose)} {Name}                      Display version information.");
+            Console.WriteLine();
         }
 
         /// <summary>

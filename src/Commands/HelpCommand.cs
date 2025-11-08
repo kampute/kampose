@@ -78,6 +78,7 @@ namespace Kampose.Commands
                     Console.WriteLine(line);
                 }
             }
+            Console.WriteLine();
         }
 
         /// <summary>

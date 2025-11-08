@@ -95,10 +95,10 @@
       "description": "Whether to automatically include related subtopics as 'see also' references.",
       "defaultValue": false
     },
-    "popupFileExtensions": {
+    "popupAssetNames": {
       "type": "array",
-      "description": "An array of file extensions (without the leading dot) for which links to local asset files should open in a modal pop-up instead of navigating to the file. By default, includes common text, image, and PDF extensions.",
-      "defaultValue": ["txt", "png", "jpeg", "jpg", "gif", "svg", "pdf"]
+      "description": "An array of asset file names that should open in a modal overlay when linked. Matching is case-insensitive and supports wildcard patterns.",
+      "defaultValue": ["LICENSE", "DISCLAIMER"]
     }
   },
   "templates": [

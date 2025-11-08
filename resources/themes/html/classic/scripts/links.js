@@ -7,7 +7,7 @@
 function setupLinks() {
     const origin = window.location.origin;
     const links = document.querySelectorAll('a');
-    const popupExtensions = window.kampose.config.popupFileExtensions || [];
+    const popupAssetNames = (window.kampose.config.popupAssetNames || []).map(name => name.toLowerCase());
 
     links.forEach(link => {
         if (!link.href) {
@@ -18,7 +18,7 @@ function setupLinks() {
 
         if (origin !== url.origin) {
             link.classList.add('external-link');
-        } else if (isPopupFileType(url.pathname, popupExtensions)) {
+        } else if (isPopupFileType(url.pathname, popupAssetNames)) {
             link.classList.add('popup-link');
         }
     });
@@ -30,23 +30,24 @@ function setupLinks() {
         });
     });
 
-    function isPopupFileType(path, extensions) {
-        if (path.endsWith('.html') || path.endsWith('/')) {
+    function isPopupFileType(path, patterns) {
+        if (patterns.length === 0 || path.endsWith('/')) {
             return false;
         }
 
-        if (path.endsWith('/LICENSE') || path.endsWith('/DISCLAIMER')) {
-            return true;
+        const filename = path.substring(path.lastIndexOf('/') + 1).toLowerCase();
+        for (const pattern of patterns) {
+            if (pattern.startsWith('*')) {
+                const ext = pattern.slice(1);
+                if (filename.endsWith(ext)) {
+                    return true;
+                }
+            } else if (filename === pattern) {
+                return true;
+            }
         }
 
-        if (extensions.length === 0) {
-            return false;
-        }
-
-        const lastDot = path.lastIndexOf('.');
-        const lastSegment = path.lastIndexOf('/');
-        const ext = lastDot > lastSegment ? path.substring(lastDot + 1) : '';
-        return ext && extensions.includes(ext.toLowerCase());
+        return false;
     }
 
     function openLinkInPopup(href) {
@@ -58,19 +59,32 @@ function setupLinks() {
             .then(async blob => {
                 const mimeType = blob.type || '';
 
-                // Fallback to normal navigation for HTML files
-                if (mimeType === 'text/html') {
+                let isDisplayable = mimeType.startsWith('image/') || [
+                    'text/plain',
+                    'application/pdf',
+                    'application/svg+xml'
+                ].includes(mimeType);
+
+                // Attempt to display small files as text (max. 16 KiB)
+                if (!isDisplayable && blob.size <= 16384) {
+                    try {
+                        const text = await blob.text();
+                        // Check for null characters to avoid binary files
+                        if (!text.includes('\0')) {
+                            blob = new Blob([text], { type: 'text/plain' });
+                            isDisplayable = true;
+                        }
+                    } catch {
+                        // Ignore conversion errors
+                    }
+                }
+
+                if (isDisplayable) {
+                    const blobUrl = URL.createObjectURL(blob);
+                    openPopup(blobUrl, title);
+                } else {
                     window.location.href = href;
-                    return;
                 }
-
-                // Convert unknown types to plain text for safer display
-                if (!mimeType.startsWith('image/') && mimeType !== 'application/pdf' && mimeType !== 'application/svg+xml') {
-                    blob = new Blob([blob], { type: 'text/plain' });
-                }
-
-                const blobUrl = URL.createObjectURL(blob);
-                openPopup(blobUrl, title);
             })
             .catch(() => openPopup(href, title));
     }

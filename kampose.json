@@ -29,6 +29,10 @@
     "faviconUri": "ICON.png",
     "pageFooter": "- Copyright © {{now 'yyyy'}} [Kampute](https://kampute.com/)\n- Site built with [Kampose](https://kampute.github.io/kampose/).",
     "excludeLeftSidebar": true,
+    "popupAssetNames": [
+      "LICENSE",
+      "*.json"
+    ],
     "menuItems": [
       "command-line",
       "configuration",

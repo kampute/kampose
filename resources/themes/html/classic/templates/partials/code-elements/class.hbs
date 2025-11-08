@@ -1,0 +1,30 @@
+{{!--
+  This partial renders information specific to a class.
+  @param {object} member - The class model to render information for.
+  @param {number} level - The heading level to use for subheadings.
+--}}
+
+<dl class="member-card">
+  {{#if member.metadata.explicitCustomAttributes}}
+  <dt>Attributes</dt>
+  <dd>{{>attribute_list member.metadata.explicitCustomAttributes}}</dd>
+  {{/if}}
+
+  <dt>Inheritance</dt>
+  <dd>{{>inheritance_list type=member.metadata}}</dd>
+
+  {{#if member.metadata.implementedInterfaces}}
+  <dt>Implements</dt>
+  <dd>{{>inline_list member.metadata.implementedInterfaces}}</dd>
+  {{/if}}
+
+  {{#if member.metadata.derivedTypes}}
+  <dt>Inherited by</dt>
+  <dd>{{>inline_list member.metadata.derivedTypes}}</dd>
+  {{/if}}
+</dl>
+
+{{#if member.metadata.typeParameters}}
+<h{{level}} id="type-parameters">Type Parameters</h{{level}}>
+{{>type_parameter_list typeParameters=member.metadata.typeParameters descriptions=member.doc.typeParameters}}
+{{/if}}

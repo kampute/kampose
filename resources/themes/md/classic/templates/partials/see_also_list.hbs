@@ -1,0 +1,7 @@
+﻿{{!--
+  This partial renders a list of "See Also" links.
+  @param {array} this - The list of see-also objects.
+--}}
+{{#each this}}
+- [{{#if isEmpty}}{{#if isHyperlink}}{{target}}{{else}}{{#memberName target}} {{#memberCategory target}}{{/if}}{{else}}{{content}}{{/if}}]({{#if isHyperlink}}{{target}}{{else}}{{#memberUrl target}}{{/if}})
+{{/each}}

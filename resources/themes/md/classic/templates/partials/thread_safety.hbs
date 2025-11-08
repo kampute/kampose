@@ -1,0 +1,35 @@
+{{!--
+  This partial renders thread safety information for a type.
+  @param {object} this - The thread safety information for the type.
+--}}
+{{#if content.isEmpty}}
+{{#if (isNull isStaticSafe)}}
+{{#if isInstanceSafe}}
+Public instance members of the type are guaranteed to be thread-safe.
+{{else}}{{#if (not (isNull isInstanceSafe))}}
+Public instance members of the type are not thread-safe.
+{{/if}}{{/if}}
+{{else}}{{#if (isNull isInstanceSafe)}}
+{{#if isStaticSafe}}
+Public static members of the type are guaranteed to be thread-safe.
+{{else}}
+Public static members of the type are not thread-safe.
+{{/if}}
+{{else}}
+{{#if isStaticSafe}}
+{{#if isInstanceSafe}}
+All public members of the type are guaranteed to be thread-safe.
+{{else}}
+Public static members of the type are guaranteed to be thread-safe. However, public instance members are not thread-safe.
+{{/if}}
+{{else}}
+{{#if isInstanceSafe}}
+Public instance members of the type are guaranteed to be thread-safe. However, public static members are not thread-safe.
+{{else}}
+Public members of the type are not thread-safe.
+{{/if}}
+{{/if}}
+{{/if}}{{/if}}
+{{else}}
+{{content}}
+{{/if}}

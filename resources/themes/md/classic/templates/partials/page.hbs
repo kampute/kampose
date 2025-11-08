@@ -1,0 +1,14 @@
+{{!--
+  This partial renders a page layout.
+  @param {object} this - The template context.
+--}}
+{{#if pageHeader}}
+{{{>pageHeader_partial}}}
+{{/if}}
+
+{{> (concat 'page_content_' pageType)}}
+
+{{#if pageFooter}}
+---
+{{{>pageFooter_partial}}}
+{{/if}}

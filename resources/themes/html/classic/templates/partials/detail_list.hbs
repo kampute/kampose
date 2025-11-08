@@ -1,0 +1,11 @@
+﻿{{!--
+  This partial renders a list of detailed information for each member.
+  @param {array} members - The list of members to render.
+--}}
+
+{{#each members}}
+<section class="type-member {{>member_class_names metadata}}" role="region" aria-labelledby="{{#fragment url}}">
+  <h{{../level}} id="{{#fragment url}}">{{#memberSignature this}}</h{{../level}}>
+  {{>member level=(inc ../level) member=this}}
+</section>
+{{/each}}

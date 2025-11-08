@@ -1,0 +1,15 @@
+{{!--
+  This partial renders information specific to an event.
+  @param {object} member - The event model to render.
+  @param {number} level - The heading level to use for subheadings.
+--}}
+
+<dl class="member-card">
+  {{#if member.metadata.explicitCustomAttributes}}
+  <dt>Attributes</dt>
+  <dd>{{>attribute_list member.metadata.explicitCustomAttributes}}</dd>
+  {{/if}}
+</dl>
+
+<h{{level}} id="event-type">Event Type</h{{level}}>
+{{>returns returnType=member.handlerType description=member.doc.valueDescription}}

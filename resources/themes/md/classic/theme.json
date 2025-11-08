@@ -1,0 +1,31 @@
+{
+  "base": null,
+  "metadata": {
+    "format": "md",
+    "name": "Classic",
+    "description": "A classic theme for rendering API documentation in Markdown format.",
+    "version": "1.0.0",
+    "author": "Kambiz Khojasteh",
+    "license": "MIT",
+    "homepage": "https://kampute.github.io/dot-doc/themes/classic-md.html"
+  },
+  "parameters": {
+    "pageHeader": {
+      "type": "markdown",
+      "description": "The markdown content for the page header. Template functions and variables can be used here.",
+      "defaultValue": null
+    },
+    "pageFooter": {
+      "type": "markdown",
+      "description": "The markdown content for the page footer. Template functions and variables can be used here.",
+      "defaultValue": null
+    },
+    "seeAlsoSubtopics": {
+      "type": "boolean",
+      "description": "Whether to automatically include related subtopics as 'see also' references.",
+      "defaultValue": false
+    }
+  },
+  "templates": [ "templates/**/*.hbs" ],
+  "assets": []
+}

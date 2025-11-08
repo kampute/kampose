@@ -1,0 +1,8 @@
+{{!--
+  This partial renders the return parameter information.
+  @param {object} returnType - The return type information.
+  @param {object} description - The description of the return type.
+--}}
+{{returnType}}{{#unless description.isEmpty}} \
+{{description}}
+{{/unless}}

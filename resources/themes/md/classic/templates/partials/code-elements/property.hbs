@@ -1,0 +1,20 @@
+{{!--
+  This partial renders information specific to a property.
+  @param {object} member - The property model to render information for.
+  @param {string} level - The heading level to use for subheadings.
+--}}
+{{#if member.metadata.explicitCustomAttributes}}
+Attributes: {{>attribute_list member.metadata.explicitCustomAttributes}}
+{{/if}}
+
+{{#if member.metadata.isDefaultInterfaceImplementation}}
+This property has a default implementation in the interface.
+{{/if}}
+
+{{#if member.metadata.parameters}}
+{{{level}}} Index Parameters
+{{>parameter_list parameters=member.metadata.parameters descriptions=member.doc.parameters}}
+{{/if}}
+
+{{{level}}} Property Value
+{{>returns returnType=member.metadata.type description=member.doc.valueDescription}}

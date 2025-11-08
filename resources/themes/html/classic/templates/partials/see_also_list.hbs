@@ -1,0 +1,30 @@
+﻿{{!--
+  This partial renders a list of "See Also" links.
+  @param {array} this - The list of see-also objects.
+--}}
+
+<ul class="see-also-list">
+  {{#each this}}
+  {{#if isCodeReference}}
+  <li class="is-{{#lowercase (memberCategory target)}}">
+    <a href="{{#memberUrl target}}" rel="code-reference">
+      {{#if isEmpty}}
+      {{#memberName target}} <span class="category">{{#memberCategory target}}</span>
+      {{else}}
+      {{content}}
+      {{/if}}
+    </a>
+  </li>
+  {{else}}
+  <li class="is-topic">
+    <a href="{{target}}">
+      {{#if isEmpty}}
+      {{target}}
+      {{else}}
+      {{content}}
+      {{/if}}
+    </a>
+  </li>
+  {{/if}}
+  {{/each}}
+</ul>

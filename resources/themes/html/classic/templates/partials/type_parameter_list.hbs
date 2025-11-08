@@ -1,0 +1,14 @@
+﻿{{!--
+  This partial renders a list of type parameters for a generic type.
+  @param {array} typeParameters - The type parameters to render.
+  @param {object} descriptions - The descriptions for the type parameters.
+--}}
+
+<dl class="param-list">
+  {{#each typeParameters}}
+  <dt><code class="type-param-name">{{name}}</code></dt>
+  {{#with (lookup ../descriptions name)}}{{#unless isEmpty}}
+  <dd>{{this}}</dd>
+  {{/unless}}{{/with}}
+  {{/each}}
+</dl>

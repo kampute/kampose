@@ -1,0 +1,27 @@
+{{!--
+  This partial renders information specific to an interface.
+  @param {object} member - The interface model to render.
+  @param {number} level - The heading level to use for subheadings.
+--}}
+
+<dl class="member-card">
+  {{#if member.metadata.explicitCustomAttributes}}
+  <dt>Attributes</dt>
+  <dd>{{>attribute_list member.metadata.explicitCustomAttributes}}</dd>
+  {{/if}}
+
+  {{#if member.metadata.implementedInterfaces}}
+  <dt>Extends</dt>
+  <dd>{{>inline_list member.metadata.implementedInterfaces}}</dd>
+  {{/if}}
+
+  {{#if member.metadata.implementingTypes}}
+  <dt>Implemented by</dt>
+  <dd>{{>inline_list member.metadata.implementingTypes}}</dd>
+  {{/if}}
+</dl>
+
+{{#if member.metadata.typeParameters}}
+<h{{level}} id="type-parameters">Type Parameters</h{{level}}>
+{{>type_parameter_list typeParameters=member.metadata.typeParameters descriptions=member.doc.typeParameters}}
+{{/if}}

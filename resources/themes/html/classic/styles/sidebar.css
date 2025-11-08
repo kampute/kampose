@@ -1,0 +1,105 @@
+:root {
+  --sidebar-left-width: clamp(20rem, 18%, 30rem);
+  --sidebar-right-width: clamp(20rem, 16%, 30rem);
+}
+
+.sidebar {
+  height: 100%;
+  position: sticky;
+  top: 0;
+  align-self: stretch;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: var(--color-sidebar-background, var(--color-surface));
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  transition: transform 0.3s ease-in-out, width 0.3s ease-in-out;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background-color: var(--color-border);
+  border-radius: 6px;
+}
+
+.sidebar-left {
+  width: var(--sidebar-left-width);
+  border-right: 1px solid var(--color-border);
+  left: 0;
+}
+
+.sidebar-right {
+  width: var(--sidebar-right-width);
+  border-left: 1px solid var(--color-border);
+  right: 0;
+}
+
+.sidebar-header {
+  width: 100%;
+  padding: 1.25rem 1.25rem 1rem 1.25rem;
+  position: sticky;
+  top: 0;
+  background-color: var(--color-sidebar-background, var(--color-surface));
+  z-index: 10;
+  box-sizing: border-box;
+}
+
+.sidebar-header h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-heading);
+}
+
+.sidebar-nav {
+  flex-grow: 1;
+  overflow: auto;
+  padding: 0 0 0.5rem 1.25rem;
+}
+
+.sidebar-nav::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sidebar-nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb {
+  background-color: var(--color-border);
+  border-radius: 2px;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-text-muted);
+}
+
+@media (max-width: 1200px) {
+  .has-left-sidebar .sidebar-right {
+    transform: translateX(100%);
+    width: 0;
+  }
+}
+
+@media (max-width: 1024px) {
+  .sidebar-left {
+    transform: translateX(-100%);
+    width: 0;
+  }
+
+  .sidebar-right {
+    transform: translateX(100%);
+    width: 0;
+  }
+}

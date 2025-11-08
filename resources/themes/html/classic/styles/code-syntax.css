@@ -1,0 +1,164 @@
+:root {
+  /* Basic syntax elements */
+  --token-keyword: light-dark(#0000ff, #569cd6);
+  --token-operator: light-dark(#000000, #d4d4d4);
+  --token-punctuation: light-dark(#000000, #d4d4d4);
+  --token-boolean: light-dark(#0000ff, #569cd6);
+  --token-number: light-dark(#098658, #b5cea8);
+  /* Comments and documentation */
+  --token-comment: light-dark(#008000, #6a9955);
+  --token-doctype: light-dark(#800000, #808080);
+  /* Text and strings */
+  --token-string: light-dark(#a31515, #ce9178);
+  --token-regex: light-dark(#811f3f, #d16969);
+  --token-important: light-dark(#ff0000, #ff8c8c);
+  /* Names and identifiers */
+  --token-variable: light-dark(#001080, #9cdcfe);
+  --token-parameter: light-dark(#001080, #9cdcfe);
+  --token-named-parameter: light-dark(#001080, #9cdcfe);
+  --token-property: light-dark(#001080, #9cdcfe);
+  --token-namespace: light-dark(#000000, #d4d4d4);
+  --token-function: light-dark(#795e26, #dcdcaa);
+  --token-class-name: light-dark(#267f99, #4ec9b0);
+  --token-constructor-invocation: light-dark(#267f99, #4ec9b0);
+  /* Markup and templating */
+  --token-tag: light-dark(#800000, #569cd6);
+  --token-attr-name: light-dark(#ff0000, #9cdcfe);
+  --token-attr-value: light-dark(#0000ff, #ce9178);
+}
+
+code .token {
+  background: none;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  margin: 0;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Comments and documentation */
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata,
+.token.hashbang {
+  color: var(--token-comment);
+}
+
+/* Basic syntax elements */
+.token.punctuation,
+.token.operator {
+  color: var(--token-punctuation);
+}
+
+.token.namespace {
+  color: var(--token-namespace);
+}
+
+.token.boolean,
+.token.constant,
+.token.builtin,
+.token.atrule {
+  color: var(--token-keyword);
+}
+
+.token.number {
+  color: var(--token-number);
+}
+
+.token.keyword {
+  color: var(--token-keyword);
+}
+
+/* Text and strings */
+.token.string,
+.token.char,
+.token.url,
+.token.deleted,
+.token.inserted,
+.token.format-string {
+  color: var(--token-string);
+}
+
+.token.regex,
+.token.language-regex {
+  color: var(--token-regex);
+}
+
+.token.important {
+  color: var(--token-important);
+  font-weight: bold;
+}
+
+/* Names and identifiers */
+.token.variable,
+.token.entity {
+  color: var(--token-variable);
+}
+
+.token.property,
+.token.selector,
+.token.symbol {
+  color: var(--token-property);
+}
+
+.token.function {
+  color: var(--token-function);
+}
+
+.token.class-name,
+.token.constructor-invocation.class-name {
+  color: var(--token-class-name);
+}
+
+.token.parameter,
+.token.named-parameter.punctuation {
+  color: var(--token-parameter);
+}
+
+/* Markup and templating */
+.token.tag {
+  color: var(--token-tag);
+}
+
+.token.attr-name {
+  color: var(--token-attr-name);
+}
+
+.token.attr-value {
+  color: var(--token-attr-value);
+}
+
+.token.doctype {
+  color: var(--token-doctype);
+}
+
+.token.internal-subset {
+  color: var(--token-doctype);
+}
+
+.token.template-punctuation,
+.token.interpolation {
+  color: var(--token-punctuation);
+}
+
+.token.interpolation-punctuation {
+  color: var(--token-keyword);
+}
+
+/* Text formatting */
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+.token.entity {
+  cursor: help;
+}

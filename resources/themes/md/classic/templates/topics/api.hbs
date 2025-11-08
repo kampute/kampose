@@ -1,0 +1,13 @@
+﻿{{!--
+  This partial renders the API overview for the documentation.
+  @param {object} this - The documentation context, including all assemblies, namespaces, types, and topics.
+  @note The common template variables are not available in this context.
+--}}
+{{#if (eq (len assemblies) 1)}}
+{{>assembly level='#' assembly=assemblies.0}}
+{{else}}
+# Assemblies
+{{#each assemblies}}
+{{>assembly level='##' assembly=this}}
+{{/each}}
+{{/if}}

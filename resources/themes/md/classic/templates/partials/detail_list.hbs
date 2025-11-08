@@ -1,0 +1,8 @@
+﻿{{!--
+  This partial renders a list of detailed information for each member.
+  @param {array} members - The list of members to render.
+--}}
+{{#each members}}
+{{{../level}}} {{#memberSignature this}}
+{{>member level=(concat '#' ../level) member=this}}
+{{/each}}

@@ -1,0 +1,46 @@
+{{!--
+  This partial renders the details of type members.
+  @param {object} type - The type model to render member details for.
+  @param {string} level - The heading level for the details.
+--}}
+{{#if type.constructors}}
+{{{level}}} Constructors
+
+{{>detail_list level=(concat '#' level) members=type.constructors}}
+{{/if}}
+
+{{#if type.fields}}
+{{{level}}} Fields
+
+{{>detail_list level=(concat '#' level) members=type.fields}}
+{{/if}}
+
+{{#if type.properties}}
+{{{level}}} Properties
+
+{{>detail_list level=(concat '#' level) members=type.properties}}
+{{/if}}
+
+{{#if type.methods}}
+{{{level}}} Methods
+
+{{>detail_list level=(concat '#' level) members=type.methods}}
+{{/if}}
+
+{{#if type.events}}
+{{{level}}} Events
+
+{{>detail_list level=(concat '#' level) members=type.events}}
+{{/if}}
+
+{{#if type.operators}}
+{{{level}}} Operators
+
+{{>detail_list level=(concat '#' level) members=type.operators}}
+{{/if}}
+
+{{#if type.explicitInterfaceMembers}}
+{{{level}}} Explicit Interface Implementations
+
+{{>detail_list level=(concat '#' level) members=type.explicitInterfaceMembers}}
+{{/if}}

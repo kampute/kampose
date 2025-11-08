@@ -1,0 +1,19 @@
+{{!--
+  This partial renders the brand section of the page, containing the project logo and title.
+  @param {object} this - The template context
+--}}
+
+<div class="brand" aria-label="Project title and logo">
+  {{#if (and projectLogoLightUri projectLogoDarkUri)}}
+  <img src="{{#rootRelativeUrl projectLogoDarkUri}}" alt="{{projectName}} logo" class="logo dark-mode" />
+  <img src="{{#rootRelativeUrl projectLogoLightUri}}" alt="{{projectName}} logo" class="logo light-mode" />
+  {{else}}{{#if projectLogoUri}}
+  <img src="{{#rootRelativeUrl projectLogoUri}}" alt="{{projectName}} logo" class="logo" />
+  {{/if}}{{/if}}
+  {{#if (or projectName projectSlogan)}}
+  <div class="project-info">
+    <span class="project-name">{{projectName}}</span>
+    <span class="project-slogan">{{projectSlogan}}</span>
+  </div>
+  {{/if}}
+</div>

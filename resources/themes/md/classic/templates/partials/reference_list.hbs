@@ -1,0 +1,13 @@
+﻿{{!--
+  This partial renders a list of references.
+  @param {array} this - The list of reference objects.
+--}}
+{{#each this}}
+
+{{#cref reference}}{{#unless isEmpty}} \
+{{content}}{{#each variants}} \
+`— OR —` \
+{{this}}
+{{/each}}{{/unless}}
+
+{{/each}}

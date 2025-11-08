@@ -1,0 +1,29 @@
+{{!--
+  This partial renders the HTML head meta tags and title for a page.
+  @param {object} this - The template context.
+--}}
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{#if projectName}}{{projectName}}{{/if}}{{#if pageTitle}}{{#if projectName}} - {{/if}}{{pageTitle}}{{#if model.namespace}} ({{model.namespace.name}}){{/if}}{{/if}}</title>
+{{#if faviconUri}}
+<link rel="icon" href="{{#rootRelativeUrl faviconUri}}" />
+{{/if}}
+{{#each styles}}
+<link rel="stylesheet" href="{{#rootRelativeUrl this}}" />
+{{/each}}
+{{#if styleUri}}
+<link rel="stylesheet" href="{{#rootRelativeUrl styleUri}}" />
+{{/if}}
+{{#each scripts}}
+<script src="{{#rootRelativeUrl this}}"></script>
+{{/each}}
+<script src="{{#rootRelativeUrl 'prism.min.js'}}"></script>
+{{#if scriptUri}}
+<script src="{{#rootRelativeUrl scriptUri}}"></script>
+{{/if}}
+<meta name="generator" content="{{generator}}" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+{{#unless model.doc.summary.isEmpty}}
+<meta name="description" content="{{#stripTags}}{{model.doc.summary}}{{/stripTags}}" />
+{{/unless}}

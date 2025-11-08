@@ -1,0 +1,18 @@
+{{!--
+  This partial renders information specific to an operator.
+  @param {object} member - The operator model to render.
+  @param {number} level - The heading level to use for subheadings.
+--}}
+
+<dl class="member-card">
+  {{#if member.metadata.explicitCustomAttributes}}
+  <dt>Attributes</dt>
+  <dd>{{>attribute_list member.metadata.explicitCustomAttributes}}</dd>
+  {{/if}}
+</dl>
+
+<h{{level}} id="parameters">Parameters</h{{level}}>
+{{>parameter_list parameters=member.metadata.parameters descriptions=member.doc.parameters}}
+
+<h{{level}} id="returns">Returns</h{{level}}>
+{{>returns returnType=member.metadata.return.type description=member.doc.returnDescription}}

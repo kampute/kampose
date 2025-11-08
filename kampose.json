@@ -1,0 +1,41 @@
+{
+  "convention": "dotNet",
+  "outputDirectory": ".site",
+  "topicHierarchy": "directory",
+  "topics": [
+    "docs/**/*.md"
+  ],
+  "assets": [
+    {
+      "source": [
+        "LICENSE",
+        "*.png",
+        "docs/*.png"
+      ]
+    },
+    {
+      "targetPath": "json-schemas",
+      "source": [
+        "resources/json-schema/**/*.json"
+      ]
+    }
+  ],
+  "theme": "classic",
+  "themeSettings": {
+    "projectName": "Kampose",
+    "projectSlogan": "A tool to bring your code’s story to light.",
+    "projectLogoLightUri": "logo-dark.png",
+    "projectLogoDarkUri": "logo-light.png",
+    "faviconUri": "ICON.png",
+    "pageFooter": "- Copyright © {{now 'yyyy'}} [Kampute](https://kampute.com)\n- Site built with [Kampose](https://kampute.github.io/kampose).",
+    "excludeLeftSidebar": true,
+    "menuItems": [
+      "command-line",
+      "configuration",
+      "themes",
+      "ci-cd-integration",
+      "xmldoc-tags",
+      "best-practices"
+    ]
+  }
+}

@@ -1,0 +1,37 @@
+{{!--
+  This partial renders information specific to an enum.
+  @param {object} member - The enum model to render.
+  @param {number} level - The heading level to use for subheadings.
+--}}
+
+<dl class="member-card">
+  {{#if member.metadata.explicitCustomAttributes}}
+  <dt>Attributes</dt>
+  <dd>{{>attribute_list member.metadata.explicitCustomAttributes}}</dd>
+  {{/if}}
+
+  <dt>Inheritance</dt>
+  <dd>{{>inheritance_list type=member.metadata}}</dd>
+</dl>
+
+{{#if model.values}}
+<h{{level}} id="fields">Fields</h{{level}}>
+<table class="enum-values">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each model.values}}
+    <tr class="is-field">
+      <td>{{name}}</td>
+      <td align="center">{{metadata.literalValue}}</td>
+      <td>{{doc.summary}}</td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
+{{/if}}

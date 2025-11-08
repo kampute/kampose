@@ -1,0 +1,10 @@
+﻿{{!--
+  This partial renders a table of members and their descriptions.
+  @param {string} name - The name of the member type.
+  @param {array} members - The list of member models to include in the summary.
+--}}
+| {{#firstNonBlank name 'Name'}} | Description |
+|---|---|
+{{#each members}}
+| {{this}} | {{doc.summary}} |
+{{/each}}

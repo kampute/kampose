@@ -1,0 +1,16 @@
+{{!--
+  This partial renders information specific to an operator.
+  @param {object} member - The operator model to render information for.
+  @param {string} level - The heading level to use for subheadings.
+--}}
+{{#if member.metadata.explicitCustomAttributes}}
+Attributes: {{>attribute_list member.metadata.explicitCustomAttributes}}
+{{/if}}
+
+{{#if member.metadata.parameters}}
+{{{level}}} Parameters
+{{>parameter_list parameters=member.metadata.parameters descriptions=member.doc.parameters}}
+{{/if}}
+
+{{{level}}} Returns
+{{>returns returnType=member.metadata.return.type description=member.doc.returnDescription}}

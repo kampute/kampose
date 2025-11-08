@@ -1,0 +1,123 @@
+{
+  "base": null,
+  "metadata": {
+    "format": "html",
+    "name": "Classic",
+    "description": "A classic theme for rendering API documentation in HTML format.",
+    "version": "1.0.0",
+    "author": "Kambiz Khojasteh",
+    "license": "MIT",
+    "homepage": "https://kampute.github.io/dot-doc/themes/classic-html.html"
+  },
+  "parameters": {
+    "projectName": {
+      "type": "string",
+      "description": "The name of the project.",
+      "defaultValue": null
+    },
+    "projectSlogan": {
+      "type": "string",
+      "description": "The slogan or tagline of the project.",
+      "defaultValue": null
+    },
+    "projectLogoUri": {
+      "type": "uri",
+      "description": "The URI of the project logo.",
+      "defaultValue": null
+    },
+    "projectLogoDarkUri": {
+      "type": "uri",
+      "description": "The URI of the project logo for dark backgrounds. When this is set, 'projectLogoLightUri' is required and 'projectLogoUri' is ignored.",
+      "defaultValue": null
+    },
+    "projectLogoLightUri": {
+      "type": "uri",
+      "description": "The URI of the project logo for light backgrounds. When this is set, 'projectLogoDarkUri' is required and 'projectLogoUri' is ignored.",
+      "defaultValue": null
+    },
+    "faviconUri": {
+      "type": "uri",
+      "description": "The URI of the favicon.",
+      "defaultValue": null
+    },
+    "styleUri": {
+      "type": "uri",
+      "description": "The URI of the custom stylesheet to extend or override the default styles.",
+      "defaultValue": null
+    },
+    "scriptUri": {
+      "type": "uri",
+      "description": "The URI of the custom script to extend the default functionality.",
+      "defaultValue": null
+    },
+    "pageHeader": {
+      "type": "markdown",
+      "description": "The markdown content for the page header. Template functions and variables can be used here.",
+      "defaultValue": null
+    },
+    "pageFooter": {
+      "type": "markdown",
+      "description": "The markdown content for the page footer. Template functions and variables can be used here.",
+      "defaultValue": null
+    },
+    "menuItems": {
+      "type": "array",
+      "description": "Defines the menu bar structure as an array. Each item is an object with 'title' and 'url' properties. To create dropdowns, add an 'items' array of sub-items. At any level, use '*' to auto-insert documentation topics, or '-' to add a divider.",
+      "defaultValue": []
+    },
+    "excludeBreadcrumb": {
+      "type": "boolean",
+      "description": "Determines whether to avoid rendering the breadcrumb navigation.",
+      "defaultValue": false
+    },
+    "excludeLeftSidebar": {
+      "type": "boolean",
+      "description": "Determines whether to avoid rendering the left sidebar, which contains the main navigation.",
+      "defaultValue": false
+    },
+    "excludeRightSidebar": {
+      "type": "boolean",
+      "description": "Determines whether to avoid rendering the right sidebar, which contains the page-specific navigation.",
+      "defaultValue": false
+    },
+    "groupTypesByNamespace": {
+      "type": "boolean",
+      "description": "Determines whether to group types by their namespace in the left sidebar. If true, types are grouped by their namespace; if false, they are listed individually.",
+      "defaultValue": false
+    },
+    "showTypeMembersSummary": {
+      "type": "boolean",
+      "description": "Determines whether to include a summary of type members in the type documentation pages. This is relevant only when each type member has its own documentation page.",
+      "defaultValue": false
+    },
+    "seeAlsoSubtopics": {
+      "type": "boolean",
+      "description": "Whether to automatically include related subtopics as 'see also' references.",
+      "defaultValue": false
+    },
+    "popupFileExtensions": {
+      "type": "array",
+      "description": "An array of file extensions (without the leading dot) for which links to local asset files should open in a modal pop-up instead of navigating to the file. By default, includes common text, image, and PDF extensions.",
+      "defaultValue": ["", "txt", "png", "jpeg", "jpg", "gif", "svg", "pdf"]
+    }
+  },
+  "templates": [
+    "templates/**/*.hbs"
+  ],
+  "scripts": {
+    "source": [
+      "scripts/**/*.js"
+    ],
+    "targetPath": "script.js"
+  },
+  "styles": {
+    "source": [
+      "styles/**/*.css"
+    ],
+    "targetPath": "style.css"
+  },
+  "assets": [
+    "prism.min.js",
+    ".nojekyll"
+  ]
+}

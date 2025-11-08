@@ -1,0 +1,15 @@
+{{!--
+  This partial renders information specific to a field.
+  @param {object} member - The field model to render.
+  @param {number} level - The heading level to use for subheadings.
+--}}
+
+<dl class="member-card">
+  {{#if member.metadata.explicitCustomAttributes}}
+  <dt>Attributes</dt>
+  <dd>{{>attribute_list member.metadata.explicitCustomAttributes}}</dd>
+  {{/if}}
+</dl>
+
+<h{{level}} id="field-value">Field Value</h{{level}}>
+{{>returns returnType=member.metadata.type description=member.doc.valueDescription}}

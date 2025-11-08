@@ -1,0 +1,11 @@
+﻿{{!--
+  This partial renders a list of type parameters for a generic type.
+  @param {array} typeParameters - The type parameters to render.
+  @param {object} descriptions - The descriptions for the type parameters.
+--}}
+{{#each typeParameters}}
+
+**`{{name}}`**{{#with (lookup ../descriptions name)}}{{#unless isEmpty}} \
+{{this}}{{/unless}}{{/with}}
+
+{{/each}}

@@ -1,0 +1,33 @@
+{{!--
+  This partial renders information specific to a method.
+  @param {object} member - The method model to render.
+  @param {number} level - The heading level to use for subheadings.
+--}}
+
+<dl class="member-card">
+  {{#if member.metadata.explicitCustomAttributes}}
+  <dt>Attributes</dt>
+  <dd>{{>attribute_list member.metadata.explicitCustomAttributes}}</dd>
+  {{/if}}
+</dl>
+
+{{#if member.metadata.isDefaultInterfaceImplementation}}
+<div class="default-impl">
+  This method has a default implementation in the interface.
+</div>
+{{/if}}
+
+{{#if member.metadata.typeParameters}}
+<h{{level}} id="type-parameters">Type Parameters</h{{level}}>
+{{>type_parameter_list typeParameters=member.metadata.typeParameters descriptions=member.doc.typeParameters}}
+{{/if}}
+
+{{#if member.metadata.parameters}}
+<h{{level}} id="parameters">Parameters</h{{level}}>
+{{>parameter_list parameters=member.metadata.parameters descriptions=member.doc.parameters}}
+{{/if}}
+
+{{#if member.metadata.hasReturnValue}}
+<h{{level}} id="returns">Returns</h{{level}}>
+{{>returns returnType=member.metadata.return.type description=member.doc.returnDescription}}
+{{/if}}

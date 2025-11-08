@@ -1,0 +1,218 @@
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}
+
+/* Large desktops and 4K displays */
+@media (min-width: 1440px) {
+  h1 {
+    font-size: 2.5rem;
+  }
+
+  h2 {
+    font-size: 2rem;
+  }
+
+  h3 {
+    font-size: 1.5rem;
+  }
+
+  h4 {
+    font-size: 1.2rem;
+  }
+
+  h5 {
+    font-size: 1.05rem;
+  }
+
+  h6 {
+    font-size: 0.95rem;
+  }
+
+  pre code {
+    font-size: 1.1rem;
+  }
+}
+
+/* Large laptops and desktops */
+@media (max-width: 1439px) and (min-width: 1200px) {
+  h1 {
+    font-size: 2.2rem;
+  }
+
+  h2 {
+    font-size: 1.6rem;
+  }
+
+  h3 {
+    font-size: 1.2rem;
+  }
+
+  h4 {
+    font-size: 1.05rem;
+  }
+
+  h5 {
+    font-size: 0.95rem;
+  }
+
+  h6 {
+    font-size: 0.9rem;
+  }
+}
+
+/* Small laptops and large tablets landscape */
+@media (max-width: 1199px) and (min-width: 1024px) {
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  h2 {
+    font-size: 1.4rem;
+  }
+
+  h3 {
+    font-size: 1.1rem;
+  }
+
+  h4 {
+    font-size: 1rem;
+  }
+}
+
+/* Tablets portrait and small laptops */
+@media (max-width: 1023px) and (min-width: 768px) {
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+  }
+
+  h3 {
+    font-size: 1rem;
+  }
+
+  h4 {
+    font-size: 0.95rem;
+  }
+
+  pre {
+    padding: 1.1rem;
+  }
+
+  pre code {
+    font-size: 0.95rem;
+  }
+}
+
+/* Large phones and small tablets */
+@media (max-width: 767px) and (min-width: 414px) {
+  h1 {
+    font-size: 1.2rem;
+  }
+
+  h2 {
+    font-size: 1rem;
+  }
+
+  h3 {
+    font-size: 0.95rem;
+  }
+
+  h4 {
+    font-size: 0.9rem;
+  }
+
+  h5 {
+    font-size: 0.85rem;
+  }
+
+  h6 {
+    font-size: 0.8rem;
+  }
+
+  pre {
+    padding: 1rem;
+  }
+
+  pre code {
+    font-size: 0.9rem;
+  }
+}
+
+/* Medium phones */
+@media (max-width: 413px) and (min-width: 375px) {
+  h1 {
+    font-size: 1.1rem;
+  }
+
+  h2 {
+    font-size: 0.95rem;
+  }
+
+  h3 {
+    font-size: 0.9rem;
+  }
+
+  h4 {
+    font-size: 0.85rem;
+  }
+
+  h5 {
+    font-size: 0.8rem;
+  }
+
+  h6 {
+    font-size: 0.75rem;
+  }
+
+  pre {
+    padding: 0.875rem;
+  }
+
+  pre code {
+    font-size: 0.85rem;
+  }
+}
+
+/* Small phones */
+@media (max-width: 374px) {
+  body {
+    font-size: 0.9rem;
+  }
+
+  h1 {
+    font-size: 1rem;
+  }
+
+  h2 {
+    font-size: 0.9rem;
+  }
+
+  h3 {
+    font-size: 0.85rem;
+  }
+
+  h4 {
+    font-size: 0.8rem;
+  }
+
+  h5 {
+    font-size: 0.75rem;
+  }
+
+  h6 {
+    font-size: 0.7rem;
+  }
+
+  pre {
+    padding: 0.75rem;
+  }
+
+  pre code {
+    font-size: 0.8rem;
+  }
+}

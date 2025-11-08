@@ -1,0 +1,31 @@
+{{!--
+  This partial renders the left sidebar section of the page, containing the main navigation links.
+  @param {object} this - The template context
+--}}
+
+<aside class="sidebar sidebar-left" role="complementary" aria-label="Site navigation" tabindex="-1">
+  <div class="sidebar-header">
+    <div class="search-container" role="search">
+      <input
+        type="text"
+        id="nav-search"
+        class="nav-search"
+        placeholder="Search..."
+        aria-label="Search documentation"
+        title="Type to filter content (Press / to focus)"
+        autocomplete="off"
+        spellcheck="false">
+      <button id="clear-search" type="button" class="clear-search hidden" aria-label="Clear search" title="Clear" tabindex="-1">
+        <span class="icon icon-delete" aria-hidden="true"></span>
+      </button>
+      <span class="search-icon" aria-hidden="true">
+        <span class="icon icon-search"></span>
+      </span>
+    </div>
+  </div>
+  <nav id="site-navigation" class="sidebar-nav" data-base-url="{{#rootUrl}}">
+    <div class="no-search-results hidden" aria-live="polite" role="status">
+      No results found
+    </div>
+  </nav>
+</aside>

@@ -1,0 +1,33 @@
+﻿{{!--
+  This partial renders types grouped by category.
+  @param {object} this - The collection of types.
+--}}
+{{#if classes}}
+## Classes
+
+{{>summary_list name='Class' members=classes}}
+{{/if}}
+
+{{#if structs}}
+## Structs
+
+{{>summary_list name='Struct' members=structs}}
+{{/if}}
+
+{{#if interfaces}}
+## Interfaces
+
+{{>summary_list name='Interface' members=interfaces}}
+{{/if}}
+
+{{#if enums}}
+## Enums
+
+{{>summary_list name='Enum' members=enums}}
+{{/if}}
+
+{{#if delegates}}
+## Delegates
+
+{{>summary_list name='Delegate' members=delegates}}
+{{/if}}

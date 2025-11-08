@@ -1,0 +1,23 @@
+{{!--
+  This partial renders information specific to a class.
+  @param {object} member - The class model to render information for.
+  @param {string} level - The heading level to use for subheadings.
+--}}
+{{#if member.metadata.explicitCustomAttributes}}
+Attributes: {{>attribute_list member.metadata.explicitCustomAttributes}}
+{{/if}}
+
+Inheritance: {{>inheritance_list type=member.metadata}}
+
+{{#if member.metadata.implementedInterfaces}}
+Implements: {{>inline_list member.metadata.implementedInterfaces}}
+{{/if}}
+
+{{#if member.metadata.derivedTypes}}
+Inherited by: {{>inline_list member.metadata.derivedTypes}}
+{{/if}}
+
+{{#if member.metadata.typeParameters}}
+{{{level}}} Type Parameters
+{{>type_parameter_list typeParameters=member.metadata.typeParameters descriptions=member.doc.typeParameters}}
+{{/if}}

@@ -1,0 +1,40 @@
+{{!--
+	This partial renders a summary of type members.
+	@param {object} type - The type model containing member information.
+	@param {number} level - The heading level for the summary.
+--}}
+
+{{#if type.constructors}}
+<h{{level}} id="constructors">Constructors</h{{level}}>
+{{>summary_list name='Constructor' members=type.constructors}}
+{{/if}}
+
+{{#if type.fields}}
+<h{{level}} id="fields">Fields</h{{level}}>
+{{>summary_list name='Field' members=type.fields}}
+{{/if}}
+
+{{#if type.properties}}
+<h{{level}} id="properties">Properties</h{{level}}>
+{{>summary_list name='Property' members=type.properties}}
+{{/if}}
+
+{{#if type.methods}}
+<h{{level}} id="methods">Methods</h{{level}}>
+{{>summary_list name='Method' members=type.methods}}
+{{/if}}
+
+{{#if type.events}}
+<h{{level}} id="events">Events</h{{level}}>
+{{>summary_list name='Event' members=type.events}}
+{{/if}}
+
+{{#if type.operators}}
+<h{{level}} id="operators">Operators</h{{level}}>
+{{>summary_list name='Operator' members=type.operators}}
+{{/if}}
+
+{{#if type.explicitInterfaceMembers}}
+<h{{level}} id="explicit-interface-implementations">Explicit Interface Implementations</h{{level}}>
+{{>summary_list name="Explicit Member" members=type.explicitInterfaceMembers}}
+{{/if}}

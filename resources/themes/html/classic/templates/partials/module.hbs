@@ -1,0 +1,11 @@
+{{!--
+  This partial renders the module information of a type or member.
+  @param {object} this - The member model.
+--}}
+
+<dl class="module-card">
+  <dt>Namespace</dt>
+  <dd>{{namespace}}</dd>
+  <dt>Assembly</dt>
+  <dd>{{>inline_list assembly.metadata.modules}}</dd>
+</dl>

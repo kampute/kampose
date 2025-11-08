@@ -1,0 +1,28 @@
+{{!--
+	This partial renders information specific to a type.
+	@param {object} type - The type model to render.
+	@param {number} level - The heading level to use for subheadings.
+--}}
+
+{{>explanation level=level member=type}}
+
+{{#if expandMembers}}
+{{>type_members_detail}}
+{{else}}{{#if showTypeMembersSummary}}
+{{>type_members_summary}}
+{{/if}}{{/if}}
+
+{{#if type.extensionMethods}}
+<h{{level}} id="extension-methods">Extension Methods</h{{level}}>
+{{>summary_list name='Extension Method' members=type.extensionMethods}}
+{{/if}}
+
+{{#unless type.doc.threadSafety.isEmpty}}
+<h{{level}} id="thread-safety">Thread Safety</h{{level}}>
+{{>thread_safety type.doc.threadSafety}}
+{{/unless}}
+
+{{#if type.doc.seeAlso}}
+<h{{level}} id="see-also">See Also</h{{level}}>
+{{>see_also_list type.doc.seeAlso}}
+{{/if}}

@@ -1,0 +1,5 @@
+﻿{{!--
+  This partial renders the inheritance list of a type.
+  @param {object} type - The type to render the inheritance list for.
+--}}
+{{#each type.baseTypeHierarchy}}{{this}} ← {{/each}}{{#memberName type}}

@@ -1,0 +1,41 @@
+﻿{{!--
+  This partial renders the breadcrumb navigation section of the page.
+  @param {object} this - The template context
+--}}
+
+<nav class="breadcrumb" role="navigation" aria-label="Breadcrumb" tabindex="-1">
+  <ol>
+    {{#if (ne model.url (rootRelativeUrl 'index.html'))}}
+    <li class="is-topic">
+      <a href="{{#rootRelativeUrl 'index.html'}}">
+        <span class="name">{{homePageTitle}}</span>
+      </a>
+    </li>
+    {{/if}}
+    {{#if (and model.isApiModel apiPageTitle)}}
+    <li class="is-topic">
+      <a href="{{#rootRelativeUrl 'api/index.html'}}">
+        <span class="name">{{apiPageTitle}}</span>
+      </a>
+    </li>
+    {{/if}}
+    {{#each model.hierarchyPath}}
+    <li class="is-{{#lowercase modelType}}">
+      <a href="{{url}}">
+        <span class="name">{{name}}</span>
+        {{#if isApiModel}}
+        <span class="category">{{modelType}}</span>
+        {{/if}}
+      </a>
+    </li>
+    {{/each}}
+    <li class="is-{{#lowercase model.modelType}} current-page" aria-current="page">
+      <a href="{{model.url}}">
+        <span class="name">{{model.name}}</span>
+        {{#if model.isApiModel}}
+        <span class="category">{{model.modelType}}</span>
+        {{/if}}
+      </a>
+    </li>
+  </ol>
+</nav>

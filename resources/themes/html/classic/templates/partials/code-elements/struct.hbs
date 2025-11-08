@@ -1,0 +1,25 @@
+{{!--
+  This partial renders information specific to a struct.
+  @param {object} member - The struct model to render.
+  @param {number} level - The heading level to use for subheadings.
+--}}
+
+<dl class="member-card">
+  {{#if member.metadata.explicitCustomAttributes}}
+  <dt>Attributes</dt>
+  <dd>{{>attribute_list member.metadata.explicitCustomAttributes}}</dd>
+  {{/if}}
+
+  <dt>Inheritance</dt>
+  <dd>{{>inheritance_list type=member.metadata}}</dd>
+
+  {{#if member.metadata.implementedInterfaces}}
+  <dt>Implements</dt>
+  <dd>{{>inline_list member.metadata.implementedInterfaces}}</dd>
+  {{/if}}
+</dl>
+
+{{#if member.metadata.typeParameters}}
+<h{{level}} id="type-parameters">Type Parameters</h{{level}}>
+{{>type_parameter_list typeParameters=member.metadata.typeParameters descriptions=member.doc.typeParameters}}
+{{/if}}

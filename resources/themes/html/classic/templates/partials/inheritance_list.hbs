@@ -1,0 +1,11 @@
+﻿{{!--
+  This partial renders the inheritance list of a type.
+  @param {object} type - The type to render the inheritance list for.
+--}}
+
+<ul class="inline-list inheritance-list" aria-label="Inheritance hierarchy">
+  {{#each type.baseTypeHierarchy}}
+  <li>{{this}}</li>
+  {{/each}}
+  <li aria-current="location">{{#memberName type}}</li>
+</ul>

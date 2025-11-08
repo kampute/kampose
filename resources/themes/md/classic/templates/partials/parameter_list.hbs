@@ -1,0 +1,11 @@
+﻿{{!--
+  This partial renders a list of parameters.
+  @param {array} parameters - The parameters to render.
+  @param {object} descriptions - The descriptions for the parameters.
+--}}
+{{#each parameters}}
+
+**`{{name}}`** {{type}} {{#if isOptional}}`optional`{{/if}}{{#with (lookup ../descriptions name)}}{{#unless isEmpty}} \
+{{this}}{{/unless}}{{/with}}
+
+{{/each}}

@@ -1,0 +1,60 @@
+.brand {
+  display: inline-flex;
+  align-items: center;
+}
+
+.brand:empty {
+  display: none;
+}
+
+.brand .project-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  white-space: nowrap;
+  color: var(--color-text);
+}
+
+.brand .project-info .project-name {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+  font-weight: 600;
+  opacity: 0.8
+}
+
+.brand .project-info .project-slogan {
+  font-size: 0.8rem;
+  font-weight: 400;
+  opacity: 0.6
+}
+
+.brand .logo {
+  width: auto;
+  height: 2.8rem;
+}
+
+.brand .logo:not(:last-child) {
+  margin-right: 0.5rem;
+}
+
+.brand .logo.dark-mode {
+  display: none;
+}
+
+html[data-color-mode="dark"] .brand .logo.light-mode {
+  display: none;
+}
+
+html[data-color-mode="dark"] .brand .logo.dark-mode {
+  display: unset;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-color-mode="light"]) .brand .logo.light-mode {
+    display: none;
+  }
+
+  html:not([data-color-mode="light"]) .brand .logo.dark-mode {
+    display: unset;
+  }
+}

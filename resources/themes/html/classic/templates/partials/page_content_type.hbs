@@ -1,0 +1,10 @@
+{{!--
+	This partial renders the content for a type page.
+	@param {object} this - The template context.
+--}}
+
+<h1>{{pageTitle}}</h1>
+{{>module model}}
+
+<h2 id="definition">Definition</h2>
+{{>type level=2 type=model}}

@@ -1,0 +1,12 @@
+﻿{{!--
+	This partial renders CSS class names for a member based on its attributes.
+	@param {object} this - The member to inspect.
+--}}
+
+is-{{#lowercase (memberCategory this)}}
+{{#if isPublic}}is-public{{/if}}
+{{#if isStatic}}is-static{{/if}}
+{{#if isAbstract}}is-abstract{{/if}}
+{{#if isExplicitInterfaceImplementation}}is-explicit-impl{{/if}}
+{{#if isDefaultInterfaceImplementation}}is-default-impl{{/if}}
+{{#if hasOverloads}}has-overloads{{/if}}

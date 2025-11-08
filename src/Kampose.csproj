@@ -1,0 +1,64 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Version>0.1.0</Version>
+    <Company>Kampute</Company>
+    <Authors>Kambiz Khojasteh</Authors>
+    <Copyright>Copyright (c) 2025 Kampute</Copyright>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>kampose</AssemblyName>
+
+    <!-- .NET Global Tool Configuration -->
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>kampose</ToolCommandName>
+
+    <!-- NuGet Package Metadata -->
+    <PackageId>Kampose</PackageId>
+    <Title>Kampose - .NET API Documentation Composer</Title>
+    <Description>Command-line tool for .NET projects that composes XML documentation comments, assemblies, and custom topics into comprehensive API documentation. Supports multiple output formats (HTML, Markdown) with extensible theme system and Handlebars templating.</Description>
+    <PackageTags>documentation;api-docs;xmldoc;dotnet-tool;cli;handlebars;markdown;html;docfx;devops</PackageTags>
+    <PackageReleaseNotes>For detailed release notes, please visit https://github.com/kampute/kampose/releases</PackageReleaseNotes>
+    <PackageProjectUrl>https://kampute.github.io/kampose</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/kampute/kampose</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>ICON.png</PackageIcon>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <ApplicationIcon>Kampose.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md" Pack="true" PackagePath="\" />
+    <None Include="..\ICON.png" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\resources\**\*">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <TargetPath>%(RecursiveDir)%(Filename)%(Extension)</TargetPath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Kampose.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Handlebars.Net" Version="2.1.6" />
+    <PackageReference Include="JsonSchema.Net" Version="7.4.0" />
+    <PackageReference Include="Kampute.DocToolkit" Version="1.1.0" />
+    <PackageReference Include="Markdig.Signed" Version="0.43.0" />
+    <PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" Version="9.0.10" />
+    <PackageReference Include="NUglify" Version="1.21.17" />
+  </ItemGroup>
+
+  <PropertyGroup Condition="Exists('..\SigningKey.snk')">
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\SigningKey.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+
+</Project>

@@ -1,0 +1,21 @@
+{{!--
+  This partial renders the content for an overloads page.
+  @param {object} this - The template context.
+--}}
+
+<h1>{{pageTitle}}</h1>
+{{>module model}}
+
+{{#unless model.doc.summary.isEmpty}}
+<div class="doc-summary">
+  {{model.doc.summary}}
+</div>
+{{/unless}}
+
+{{>summary_list members=model}}
+{{>detail_list level=3 members=model}}
+
+{{#if model.doc.seeAlso}}
+<h2 id="see-also">See Also</h2>
+{{>see_also_list model.doc.seeAlso}}
+{{/if}}

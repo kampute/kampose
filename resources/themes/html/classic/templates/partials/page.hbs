@@ -1,0 +1,55 @@
+{{!--
+  This partial renders a page layout.
+  @param {object} this - The template context.
+--}}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {{>page_meta}}
+</head>
+
+<body class="{{#unless excludeLeftSidebar}}has-left-sidebar{{/unless}} {{#unless excludeRightSidebar}}has-right-sidebar{{/unless}} {{#unless excludeBreadcrumb}}has-breadcrumb{{/unless}}">
+  <a href="#article" class="skip-link" aria-label="Skip to main content" tabindex="0">Skip to main content</a>
+
+  <header class="header" role="banner">
+    <div class="header-main">
+      {{>brand}}
+      {{>menubar}}
+    </div>
+    {{#unless excludeBreadcrumb}}
+    {{>breadcrumb}}
+    {{/unless}}
+  </header>
+
+  <div class="content">
+    {{#unless excludeLeftSidebar}}
+    {{>sidebar_left}}
+    {{/unless}}
+
+    <main id="article" role="main" class="article {{#if expandMembers}}has-expanded-members{{/if}} {{#if model.category}}{{>member_class_names model}}{{/if}}">
+      {{#if pageHeader}}
+      <header class="content-header" role="banner">
+        {{{>pageHeader_partial}}}
+      </header>
+      {{/if}}
+
+      {{> (concat 'page_content_' pageType)}}
+
+      {{#if pageFooter}}
+      <footer class="content-footer" role="contentinfo">
+        {{{>pageFooter_partial}}}
+      </footer>
+      {{/if}}
+    </main>
+
+    {{#unless excludeRightSidebar}}
+    {{>sidebar_right}}
+    {{/unless}}
+  </div>
+
+  {{>modal_dialog}}
+</body>
+
+</html>

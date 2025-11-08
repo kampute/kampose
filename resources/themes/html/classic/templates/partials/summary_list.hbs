@@ -1,0 +1,15 @@
+﻿{{!--
+  This partial renders a table of members and their descriptions.
+  @param {array} members - The list of member models to include in the summary.
+--}}
+
+<table class="summary-list">
+  <tbody>
+    {{#each members}}
+    <tr class="{{>member_class_names this}}">
+      <td>{{this}}</td>
+      <td>{{doc.summary}}</td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>

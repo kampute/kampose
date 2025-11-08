@@ -1,0 +1,71 @@
+{{!--
+  This partial renders the assembly information.
+  @param {object} assembly - The assembly to render information for.
+  @param {number} level - The heading level to use for subheadings.
+--}}
+
+<h{{level}} id="{{lowercase assembly.metadata.identity.name}}">
+  {{assembly.name}} Assembly
+  {{#if assembly.metadata.isStronglyNamed}}<span class="icon icon-shield superscript" title="Strongly Named Assembly"></span>{{/if}}
+</h{{level}}>
+
+<dl class="module-card">
+
+  {{#if assembly.metadata.attributes.packageLicenseExpression}}
+  <dt>License:</dt>
+  <dd><a href="https://opensource.org/licenses/{{assembly.metadata.attributes.packageLicenseExpression}}">{{assembly.metadata.attributes.packageLicenseExpression}}</a></dd>
+  {{/if}}
+
+  <dt>Version:</dt>
+  <dd>{{assembly.metadata.identity.version}}</dd>
+
+  {{#if (and assembly.metadata.attributes.product (ne assembly.metadata.attributes.product assembly.name))}}
+  <dt>Product:</dt>
+  <dd>{{assembly.metadata.attributes.product}}</dd>
+  {{/if}}
+
+  {{#if assembly.metadata.attributes.company}}
+  <dt>Company:</dt>
+  <dd>{{assembly.metadata.attributes.company}}</dd>
+  {{/if}}
+
+  {{#if assembly.metadata.attributes.copyright}}
+  <dt>Copyright:</dt>
+  <dd>{{assembly.metadata.attributes.copyright}}</dd>
+  {{/if}}
+
+  {{#if assembly.metadata.attributes.trademark}}
+  <dt>Trademark:</dt>
+  <dd>{{assembly.metadata.attributes.trademark}}</dd>
+  {{/if}}
+
+  {{#if assembly.metadata.attributes.authors}}
+  <dt>Author(s):</dt>
+  <dd>{{assembly.metadata.attributes.authors}}</dd>
+  {{/if}}
+
+  {{#if assembly.metadata.attributes.repositoryUrl}}
+  <dt>Repository:</dt>
+  <dd><a href="{{assembly.metadata.attributes.repositoryUrl}}">{{assembly.metadata.attributes.repositoryUrl}}</a></dd>
+  {{/if}}
+
+  {{#if assembly.metadata.attributes.locale}}
+  <dt>Locale:</dt>
+  <dd>{{assembly.metadata.attributes.locale}}</dd>
+  {{/if}}
+
+</dl>
+
+{{#if assembly.metadata.attributes.description}}
+<div class="doc-summary">
+  {{assembly.metadata.attributes.description}}
+</div>
+{{/if}}
+
+<h{{#inc level}}>Namespaces</h{{#inc level}}>
+{{>summary_list members=assembly.namespaces}}
+
+{{#if assembly.metadata.attributes.packageReleaseNotes}}
+<h{{#inc level}}>Release Notes</h{{#inc level}}>
+{{#markdown}}{{{assembly.metadata.attributes.packageReleaseNotes}}}{{/markdown}}
+{{/if}}

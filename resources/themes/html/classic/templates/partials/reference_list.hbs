@@ -1,0 +1,16 @@
+﻿{{!--
+  This partial renders a list of references.
+  @param {array} this - The list of references.
+--}}
+
+<dl class="reference-list">
+  {{#each this}}
+  <dt><a href="{{#memberUrl reference}}" rel="code-reference">{{#memberName reference}}</a></dt>
+  {{#unless isEmpty}}
+  <dd>{{content}}</dd>
+  {{#each variants}}
+  <dd class="variant">{{this}}</dd>
+  {{/each}}
+  {{/unless}}
+  {{/each}}
+</dl>

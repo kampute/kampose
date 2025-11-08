@@ -1,0 +1,38 @@
+{{!--
+  This partial renders thread safety information for a type.
+  @param {object} this - The thread safety information for the type.
+--}}
+
+<div class="doc-comment" role="note" aria-label="Thread safety information">
+  {{#if content.isEmpty}}
+  {{#if (isNull isStaticSafe)}}
+  {{#if isInstanceSafe}}
+  <p>Public instance members of the type are guaranteed to be thread-safe.</p>
+  {{else}}{{#if (not (isNull isInstanceSafe))}}
+  <p>Public instance members of the type are not thread-safe.</p>
+  {{/if}}{{/if}}
+  {{else}}{{#if (isNull isInstanceSafe)}}
+  {{#if isStaticSafe}}
+  <p>Public static members of the type are guaranteed to be thread-safe.</p>
+  {{else}}
+  <p>Public static members of the type are not thread-safe.</p>
+  {{/if}}
+  {{else}}
+  {{#if isStaticSafe}}
+  {{#if isInstanceSafe}}
+  <p>All public members of the type are guaranteed to be thread-safe.</p>
+  {{else}}
+  <p>Public static members of the type are guaranteed to be thread-safe. However, public instance members are not thread-safe.</p>
+  {{/if}}
+  {{else}}
+  {{#if isInstanceSafe}}
+  <p>Public instance members of the type are guaranteed to be thread-safe. However, public static members are not thread-safe.</p>
+  {{else}}
+  <p>Public members of the type are not thread-safe.</p>
+  {{/if}}
+  {{/if}}
+  {{/if}}{{/if}}
+  {{else}}
+  {{content}}
+  {{/if}}
+</div>

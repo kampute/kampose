@@ -1,0 +1,43 @@
+{{!--
+  This partial renders the detailed explanation section of a type or member.
+  @param {object} member - The member model to render.
+  @param {string} level - The heading level to use for subheadings.
+--}}
+
+{{#if (and member.doc.summary.isEmpty member.metadata.isDefaultConstructor)}}
+Initializes a new instance of {{member.declaringType}} {{#lowercase (memberCategory member.declaringType)}}.
+{{else}}
+{{member.doc.summary}}
+{{/if}}
+
+```{{member.context.language.identifier}}
+{{{#memberDefinition member}}}
+
+```
+
+{{> (lowercase member.modelType)}}
+
+{{#if member.doc.permissions}}
+{{{level}}} Permissions
+{{>reference_list member.doc.permissions}}
+{{/if}}
+
+{{#if member.doc.events}}
+{{{level}}} Events
+{{>reference_list member.doc.events}}
+{{/if}}
+
+{{#if member.doc.exceptions}}
+{{{level}}} Exceptions
+{{>reference_list member.doc.exceptions}}
+{{/if}}
+
+{{#unless member.doc.remarks.isEmpty}}
+{{{level}}} Remarks
+{{member.doc.remarks}}
+{{/unless}}
+
+{{#unless member.doc.example.isEmpty}}
+{{{level}}} Examples
+{{member.doc.example}}
+{{/unless}}

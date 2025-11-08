@@ -1,0 +1,12 @@
+{{!--
+	This partial renders information specific to a member of a type.
+	@param {object} member - The member model to render information for.
+	@param {number} level - The heading level to use for subheadings.
+--}}
+
+{{>explanation level=level member=member}}
+
+{{#if member.doc.seeAlso}}
+<h{{level}} id="see-also">See Also</h{{level}}>
+{{>see_also_list member.doc.seeAlso}}
+{{/if}}

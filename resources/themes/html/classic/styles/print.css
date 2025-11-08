@@ -1,0 +1,169 @@
+@media print {
+  @page {
+    size: portrait, landscape;
+    margin: 0.5in;
+    zoom: 0.5;
+  }
+
+  :root {
+    color-scheme: light;
+
+    /* Primary backgrounds */
+    --color-background: #ffffff;
+    --color-alt-background: #f8f9fa;
+    --color-surface: #ffffff;
+
+    /* Text colors */
+    --color-text: #212529;
+    --color-text-muted: #6c757d;
+    --color-heading: #1a1a1a;
+
+    /* Interactive elements */
+    --color-input-background: #ffffff;
+    --color-border: #dee2e6;
+    --color-shadow: rgba(0, 0, 0, 0.08);
+
+    /* Accent colors */
+    --color-accent: #495057;
+    --color-accent-text: #ffffff;
+
+    /* Link colors */
+    --color-link: #0077cc;
+    --color-link-hover: #00509e;
+
+    /* Code colors */
+    --color-code-background: #f1f3f5;
+    --color-code-text: #2a2e36;
+
+    /* Status colors */
+    --color-hint-background: #ebffea;
+    --color-hint: #087204;
+    --color-information-background: #e7f3ff;
+    --color-information: #0066cc;
+    --color-important-background: #fff3cd;
+    --color-important: #856404;
+    --color-security-background: #f8d7da;
+    --color-security: #721c24;
+  }
+
+  html {
+    color-scheme: light !important;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    box-shadow: none !important;
+  }
+
+  body {
+    font-size: 12pt;
+    line-height: 1.4;
+  }
+
+  h1 {
+    font-size: 18pt;
+    margin-bottom: 12pt;
+  }
+
+  h2 {
+    font-size: 16pt;
+    margin-top: 18pt;
+    margin-bottom: 6pt;
+  }
+
+  h3 {
+    font-size: 14pt;
+    margin-top: 12pt;
+    margin-bottom: 6pt;
+  }
+
+  h4 {
+    font-size: 13pt;
+    margin-top: 12pt;
+    margin-bottom: 4pt;
+  }
+
+  h5 {
+    font-size: 12pt;
+    margin-top: 10pt;
+    margin-bottom: 4pt;
+  }
+
+  h6 {
+    font-size: 11pt;
+    margin-top: 8pt;
+    margin-bottom: 4pt;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    page-break-inside: avoid;
+  }
+
+  table {
+    page-break-inside: auto;
+  }
+
+  pre {
+    padding: 8pt;
+    page-break-inside: avoid;
+  }
+
+  pre code {
+    font-size: 9pt;
+  }
+
+  code {
+    font-size: 10pt;
+  }
+
+  p {
+    orphans: 3;
+    widows: 3;
+  }
+
+  blockquote,
+  pre,
+  ul,
+  ol,
+  tr,
+  img {
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+
+  a {
+    color: var(--color-link);
+    text-decoration: none;
+  }
+
+  .header,
+  .sidebar,
+  .skip-link {
+    display: none;
+  }
+
+  .content,
+  .content main {
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+    height: auto;
+  }
+
+  .module-card,
+  .member-card {
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+
+  .type-member {
+    padding: 0;
+    border: none;
+  }
+}

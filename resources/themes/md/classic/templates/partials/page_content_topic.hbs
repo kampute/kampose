@@ -1,0 +1,12 @@
+{{!--
+  This partial renders the content for a topic page.
+  @param {object} this - The template context.
+--}}
+{{{model}}}
+
+{{#if (and seeAlsoSubtopics model.subtopics)}}
+## See Also
+{{#each model.subtopics}}
+- [{{name}}]({{url}})
+{{/each}}
+{{/if}}

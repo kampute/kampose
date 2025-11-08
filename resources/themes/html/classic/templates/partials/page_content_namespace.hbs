@@ -1,0 +1,28 @@
+{{!--
+  This partial renders the content for a namespace page.
+  @param {object} this - The template context.
+--}}
+
+<h1>{{pageTitle}}</h1>
+{{#unless model.doc.summary.isEmpty}}
+<div class="doc-summary">
+  {{model.doc.summary}}
+</div>
+{{/unless}}
+
+{{#unless model.doc.remarks.isEmpty}}
+<h2 id="remarks">Remarks</h2>
+{{model.doc.remarks}}
+{{/unless}}
+
+{{#unless model.doc.example.isEmpty}}
+<h2 id="remarks">Examples</h2>
+{{model.doc.examples}}
+{{/unless}}
+
+{{>type_category_list model.types}}
+
+{{#if model.doc.seeAlso}}
+<h2 id="see-also">See Also</h2>
+{{>see_also_list model.doc.seeAlso}}
+{{/if}}

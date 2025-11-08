@@ -1,0 +1,46 @@
+{{!--
+  This partial renders the assembly information.
+  @param {object} assembly - The assembly to render information for.
+  @level {string} level - The heading level to use for subheadings.
+--}}
+{{level}} {{assembly.name}} Assembly
+
+{{#if assembly.metadata.attributes.packageLicenseExpression}}
+> License: [{{assembly.metadata.attributes.packageLicenseExpression}}](https://opensource.org/licenses/{{assembly.metadata.attributes.packageLicenseExpression}}) \
+{{/if}}
+> Version: {{assembly.metadata.identity.version}} \
+{{#if (and assembly.metadata.attributes.product (ne assembly.metadata.attributes.product assembly.name))}}
+> Product: {{assembly.metadata.attributes.product}} \
+{{/if}}
+{{#if assembly.metadata.attributes.company}}
+> Company: {{assembly.metadata.attributes.company}} \
+{{/if}}
+{{#if assembly.metadata.attributes.copyright}}
+> Copyright: {{assembly.metadata.attributes.copyright}} \
+{{/if}}
+{{#if assembly.metadata.attributes.trademark}}
+> Trademark: {{assembly.metadata.attributes.trademark}} \
+{{/if}}
+{{#if assembly.metadata.attributes.authors}}
+> Author(s): {{assembly.metadata.attributes.authors}} \
+{{/if}}
+{{#if assembly.metadata.attributes.repositoryUrl}}
+> Repository: [{{assembly.metadata.attributes.repositoryUrl}}]({{assembly.metadata.attributes.repositoryUrl}}) \
+{{/if}}
+{{#if assembly.metadata.attributes.locale}}
+> Locale: {{assembly.metadata.attributes.locale}} \
+{{/if}}
+> {{#if (eq assembly.metadata.modules.count 1)}}Module{{else}}Modules{{/if}}: {{>inline_list assembly.metadata.modules}}
+
+{{#if assembly.metadata.attributes.description}}
+{{assembly.metadata.attributes.description}}
+{{/if}}
+
+#{{level}} Namespaces
+
+{{>summary_list name='Namespace' members=assembly.namespaces}}
+
+{{#if assembly.metadata.attributes.packageReleaseNotes}}
+#{{level}} Release Notes
+{{{assembly.metadata.attributes.packageReleaseNotes}}}
+{{/if}}

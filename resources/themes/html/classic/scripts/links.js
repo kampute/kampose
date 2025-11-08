@@ -31,89 +31,47 @@ function setupLinks() {
     });
 
     function isPopupFileType(path, extensions) {
-        if (!extensions.length || path.endsWith('.html') || path.endsWith('/')) {
+        if (path.endsWith('.html') || path.endsWith('/')) {
             return false;
         }
+
+        if (path.endsWith('/LICENSE') || path.endsWith('/DISCLAIMER')) {
+            return true;
+        }
+
+        if (extensions.length === 0) {
+            return false;
+        }
+
         const lastDot = path.lastIndexOf('.');
         const lastSegment = path.lastIndexOf('/');
         const ext = lastDot > lastSegment ? path.substring(lastDot + 1) : '';
-        return extensions.includes(ext.toLowerCase());
+        return ext && extensions.includes(ext.toLowerCase());
     }
 
     function openLinkInPopup(href) {
         const url = new URL(href);
-        const title = url.pathname.split('/').pop() || url.hostname;
+        const title = url.pathname.split('/').pop();
 
         fetch(href)
             .then(response => response.blob())
             .then(async blob => {
                 const mimeType = blob.type || '';
 
-                // Directly open images and PDFs in popup
-                if (mimeType.startsWith('image/') || mimeType === 'application/pdf') {
-                    openPopup(href, title);
+                // Fallback to normal navigation for HTML files
+                if (mimeType === 'text/html') {
+                    window.location.href = href;
                     return;
                 }
 
-                // Try to get text data URL for renderable text content
-                const textDataUrl = await getTextDataUrl(blob);
-                if (textDataUrl) {
-                    openPopup(textDataUrl, title);
-                    return;
+                // Convert unknown types to plain text for safer display
+                if (!mimeType.startsWith('image/') && mimeType !== 'application/pdf' && mimeType !== 'application/svg+xml') {
+                    blob = new Blob([blob], { type: 'text/plain' });
                 }
 
-                // Unsupported content: redirect instead of popup
-                window.location.href = href;
+                const blobUrl = URL.createObjectURL(blob);
+                openPopup(blobUrl, title);
             })
             .catch(() => openPopup(href, title));
-    }
-
-    async function getTextDataUrl(blob) {
-        const mimeType = blob.type || '';
-
-        // Exclude HTML content
-        if (mimeType === 'text/html') {
-            return null;
-        }
-
-        // Known text types that are safe to render
-        const isKnownTextType = mimeType.startsWith('text/') || [
-            'application/json',
-            'application/xml',
-            'application/javascript',
-            'application/typescript',
-            'application/x-yaml',
-            'application/yaml',
-            'application/toml',
-            'application/x-sh',
-            'application/x-python',
-            'application/sql',
-            'application/graphql',
-            'application/x-httpd-php'
-        ].includes(mimeType);
-
-        if (isKnownTextType) {
-            try {
-                const text = await blob.text();
-                return 'data:text/plain;base64,' + btoa(text);
-            } catch {
-                return null;
-            }
-        }
-
-        // Unknown or binary MIME type - check content heuristically
-        if (blob.size < 1024) {
-            try {
-                const text = await blob.text();
-                // If it contains null bytes, it's likely binary
-                if (!text.includes('\0')) {
-                    return 'data:text/plain;base64,' + btoa(text);
-                }
-            } catch {
-                return null;
-            }
-        }
-
-        return null;
     }
 }

@@ -425,13 +425,15 @@ The `popupFileExtensions` setting specifies an array of file extensions (without
 
 When a user clicks a link to a file with one of the specified extensions, the theme fetches the file and verifies its MIME type before displaying it. Only files with text, image, or PDF MIME types will open in the modal. Files with other MIME types are ignored and use standard browser navigation behavior.
 
-By default, the theme displays text files (`.txt`), common image formats (`.png`, `.jpg`, `.jpeg`, `.gif`, `.svg`), PDFs (`.pdf`), and files without extensions (like `LICENSE`) in a modal overlay.
+By default, the theme displays text files (`.txt`), common image formats (`.png`, `.jpg`, `.jpeg`, `.gif`, `.svg`), and PDFs (`.pdf`) in the modal.
 
-> Files without extensions are interpreted as plain text when displayed in the modal. If a file without an extension contains binary or non-text data, the modal may display garbled or unreadable characters.
+To customize which extensions trigger the modal, modify the array to include only the desired file extensions. To disable this feature entirely, set this to an empty array (`[]`).
 
-To customize which extensions trigger the modal, modify the array to include only the desired file extensions. Use the empty string (`""`) in the array to match files without extensions. To disable this feature entirely, set this to an empty array (`[]`).
+> The special `LICENSE` and `DISCLAIMER` files (without extensions) are always opened in the modal regardless of this setting.
 
-> This setting only affects local links to non-HTML files within the documentation. External links and links to `.html` files always use standard navigation behavior.
+If a configured file extension appear to be neither text, image, nor PDF based on its MIME type, the theme will convert it to plain text for safer display in the modal. It is your responsibility to ensure that only appropriate file types are included in this setting.
+
+> This setting only affects local links to non-HTML files within the documentation. External links and links to HTML files always use standard navigation behavior.
 
 #### Example
 

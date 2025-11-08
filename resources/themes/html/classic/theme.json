@@ -98,7 +98,7 @@
     "popupFileExtensions": {
       "type": "array",
       "description": "An array of file extensions (without the leading dot) for which links to local asset files should open in a modal pop-up instead of navigating to the file. By default, includes common text, image, and PDF extensions.",
-      "defaultValue": ["", "txt", "png", "jpeg", "jpg", "gif", "svg", "pdf"]
+      "defaultValue": ["txt", "png", "jpeg", "jpg", "gif", "svg", "pdf"]
     }
   },
   "templates": [

@@ -25,7 +25,10 @@ kampose build [OPTIONS] [config-file]
 - `config-file` - Path to your configuration file. Defaults to `kampose.json` in the current directory if not specified. You can omit the `.json` extension and it will be added automatically.
 
 ##### Options:
+- `-d, --debug` - Enable detailed logging to help diagnose issues during the documentation generation process.
 - `-h, --help` - Show help information for the build command
+
+> The `--debug` option only affects the verbosity of the output when redirected (e.g., to a log file or CI/CD system).
 
 ##### Examples:
 ```bash
@@ -37,6 +40,9 @@ kampose build custom-config.json
 
 # Specify a configuration file without the .json extension
 kampose build my-config
+
+# Generate documentation with debug output
+kampose build my-config --debug > log.txt
 ```
 
 ### `help`
@@ -106,9 +112,3 @@ Kampose returns these exit codes to indicate what happened:
 - `2` - Invalid command or options
 - `3` - Configuration or theme validation errors
 - `4` - Unexpected errors
-
-## Verbose Logging
-
-By default, Kampose does not display detailed logging information.
-
-However, if you redirect the output to a file or another destination, Kampose will automatically enable verbose logging. This includes detailed information about the processing steps, warnings, and errors encountered during execution.

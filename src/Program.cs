@@ -64,7 +64,7 @@ namespace Kampose
         private static IActivityReporter CreateActivityReporter()
         {
             if (Console.IsOutputRedirected)
-                return new TextWriterActivityReporter(Console.Out, Console.Error, verbose: true);
+                return new TextWriterActivityReporter(Console.Out, Console.Error);
 
             try
             {
@@ -72,7 +72,7 @@ namespace Kampose
             }
             catch
             {
-                return new TextWriterActivityReporter(Console.Out, verbose: false);
+                return new TextWriterActivityReporter(Console.Out);
             }
         }
     }

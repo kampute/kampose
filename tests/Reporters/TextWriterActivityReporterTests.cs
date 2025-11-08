@@ -42,7 +42,7 @@ namespace Kampose.Test.Reporters
         public void BeginStep_WithVerboseTrue_WritesStepAndFlushes()
         {
             using var writer = new StringWriter();
-            using var reporter = new TextWriterActivityReporter(writer, verbose: true);
+            using var reporter = new TextWriterActivityReporter(writer) { Verbose = true };
 
             reporter.BeginActivity("Test Activity");
             reporter.BeginStep("Test Step");
@@ -55,7 +55,7 @@ namespace Kampose.Test.Reporters
         public void BeginStep_WithVerboseFalse_DoesNotWriteStep()
         {
             using var writer = new StringWriter();
-            using var reporter = new TextWriterActivityReporter(writer, verbose: false);
+            using var reporter = new TextWriterActivityReporter(writer) { Verbose = false };
 
             reporter.BeginActivity("Test Activity");
             reporter.BeginStep("Test Step");
@@ -184,7 +184,7 @@ namespace Kampose.Test.Reporters
         public void OutputIsImmediatelyFlushed_ForCICDScenarios()
         {
             using var writer = new FlushTrackingWriter();
-            using var reporter = new TextWriterActivityReporter(writer, verbose: true);
+            using var reporter = new TextWriterActivityReporter(writer) { Verbose = true };
 
             reporter.BeginActivity("Activity");
             Assert.That(writer.FlushCount, Is.GreaterThan(0), "Activity should flush output");
@@ -202,7 +202,7 @@ namespace Kampose.Test.Reporters
         public void Dispose_WithDisposeWriterTrue_DisposesWriter()
         {
             var writer = new DisposableTrackingWriter();
-            var reporter = new TextWriterActivityReporter(writer, verbose: false, disposeWriter: true);
+            var reporter = new TextWriterActivityReporter(writer, disposeWriter: true);
 
             reporter.Dispose();
 
@@ -213,7 +213,7 @@ namespace Kampose.Test.Reporters
         public void Dispose_WithDisposeWriterFalse_DoesNotDisposeWriter()
         {
             var writer = new DisposableTrackingWriter();
-            var reporter = new TextWriterActivityReporter(writer, verbose: false, disposeWriter: false);
+            var reporter = new TextWriterActivityReporter(writer, disposeWriter: false);
 
             reporter.Dispose();
 
@@ -225,7 +225,7 @@ namespace Kampose.Test.Reporters
         {
             var stdoutWriter = new DisposableTrackingWriter();
             var stderrWriter = new DisposableTrackingWriter();
-            var reporter = new TextWriterActivityReporter(stdoutWriter, stderrWriter, verbose: false, disposeWriter: true, disposeErrorWriter: true);
+            var reporter = new TextWriterActivityReporter(stdoutWriter, stderrWriter, disposeWriter: true, disposeErrorWriter: true);
 
             reporter.Dispose();
 
@@ -240,7 +240,7 @@ namespace Kampose.Test.Reporters
         public void Dispose_WithSameWriterForBoth_DisposesOnlyOnce()
         {
             var writer = new DisposableTrackingWriter();
-            var reporter = new TextWriterActivityReporter(writer, writer, verbose: false, disposeWriter: true, disposeErrorWriter: true);
+            var reporter = new TextWriterActivityReporter(writer, writer, disposeWriter: true, disposeErrorWriter: true);
 
             reporter.Dispose();
 
@@ -266,7 +266,7 @@ namespace Kampose.Test.Reporters
         public void MultipleCalls_ToSameStep_WritesOnlyOnce()
         {
             using var writer = new StringWriter();
-            using var reporter = new TextWriterActivityReporter(writer, verbose: true);
+            using var reporter = new TextWriterActivityReporter(writer) { Verbose = true };
 
             reporter.BeginStep("Step");
             var outputAfterFirst = writer.ToString();

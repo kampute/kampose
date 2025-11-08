@@ -37,12 +37,20 @@ namespace Kampose.Commands
             foreach (var arg in args)
             {
                 if (arg.StartsWith('-'))
-                    throw new CommandException($"Unknown option '{arg}'.", this);
-
-                if (!string.IsNullOrEmpty(configFile))
+                {
+                    if (arg is "-d" or "--debug")
+                        options.Verbose = true;
+                    else
+                        throw new CommandException($"Unknown option '{arg}'.", this);
+                }
+                else if (string.IsNullOrEmpty(configFile))
+                {
+                    configFile = arg;
+                }
+                else
+                {
                     throw new CommandException("Only one configuration file can be specified.", this);
-
-                configFile = arg;
+                }
             }
 
             if (!string.IsNullOrEmpty(configFile))
@@ -61,6 +69,9 @@ namespace Kampose.Commands
         protected override int ExecuteCommand(Options options, IActivityReporter reporter)
         {
             WriteApplicationHeader();
+
+            // Set reporter verbosity
+            reporter.Verbose = options.Verbose;
 
             // Load configuration
             var config = Configuration.LoadFromFile(options.ConfigPath);
@@ -109,6 +120,7 @@ namespace Kampose.Commands
             Console.WriteLine(Description);
             Console.WriteLine();
             Console.WriteLine("OPTIONS:");
+            Console.WriteLine("  -d, --debug                 Enables detailed logging to help diagnose issues during the documentation generation process.");
             Console.WriteLine("  -h, --help                  Display this help message and exit.");
             Console.WriteLine();
             Console.WriteLine($"If no configuration file is specified, the tool defaults to '{DefaultConfigFile}' in the current directory.");
@@ -116,6 +128,7 @@ namespace Kampose.Commands
             Console.WriteLine("EXAMPLES:");
             Console.WriteLine($"  {nameof(Kampose)} {Name}                      Use the default configuration file '{DefaultConfigFile}' in the current directory.");
             Console.WriteLine($"  {nameof(Kampose)} {Name} custom-config.json   Use 'custom-config.json' as the configuration file.");
+            Console.WriteLine($"  {nameof(Kampose)} {Name} --debug              Generate documentation with debug output.");
         }
 
         /// <summary>
@@ -161,6 +174,14 @@ namespace Kampose.Commands
             /// The path to the configuration file.
             /// </value>
             public string ConfigPath { get; set; } = DefaultConfigFile;
+
+            /// <summary>
+            /// Gets or sets a value indicating whether verbose reporting is enabled.
+            /// </summary>
+            /// <value>
+            /// <see langword="true"/> if verbose reporting is enabled; otherwise, <see langword="false"/>.
+            /// </value>
+            public bool Verbose { get; set; } = false;
         }
     }
 }

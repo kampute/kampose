@@ -14,6 +14,14 @@ namespace Kampose.Reporters
     public interface IActivityReporter : IDisposable
     {
         /// <summary>
+        /// Gets or sets a value indicating whether verbose reporting is enabled.
+        /// </summary>
+        /// <value>
+        /// <see langword="true"/> if verbose reporting is enabled; otherwise, <see langword="false"/>.
+        /// </value>
+        bool Verbose { get; set; }
+
+        /// <summary>
         /// Gets the number of warnings reported during the operation.
         /// </summary>
         /// <value>

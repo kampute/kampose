@@ -19,7 +19,6 @@ namespace Kampose.Reporters
         private readonly TextWriter errorWriter;
         private readonly bool disposeWriter;
         private readonly bool disposeErrorWriter;
-        private readonly bool verbose = false;
 
         private string currentActivity = string.Empty;
         private string currentStep = string.Empty;
@@ -31,11 +30,10 @@ namespace Kampose.Reporters
         /// Initializes a new instance of the <see cref="TextWriterActivityReporter"/> class.
         /// </summary>
         /// <param name="writer">The TextWriter to output messages to.</param>
-        /// <param name="verbose">Whether to report detailed progress messages.</param>
         /// <param name="disposeWriter">Whether to dispose the TextWriter when this reporter is disposed.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="writer"/> is null.</exception>
-        public TextWriterActivityReporter(TextWriter writer, bool verbose = false, bool disposeWriter = false)
-            : this(writer, writer, verbose, disposeWriter, false)
+        public TextWriterActivityReporter(TextWriter writer, bool disposeWriter = false)
+            : this(writer, writer, disposeWriter, false)
         {
         }
 
@@ -44,18 +42,24 @@ namespace Kampose.Reporters
         /// </summary>
         /// <param name="writer">The TextWriter to output informational messages to.</param>
         /// <param name="errorWriter">The TextWriter to output errors and warnings to.</param>
-        /// <param name="verbose">Whether to report detailed progress messages.</param>
         /// <param name="disposeWriter">Whether to dispose the <paramref name="writer"/> when this reporter is disposed.</param>
         /// <param name="disposeErrorWriter">Whether to dispose the <paramref name="errorWriter"/> when this reporter is disposed.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="writer"/> or <paramref name="errorWriter"/> is null.</exception>
-        public TextWriterActivityReporter(TextWriter writer, TextWriter errorWriter, bool verbose = false, bool disposeWriter = false, bool disposeErrorWriter = false)
+        public TextWriterActivityReporter(TextWriter writer, TextWriter errorWriter, bool disposeWriter = false, bool disposeErrorWriter = false)
         {
             this.writer = writer ?? throw new ArgumentNullException(nameof(writer));
             this.errorWriter = errorWriter ?? throw new ArgumentNullException(nameof(errorWriter));
             this.disposeWriter = disposeWriter;
             this.disposeErrorWriter = disposeErrorWriter;
-            this.verbose = verbose;
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether verbose reporting is enabled.
+        /// </summary>
+        /// <value>
+        /// <see langword="true"/> if verbose reporting is enabled; otherwise, <see langword="false"/>.
+        /// </value>
+        public bool Verbose { get; set; } = false;
 
         /// <summary>
         /// Gets the number of warnings reported during the operation.
@@ -106,7 +110,7 @@ namespace Kampose.Reporters
             if (currentStep != step)
             {
                 currentStep = step;
-                if (verbose)
+                if (Verbose)
                 {
                     writer.Write("  ");
                     writer.WriteLine(step);
@@ -143,7 +147,7 @@ namespace Kampose.Reporters
                     break;
             }
 
-            var indent = verbose && writeTypeIndicator && !string.IsNullOrEmpty(currentStep) ? "  " : string.Empty;
+            var indent = Verbose && writeTypeIndicator && !string.IsNullOrEmpty(currentStep) ? "  " : string.Empty;
 
             if (writeTypeIndicator)
             {

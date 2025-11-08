@@ -1,9 +1,0 @@
-{
-  "profiles": {
-    "Kampose": {
-      "commandName": "Project",
-      "commandLineArgs": "build",
-      "workingDirectory": "C:\\Users\\kambi\\Repos\\kampose"
-    }
-  }
-}

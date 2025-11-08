@@ -32,7 +32,7 @@ jobs:
       run: dotnet test --no-restore --verbosity minimal
 
     - name: Generate Documentation
-      run: dotnet run --project src --no-build -c Release
+      run: dotnet run --project src --no-build -c Release -- build
 
     - name: Deploy documentation to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4

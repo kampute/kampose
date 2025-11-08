@@ -134,10 +134,12 @@ namespace Kampose.Test.Templates.Helpers
         public void Json_ReturnsSerializedJson()
         {
             var data = new object[] { "str", new { Integer = 1, Boolean = true } };
-            var expectedJson = "[\r\n  \"str\",\r\n  {\r\n    \"integer\": 1,\r\n    \"boolean\": true\r\n  }\r\n]";
+            var expectedJson = "[\n  \"str\",\n  {\n    \"integer\": 1,\n    \"boolean\": true\n  }\n]";
 
             var template = handlebars.Compile("{{{#json data}}}");
-            Assert.That(template(new { data }), Is.EqualTo(expectedJson));
+            var result = template(new { data }).Replace(Environment.NewLine, "\n");
+
+            Assert.That(result, Is.EqualTo(expectedJson));
         }
 
         [TestCase(null, ExpectedResult = "null")]

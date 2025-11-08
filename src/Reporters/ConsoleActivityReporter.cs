@@ -222,7 +222,10 @@ namespace Kampose.Reporters
         private void DrawActivity()
         {
             if (activityRow == -1)
+            {
                 activityRow = Console.CursorTop;
+                EnsureConsoleSpace(1); // Ensure space for progress line
+            }
 
             Console.SetCursorPosition(0, activityRow);
             Console.ForegroundColor = ConsoleColor.White;
@@ -375,6 +378,26 @@ namespace Kampose.Reporters
 
             Console.SetCursorPosition(0, activityRow);
             activityRow = -1;
+        }
+
+        /// <summary>
+        /// Ensures there is enough space in the console buffer for the specified number of lines below the current activity row.
+        /// </summary>
+        /// <param name="requiredLines">The number of lines needed below the activity row.</param>
+        private void EnsureConsoleSpace(int requiredLines)
+        {
+            var bufferHeight = Console.BufferHeight;
+            var neededRows = activityRow + requiredLines + 1;
+
+            if (neededRows > bufferHeight)
+            {
+                var linesToScroll = neededRows - bufferHeight;
+                Console.SetCursorPosition(0, bufferHeight - 1);
+                for (var i = 0; i < linesToScroll; i++)
+                    Console.WriteLine();
+
+                activityRow -= linesToScroll;
+            }
         }
 
         /// <summary>

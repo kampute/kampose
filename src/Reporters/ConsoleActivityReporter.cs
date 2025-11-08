@@ -141,7 +141,7 @@ namespace Kampose.Reporters
             ClearLines();
             DrawLogMessages();
 
-            Console.CursorVisible = false;
+            Console.CursorVisible = true;
             disposed = true;
         }
 
@@ -382,6 +382,16 @@ namespace Kampose.Reporters
         /// </summary>
         /// <exception cref="ObjectDisposedException">Thrown if the reporter has been disposed.</exception>
         private void ThrowIfDisposed() => ObjectDisposedException.ThrowIf(disposed, nameof(IActivityReporter));
+
+        /// <inheritdoc/>
+        /// <remarks>
+        /// This implementation does not support verbose reporting; setting this property has no effect.
+        /// </remarks>
+        bool IActivityReporter.Verbose
+        {
+            get => false;
+            set { /* No-op */ }
+        }
 
         /// <summary>
         /// Represents a scope for a step in the activity reporter.

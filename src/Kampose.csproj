@@ -6,10 +6,13 @@
     <Company>Kampute</Company>
     <Authors>Kambiz Khojasteh</Authors>
     <Copyright>Copyright (c) 2025 Kampute</Copyright>
+    <Title>Kampose - .NET API Documentation Composer</Title>
+    <Description>Command-line tool for .NET projects that composes XML documentation comments, assemblies, and custom topics into comprehensive API documentation. Supports multiple output formats (HTML, Markdown) with extensible theme system and Handlebars templating.</Description>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <OutputType>Exe</OutputType>
     <AssemblyName>kampose</AssemblyName>
+    <ApplicationIcon>Kampose.ico</ApplicationIcon>
 
     <!-- .NET Global Tool Configuration -->
     <PackAsTool>true</PackAsTool>
@@ -17,8 +20,6 @@
 
     <!-- NuGet Package Metadata -->
     <PackageId>Kampose</PackageId>
-    <Title>Kampose - .NET API Documentation Composer</Title>
-    <Description>Command-line tool for .NET projects that composes XML documentation comments, assemblies, and custom topics into comprehensive API documentation. Supports multiple output formats (HTML, Markdown) with extensible theme system and Handlebars templating.</Description>
     <PackageTags>documentation;api-docs;xmldoc;dotnet-tool;cli;handlebars;markdown;html;docfx;devops</PackageTags>
     <PackageReleaseNotes>For detailed release notes, please visit https://github.com/kampute/kampose/releases</PackageReleaseNotes>
     <PackageProjectUrl>https://kampute.github.io/kampose</PackageProjectUrl>
@@ -28,7 +29,8 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageIcon>ICON.png</PackageIcon>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <ApplicationIcon>Kampose.ico</ApplicationIcon>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <NoDefaultExcludes>true</NoDefaultExcludes>
   </PropertyGroup>
 
   <ItemGroup>

@@ -31,7 +31,7 @@ Integrate documentation generation into CI/CD pipelines to keep documentation sy
 ## Installation
 
 ```bash
-dotnet tool install --global Kampose
+dotnet tool install --global kampose
 ```
 
 ## Quick Start
@@ -51,11 +51,17 @@ dotnet tool install --global Kampose
 }
 ```
 
+For more configuration options and examples, refer to the [Configuration](https://kampute.github.io/kampose/configuration.html) guide.
+
 **Step 3**: Build your project and generate documentation:
 ```bash
 dotnet build -c Release
 kampose build
 ```
+
+See the [Command-Line Interface](command-line.md) guide.
+
+See the [Getting Started Guide](https://kampute.github.io/kampose/command-line.html) for detailed instructions and examples.
 
 ## Documentation
 

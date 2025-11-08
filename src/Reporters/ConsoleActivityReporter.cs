@@ -25,7 +25,6 @@ namespace Kampose.Reporters
         private readonly char emptyProgressCell;
 
         private string currentActivity = string.Empty;
-        private string currentStep = string.Empty;
         private int currentPercentage = 0;
         private int totalSteps = 0;
         private int completedSteps = 0;
@@ -35,10 +34,11 @@ namespace Kampose.Reporters
         /// <summary>
         /// Initializes a new instance of the <see cref="ConsoleActivityReporter"/> class.
         /// </summary>
+        /// <exception cref="NotSupportedException">Thrown when the console does not support required operations.</exception>
         public ConsoleActivityReporter()
         {
+            ValidateConsoleCapabilities();
             Console.CursorVisible = false;
-
             try
             {
                 primaryBullet = '•';
@@ -59,6 +59,16 @@ namespace Kampose.Reporters
                 filledProgressCell = '#';
                 emptyProgressCell = '.';
             }
+        }
+
+        /// <inheritdoc/>
+        /// <remarks>
+        /// This implementation does not support verbose reporting; setting this property has no effect.
+        /// </remarks>
+        public bool Verbose
+        {
+            get => false;
+            set { /* No-op */ }
         }
 
         /// <summary>
@@ -113,7 +123,6 @@ namespace Kampose.Reporters
         {
             ThrowIfDisposed();
 
-            currentStep = step;
             return new StepScope(this);
         }
 
@@ -138,10 +147,17 @@ namespace Kampose.Reporters
             if (disposed)
                 return;
 
-            ClearLines();
-            DrawLogMessages();
+            try
+            {
+                ClearLines();
+                DrawLogMessages();
+                Console.CursorVisible = true;
+            }
+            catch
+            {
+                // Suppress exceptions during disposal to avoid masking original errors
+            }
 
-            Console.CursorVisible = true;
             disposed = true;
         }
 
@@ -406,14 +422,14 @@ namespace Kampose.Reporters
         /// <exception cref="ObjectDisposedException">Thrown if the reporter has been disposed.</exception>
         private void ThrowIfDisposed() => ObjectDisposedException.ThrowIf(disposed, nameof(IActivityReporter));
 
-        /// <inheritdoc/>
-        /// <remarks>
-        /// This implementation does not support verbose reporting; setting this property has no effect.
-        /// </remarks>
-        bool IActivityReporter.Verbose
+        /// <summary>
+        /// Validates that the console supports required capabilities.
+        /// </summary>
+        private static void ValidateConsoleCapabilities()
         {
-            get => false;
-            set { /* No-op */ }
+            _ = Console.BufferHeight;
+            _ = Console.WindowWidth;
+            _ = Console.CursorTop;
         }
 
         /// <summary>

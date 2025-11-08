@@ -1,0 +1,221 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Configuration",
+  "type": "object",
+  "description": "Represents the configuration for the documentation generation process.",
+  "properties": {
+    "baseDirectory": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The base directory path used to resolve relative paths in the configuration. When not specified, the directory containing the configuration file is used as the base directory."
+    },
+    "baseUrl": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uri",
+      "description": "The base URL for the documentation site. This URL is used as the root for all links in the generated documentation. If not specified (null), the URLs will be relative to the output directory."
+    },
+    "assemblies": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Glob patterns for locating .NET assembly (.dll) files whose types and members will be included in the generated documentation. The assembly files are searched within the baseDirectory and its subdirectories. For each assembly, the tool will attempt to locate a corresponding XML documentation file with the same name."
+    },
+    "xmlDocs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Glob patterns for locating XML documentation files that may be in different directories or have different naming conventions than the assemblies being documented. This property is optional and only needed when XML documentation files cannot be automatically located alongside their corresponding assemblies."
+    },
+    "references": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "namespaces": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The collection of namespaces that identify the code elements for which documentation URLs are to be resolved. The namespaces are case-sensitive and may contain a single wildcard (*) as the last segment."
+          },
+          "strategy": {
+            "type": "string",
+            "enum": [
+              "dotNet",
+              "docFx",
+              "devOps",
+              "onlineSearch"
+            ],
+            "description": "The strategy used for resolving the documentation URLs of code elements. This value determines the format and structure of the URLs."
+          },
+          "url": {
+            "type": [
+              "string"
+            ],
+            "format": "uri",
+            "description": "The full URL of the documentation site where the documentation for the code elements can be found."
+          },
+          "extension": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The file extension used in the documentation URLs if the URLs are file-based and have a file extension other than the default."
+          }
+        },
+        "required": [
+          "namespaces",
+          "strategy",
+          "url"
+        ],
+        "description": "The settings for resolving the documentation URLs of external code elements referenced by the assemblies to be documented."
+      },
+      "description": "A list of settings that define how to resolve documentation URLs for external code elements (types and members) referenced by the assemblies being documented. External references allow linking from your documentation to other documentation sites when your code references types or members from external libraries.",
+      "additionalProperties": false
+    },
+    "topics": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Glob patterns for locating topic files (such as guides, tutorials, or conceptual documentation) that will be converted to the format of documentation pages and included in the output. By default, it includes all Markdown files (*.md) in the base directory.",
+      "default": ["*.md"]
+    },
+    "topicOrder": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Explicit ordering list for topic files in the documentation. The values can be relative file paths with or without extensions (e.g., 'getting-started.md' or 'guides/advanced'). If this list is empty, topics will maintain the order in which they were discovered by the file system.",
+      "default": []
+    },
+    "topicHierarchy": {
+      "type": "string",
+      "enum": [
+        "none",
+        "directory",
+        "index",
+        "prefix"
+      ],
+      "description": "The method used to organize topics in a hierarchy structure.",
+      "default": "none"
+    },
+    "assets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Glob patterns for filtering files to be copied to the output directory. The patterns are relative to the baseDirectory and can include wildcards. The source files are copied as-is without any content transformation."
+          },
+          "targetPath": {
+            "type": "string",
+            "description": "The target directory relative to the outputDirectory where the files matching the source glob patterns will be copied. The target directory is created if it does not exist. Default is the output directory."
+          }
+        },
+        "required": [
+          "source"
+        ],
+        "description": "Filter for transferring files based on glob patterns.",
+        "additionalProperties": false
+      },
+      "description": "A list of settings that define glob patterns for locating static asset files (such as images, stylesheets, or scripts) and specify their destination directories in the output. Unlike topic files, assets are copied to the output directory without content transformation."
+    },
+    "outputDirectory": {
+      "type": "string",
+      "description": "The relative or absolute path to the directory where all generated documentation files will be written. If a relative path is provided, it is resolved against the baseDirectory. This property is required for configuration to be valid."
+    },
+    "convention": {
+      "type": "string",
+      "enum": [
+        "dotNet",
+        "docFx",
+        "devOps"
+      ],
+      "description": "The convention value that determines the site conventions (URL patterns and page grouping) used when generating documentation. This property is required for configuration to be valid."
+    },
+    "theme": {
+      "type": "string",
+      "description": "The name of a built-in theme or the path to a custom theme that controls the visual appearance of the generated documentation. Built-in theme names are simple identifiers like \"classic\". Custom theme paths can be relative to the baseDirectory or absolute file system paths. Defaults to \"classic\".",
+      "default": "classic"
+    },
+    "themeSettings": {
+      "type": "object",
+      "description": "A dictionary of key-value pairs where keys are theme-specific setting names and values are the corresponding setting values that customize the theme's appearance and behavior. Available settings depend on the chosen theme.",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {
+        "type": [
+          "string",
+          "number",
+          "boolean",
+          "null",
+          "array",
+          "object"
+        ]
+      }
+    },
+    "audit": {
+      "type": "object",
+      "description": "Configuration for XML documentation analysis to detect missing or incomplete elements.",
+      "properties": {
+        "options": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "summary",
+              "remarks",
+              "example",
+              "typeparam",
+              "param",
+              "returns",
+              "value",
+              "exception",
+              "permission",
+              "event",
+              "seeAlso",
+              "threadSafety",
+              "overloads",
+              "required",
+              "recommended",
+              "all"
+            ]
+          },
+          "description": "Specifies which documentation elements to check during the audit process. By default, only required documentation is checked.",
+          "default": [
+            "required"
+          ]
+        },
+        "includeImplicitConstructors": {
+          "type": "boolean",
+          "description": "Whether to include implicit (compiler-generated) constructors when auditing documentation completeness.",
+          "default": false
+        },
+        "stopOnIssues": {
+          "type": "boolean",
+          "description": "Whether to stop documentation generation when audit issues are found.",
+          "default": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "outputDirectory",
+    "convention"
+  ]
+}

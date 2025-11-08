@@ -1,0 +1,62 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Kampose</title><link rel="icon" href="../ICON.png"/><link rel="stylesheet" href="../style.css"/><script src="../script.js"></script><script src="../prism.min.js"></script><meta name="generator" content="Kampose [Version 0.1.0.0]"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="description" content=""/></head><body class="has-right-sidebar has-breadcrumb"><a href="#article" class="skip-link" aria-label="Skip to main content" tabindex="0">Skip to main content</a><header class="header" role="banner"><div class="header-main"><div class="brand" aria-label="Project title and logo"><img src="../logo-light.png" alt="Kampose logo" class="logo dark-mode"/> <img src="../logo-dark.png" alt="Kampose logo" class="logo light-mode"/><div class="project-info"><span class="project-name">Kampose</span> <span class="project-slogan">A tool to bring your code’s story to light.</span></div></div><nav id="menubar" class="menu-bar" role="navigation" aria-label="Main Menu" data-base-url="../" tabindex="-1"><ul class="menu" role="menubar" aria-labelledby="menubar"><li class="divider" role="separator" tabindex="-1"></li><li id="color-mode" class="menu-item has-submenu" role="menuitem" aria-hidden="true" tabindex="-1"><a><span class="icon selected-icon" aria-hidden="true"></span></a><ul class="menu" role="menu" aria-labelledby="color-mode" tabindex="-1"><li class="menu-item" data-mode="light" role="menuitemradio" aria-label="Light Color Mode" tabindex="-1"><a><span class="icon icon-light-color" aria-hidden="true"></span> <span>Light</span></a></li><li class="menu-item" data-mode="dark" role="menuitemradio" aria-label="Dark Color Mode" tabindex="-1"><a><span class="icon icon-dark-color" aria-hidden="true"></span> <span>Dark</span></a></li><li class="menu-item" data-mode="system" role="menuitemradio" aria-label="System Color Mode" tabindex="-1"><a><span class="icon icon-system-color" aria-hidden="true"></span> <span>System</span></a></li></ul></li></ul></nav></div><nav class="breadcrumb" role="navigation" aria-label="Breadcrumb" tabindex="-1"><ol><li class="is-topic"><a href="../index.html"><span class="name">Kampose</span></a></li><li class="is-topic"><a href="index.html"><span class="name">Themes</span></a></li><li class="is-topic current-page" aria-current="page"><a href="classic-md-theme.html"><span class="name">Classic Theme (Markdown)</span></a></li></ol></nav></header><div class="content"><main id="article" role="main" class="article"><h1 id="classic-theme-markdown">Classic Theme (Markdown)</h1><p>The Classic Markdown theme generates clean, portable documentation suitable for wikis, repositories, and text-based documentation systems.</p><h2 id="theme-settings">Theme Settings</h2><p>The theme supports the following customization settings:</p><table><thead><tr><th>Name</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><a href="#pageheader"><code>pageHeader</code></a></td><td>markdown</td><td></td><td>Markdown inserted at the top of every generated page.</td></tr><tr><td><a href="#pagefooter"><code>pageFooter</code></a></td><td>markdown</td><td></td><td>Markdown appended to the bottom of every generated page.</td></tr><tr><td><a href="#seealsosubtopics"><code>seeAlsoSubtopics</code></a></td><td>boolean</td><td><code>false</code></td><td>Determines whether to include a &quot;See Also&quot; list of related subtopics on topic pages.</td></tr></tbody></table><h3 id="pageheader"><code>pageHeader</code></h3><p>The <code>pageHeader</code> setting allows you to customize the content at the top of each generated page. You can use it for short branding lines, badges, or quick links. You can use Handlebars expressions within this content.</p><p>Consider the following when using the <code>pageHeader</code> setting:</p><ul><li>Verify that any HTML or raw tags you include are compatible with the Markdown processor you plan to use downstream.</li><li>When linking to a relative content path, the path should be relative to the documentation root. Use <code>{{#rootRelativeUrl 'path/to/file'}}</code> for links.</li></ul><h4 id="examples">Examples</h4><p>The following example inserts a build status badge on top of each page:</p><pre><code class="language-json">{
+    &quot;convention&quot;: &quot;devops&quot;,
+    &quot;theme&quot;: &quot;classic&quot;,
+    &quot;themeSettings&quot;: {
+        &quot;pageHeader&quot;: &quot;[![Build](https://dev.azure.com/ORG/PROJECT/_apis/build/status/PIPELINE)](https://dev.azure.com/ORG/PROJECT/_build)&quot;
+    }
+}
+</code></pre><p>The example below inserts a table of contents using Azure DevOps specific marker:</p><pre><code class="language-json">{
+    &quot;convention&quot;: &quot;devops&quot;,
+    &quot;theme&quot;: &quot;classic&quot;,
+    &quot;themeSettings&quot;: {
+        &quot;pageHeader&quot;: &quot;[_TOC_]&quot;
+    }
+}
+</code></pre><p>You can also define your own template variables and use them in the header:</p><pre><code class="language-json">{
+    &quot;convention&quot;: &quot;devops&quot;,
+    &quot;theme&quot;: &quot;classic&quot;,
+    &quot;themeSettings&quot;: {
+        &quot;prerelease&quot;: true,
+        &quot;pageHeader&quot;: &quot;&gt; {{#select prerelease 'Pre-release' 'Stable'}} Version&quot;
+    }
+}
+</code></pre><h3 id="pagefooter"><code>pageFooter</code></h3><p>The <code>pageFooter</code> setting allows you to add Markdown that will be appended to the bottom of every generated page. It's commonly used for license notes, contributor links, footnotes, or small badges. You can use Handlebars expressions within this content.</p><p>Consider the following when using the <code>pageFooter</code> setting:</p><ul><li>Verify that any HTML or raw tags you include are compatible with the Markdown processor you plan to use downstream.</li><li>When linking to a relative content path, the path should be relative to the documentation root. Use <code>{{#rootRelativeUrl 'path/to/file'}}</code> for links.</li><li>Do not include a horizontal rule (<code>---</code>) at the beginning of the footer content, the theme will automatically insert one for you.</li></ul><h4 id="examples-1">Examples</h4><p>The following example adds a link to the license file at the bottom of each page:</p><pre><code class="language-json">{
+    &quot;convention&quot;: &quot;devops&quot;,
+    &quot;theme&quot;: &quot;classic&quot;,
+    &quot;themeSettings&quot;: {
+        &quot;pageFooter&quot;: &quot;See [License]({{#rootRelativeUrl 'LICENSE'}}) for details.&quot;
+    }
+}
+</code></pre><p>The example below demonstrates how to use template helpers in the footer:</p><pre><code class="language-json">{
+    &quot;convention&quot;: &quot;devops&quot;,
+    &quot;theme&quot;: &quot;classic&quot;,
+    &quot;themeSettings&quot;: {
+        &quot;pageFooter&quot;: &quot;_Copyright (c) {{now 'yyyy'}} [Example Corp](https://example.com)_&quot;
+    }
+}
+</code></pre><p>You can also define your own template variables and use them in the footer:</p><pre><code class="language-json">{
+    &quot;convention&quot;: &quot;devops&quot;,
+    &quot;theme&quot;: &quot;classic&quot;,
+    &quot;themeSettings&quot;: {
+        &quot;buildNumber&quot;: &quot;123&quot;,
+        &quot;pageFooter&quot;: &quot;Build: {{buildNumber}}&quot;
+    }
+}
+</code></pre><h3 id="seealsosubtopics"><code>seeAlsoSubtopics</code></h3><p>The <code>seeAlsoSubtopics</code> setting determines whether to include a &quot;See Also&quot; section after the main content of conceptual topics. By default, this setting is disabled.</p><p>When <code>seeAlsoSubtopics</code> is enabled (set to <code>true</code>) and a topic has child topics, the theme inserts a &quot;See Also&quot; section on the topic's page, containing a bullet list of direct child topics (subtopics) of the current topic. This is useful for improving discoverability and creating lightweight cross-navigation between related pages.</p><h4 id="example">Example</h4><p>The following configuration enables the &quot;See Also&quot; section for topics with child topics:</p><pre><code class="language-json">{
+    &quot;convention&quot;: &quot;devops&quot;,
+    &quot;theme&quot;: &quot;classic&quot;,
+    &quot;themeSettings&quot;: {
+        &quot;seeAlsoSubtopics&quot;: true
+    }
+}
+</code></pre><p>Suppose you have the following topic structure:</p><pre><code class="language-txt">- Best Practices
+  - Coding Guidelines
+    - Style Guide
+  - Testing Strategies
+    - Unit Testing
+    - Integration Testing
+</code></pre><p>After enabling the <code>seeAlsoSubtopics</code> setting, the rendered output for &quot;Best Practices&quot; will include a &quot;See Also&quot; section as follows:</p><pre><code class="language-md">## See Also
+
+- [Coding Guidelines](coding-guidelines.md)
+- [Testing Strategies](testing-strategies.md)
+</code></pre><footer class="content-footer" role="contentinfo"><ul><li>Copyright © 2025 <a href="https://kampute.com">Kampute</a></li><li>Site built with <a href="https://kampute.github.io/kampose">Kampose</a>.</li></ul></footer></main><aside class="sidebar sidebar-right" role="complementary" aria-label="In this article" tabindex="-1"><div class="sidebar-header" aria-hidden="true"><h3>In this article</h3></div><nav id="article-navigation" class="sidebar-nav" data-max-level="3"></nav></aside></div><div id="modal-overlay" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-hidden="true"><div class="modal-container"><div class="modal-header"><h3 id="modal-title"></h3><button id="modal-close" type="button" class="modal-close-btn" aria-label="Close dialog">&times;</button></div><div class="modal-content"><div id="modal-body" class="modal-body"><iframe id="modal-iframe" frameborder="0" title="Dialog content"></iframe></div></div></div></div></body></html>

@@ -1,0 +1,299 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Theme Configuration",
+  "type": "object",
+  "description": "Represents the configuration for a theme.",
+  "properties": {
+    "base": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The identifier of the theme that this theme is based on, or null if the theme is standalone. The identifier of a theme is its directory name.",
+      "default": null
+    },
+    "metadata": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "The metadata for the theme, which includes information such as the name, version, description, author, license, and homepage. This metadata is used to provide context about the theme.",
+      "properties": {
+        "format": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The format of the theme, which can be 'html', 'md', or other formats supported by the documentation generator."
+        },
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The display name of the theme."
+        },
+        "version": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The version of the theme, which can be used for versioning purposes."
+        },
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "A brief description of the theme, explaining its purpose and features."
+        },
+        "author": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The name of the author or organization that created the theme."
+        },
+        "license": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The license under which the theme is distributed, if applicable."
+        },
+        "homepage": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "uri",
+          "description": "The URL of the theme's homepage or documentation, providing more information about the theme."
+        }
+      },
+      "additionalProperties": false
+    },
+    "templates": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "The glob patterns for the template files of the theme that will be used to generate the documentation. These patterns are relative to the theme's base directory."
+    },
+    "scripts": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Glob patterns for filtering JavaScript files that will be minified and included in the output as a single script file. The patterns are relative to the theme's base directory."
+        },
+        "targetPath": {
+          "type": "string",
+          "description": "The target file path relative to the output directory where the minified JavaScript will be written. If not specified, the default is `script.js`."
+        }
+      },
+      "required": [
+        "source"
+      ],
+      "description": "The settings for the theme's JavaScript files that will be minified and included in the output. The source files are processed to create a single script file, which is then copied to the output directory.",
+      "additionalProperties": false
+    },
+    "styles": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Glob patterns for filtering stylesheet files that will be minified and included in the output as a single stylesheet file. The patterns are relative to the theme's base directory."
+        },
+        "targetPath": {
+          "type": "string",
+          "description": "The target file path relative to the output directory where the minified stylesheet will be written. If not specified, the default is 'styles.css'."
+        }
+      },
+      "required": [
+        "source"
+      ],
+      "description": "The settings for the theme's stylesheet files that will be minified and included in the output. The source files are processed to create a single stylesheet file, which is then copied to the output directory.",
+      "additionalProperties": false
+    },
+    "assets": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "The glob patterns for the asset files of the theme that will be copied to the output directory as-is, conserving their original folder structure. The patterns are relative to the theme's base directory."
+    },
+    "parameters": {
+      "type": "object",
+      "description": "The theme parameters with their associated metadata. These parameters are accessible as variables in templates and as properties of the global 'kampose.config' object in JavaScript.",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "string",
+              "number",
+              "boolean",
+              "markdown",
+              "uri",
+              "array",
+              "object"
+            ],
+            "description": "The parameter's data type, which determines how the value should be interpreted and processed."
+          },
+          "description": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "A human-readable description explaining the parameter's purpose and expected values, or null if no description is provided."
+          },
+          "defaultValue": {
+            "type": [
+              "string",
+              "number",
+              "boolean",
+              "null",
+              "array",
+              "object"
+            ],
+            "description": "The value of the parameter, which can be a string, number, boolean, or complex object."
+          },
+          "additionalProperties": false
+        },
+        "required": [
+          "type"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "enum": [
+                    "string",
+                    "markdown"
+                  ]
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "defaultValue": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "const": "number"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "defaultValue": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "const": "boolean"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "defaultValue": {
+                  "type": [
+                    "boolean",
+                    "null"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "const": "uri"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "defaultValue": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "uri"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "const": "array"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "defaultValue": {
+                  "type": [
+                    "array",
+                    "null"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "const": "object"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "defaultValue": {
+                  "type": [
+                    "object",
+                    "null"
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "required": [
+    "templates"
+  ]
+}

@@ -1,0 +1,177 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Kampose</title><link rel="icon" href="../ICON.png"/><link rel="stylesheet" href="../style.css"/><script src="../script.js"></script><script src="../prism.min.js"></script><meta name="generator" content="Kampose [Version 0.1.0.0]"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="description" content=""/></head><body class="has-right-sidebar has-breadcrumb"><a href="#article" class="skip-link" aria-label="Skip to main content" tabindex="0">Skip to main content</a><header class="header" role="banner"><div class="header-main"><div class="brand" aria-label="Project title and logo"><img src="../logo-light.png" alt="Kampose logo" class="logo dark-mode"/> <img src="../logo-dark.png" alt="Kampose logo" class="logo light-mode"/><div class="project-info"><span class="project-name">Kampose</span> <span class="project-slogan">A tool to bring your code’s story to light.</span></div></div><nav id="menubar" class="menu-bar" role="navigation" aria-label="Main Menu" data-base-url="../" tabindex="-1"><ul class="menu" role="menubar" aria-labelledby="menubar"><li class="divider" role="separator" tabindex="-1"></li><li id="color-mode" class="menu-item has-submenu" role="menuitem" aria-hidden="true" tabindex="-1"><a><span class="icon selected-icon" aria-hidden="true"></span></a><ul class="menu" role="menu" aria-labelledby="color-mode" tabindex="-1"><li class="menu-item" data-mode="light" role="menuitemradio" aria-label="Light Color Mode" tabindex="-1"><a><span class="icon icon-light-color" aria-hidden="true"></span> <span>Light</span></a></li><li class="menu-item" data-mode="dark" role="menuitemradio" aria-label="Dark Color Mode" tabindex="-1"><a><span class="icon icon-dark-color" aria-hidden="true"></span> <span>Dark</span></a></li><li class="menu-item" data-mode="system" role="menuitemradio" aria-label="System Color Mode" tabindex="-1"><a><span class="icon icon-system-color" aria-hidden="true"></span> <span>System</span></a></li></ul></li></ul></nav></div><nav class="breadcrumb" role="navigation" aria-label="Breadcrumb" tabindex="-1"><ol><li class="is-topic"><a href="../index.html"><span class="name">Kampose</span></a></li><li class="is-topic"><a href="index.html"><span class="name">Themes</span></a></li><li class="is-topic current-page" aria-current="page"><a href="classic-html-theme.html"><span class="name">Classic Theme (HTML)</span></a></li></ol></nav></header><div class="content"><main id="article" role="main" class="article"><h1 id="classic-theme-html">Classic Theme (HTML)</h1><p>The Classic HTML theme produces responsive, interactive HTML documentation suitable for publishing to websites and project portals.</p><h2 id="theme-settings">Theme Settings</h2><p>The theme supports the following customization settings:</p><table><thead><tr><th>Name</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><a href="#projectname"><code>projectName</code></a></td><td>string</td><td></td><td>The name of the project displayed in the header and navigation.</td></tr><tr><td><a href="#projectslogan"><code>projectSlogan</code></a></td><td>string</td><td></td><td>The slogan or tagline of the project displayed alongside the project name.</td></tr><tr><td><a href="#projectlogouri"><code>projectLogoUri</code></a></td><td>uri</td><td></td><td>The URI of the project logo regardless of color mode.</td></tr><tr><td><a href="#projectlogodarkuri"><code>projectLogoDarkUri</code></a></td><td>uri</td><td></td><td>The URI of the project logo for dark color mode (requires projectLogoLightUri).</td></tr><tr><td><a href="#projectlogolighturi"><code>projectLogoLightUri</code></a></td><td>uri</td><td></td><td>The URI of the project logo for light color mode (requires projectLogoDarkUri).</td></tr><tr><td><a href="#faviconuri"><code>faviconUri</code></a></td><td>uri</td><td></td><td>The URI of the favicon displayed in browser tabs.</td></tr><tr><td><a href="#styleuri"><code>styleUri</code></a></td><td>uri</td><td></td><td>The URI of a custom stylesheet to extend or override default styles.</td></tr><tr><td><a href="#scripturi"><code>scriptUri</code></a></td><td>uri</td><td></td><td>The URI of a custom script to extend the default functionality.</td></tr><tr><td><a href="#pageheader"><code>pageHeader</code></a></td><td>markdown</td><td></td><td>Markdown content displayed at the top of the main content area on every page.</td></tr><tr><td><a href="#pagefooter"><code>pageFooter</code></a></td><td>markdown</td><td></td><td>Markdown content displayed at the bottom of the main content area on every page.</td></tr><tr><td><a href="#menuitems"><code>menuItems</code></a></td><td>array</td><td><code>[]</code></td><td>Defines the menu bar structure as an array of items with titles, URLs, and optional sub-items.</td></tr><tr><td><a href="#excludebreadcrumb"><code>excludeBreadcrumb</code></a></td><td>boolean</td><td><code>false</code></td><td>Determines whether to avoid rendering the breadcrumb navigation.</td></tr><tr><td><a href="#excludeleftsidebar"><code>excludeLeftSidebar</code></a></td><td>boolean</td><td><code>false</code></td><td>Determines whether to avoid rendering the left sidebar containing main navigation.</td></tr><tr><td><a href="#excluderightsidebar"><code>excludeRightSidebar</code></a></td><td>boolean</td><td><code>false</code></td><td>Determines whether to avoid rendering the right sidebar containing page-specific navigation.</td></tr><tr><td><a href="#grouptypesbynamespace"><code>groupTypesByNamespace</code></a></td><td>boolean</td><td><code>false</code></td><td>Determines whether to group types by their namespace in the left sidebar.</td></tr><tr><td><a href="#showtypememberssummary"><code>showTypeMembersSummary</code></a></td><td>boolean</td><td><code>false</code></td><td>Determines whether to include a summary of type members in type documentation pages when each member has its own page.</td></tr><tr><td><a href="#seealsosubtopics"><code>seeAlsoSubtopics</code></a></td><td>boolean</td><td><code>false</code></td><td>Determines whether to automatically include related subtopics as &quot;See Also&quot; references.</td></tr><tr><td><a href="#popupfileextensions"><code>popupFileExtensions</code></a></td><td>array</td><td><code>[&quot;&quot;, &quot;txt&quot;, &quot;png&quot;, &quot;jpeg&quot;, &quot;jpg&quot;, &quot;gif&quot;, &quot;svg&quot;, &quot;pdf&quot;]</code></td><td>An array of file extensions (without the leading dot) for which links to local asset files should open in a modal pop-up.</td></tr></tbody></table><h3 id="projectname"><code>projectName</code></h3><p>The <code>projectName</code> setting specifies the name of your project that will be displayed prominently in the documentation header, and helps users identify the project they're viewing.</p><h4 id="example">Example</h4><pre><code class="language-json">{
+    &quot;convention&quot;: &quot;dotnet&quot;,
+    &quot;theme&quot;: &quot;classic&quot;,
+    &quot;themeSettings&quot;: {
+        &quot;projectName&quot;: &quot;MyAwesome.Library&quot;
+    }
+}
+</code></pre><h3 id="projectslogan"><code>projectSlogan</code></h3><p>The <code>projectSlogan</code> setting allows you to add a tagline or brief description that appears alongside your project name in the header. This helps provide context about your project's purpose or key benefit.</p><p>The slogan appears below the project name in a smaller, subdued style.</p><h4 id="example-1">Example</h4><pre><code class="language-json">{
+    &quot;convention&quot;: &quot;dotnet&quot;,
+    &quot;theme&quot;: &quot;classic&quot;,
+    &quot;themeSettings&quot;: {
+        &quot;projectName&quot;: &quot;MyAwesome.Library&quot;,
+        &quot;projectSlogan&quot;: &quot;A library for awesome things&quot;
+    }
+}
+</code></pre><h3 id="projectlogouri"><code>projectLogoUri</code></h3><p>The <code>projectLogoUri</code> setting specifies the URI of your project's logo that will be displayed regardless of the user's selected color mode (light or dark). The logo appears on the same row before the project name and slogan in the header.</p><p>The URI can be relative to the documentation root or an absolute URL. When using relative paths, ensure the logo file is included in your documentation assets.</p><p>Note that when both <code>projectLogoDarkUri</code> and <code>projectLogoLightUri</code> are specified, this setting is ignored in favor of the adaptive logo system that switches based on the user's color mode preference.</p><h4 id="example-2">Example</h4><pre><code class="language-json">{
+    &quot;convention&quot;: &quot;dotnet&quot;,
+    &quot;theme&quot;: &quot;classic&quot;,
+    &quot;themeSettings&quot;: {
+        &quot;projectName&quot;: &quot;MyProject&quot;,
+        &quot;projectLogoUri&quot;: &quot;assets/logo.png&quot;
+    }
+}
+</code></pre><h3 id="projectlogodarkuri"><code>projectLogoDarkUri</code></h3><p>The <code>projectLogoDarkUri</code> setting specifies the URI of your project's logo optimized for display when users select the dark color mode. This setting must be used together with <code>projectLogoLightUri</code> to enable the adaptive logo system.</p><p>When both dark and light logo URIs are provided, the theme will automatically switch between them based on the user's color mode selection in the web interface, ensuring optimal logo visibility and appearance in both light and dark themes. The logo appears on the same row before the project name and slogan in the header.</p><h4 id="example-3">Example</h4><pre><code class="language-json">{
+    &quot;convention&quot;: &quot;dotnet&quot;,
+    &quot;theme&quot;: &quot;classic&quot;,
+    &quot;themeSettings&quot;: {
+        &quot;projectName&quot;: &quot;MyProject&quot;,
+        &quot;projectLogoDarkUri&quot;: &quot;assets/logo-dark.png&quot;,
+        &quot;projectLogoLightUri&quot;: &quot;assets/logo-light.png&quot;
+    }
+}
+</code></pre><h3 id="projectlogolighturi"><code>projectLogoLightUri</code></h3><p>The <code>projectLogoLightUri</code> setting specifies the URI of your project's logo optimized for display when users select the light color mode. This setting must be used together with <code>projectLogoDarkUri</code> to enable the adaptive logo system.</p><p>When both light and dark logo URIs are provided, the theme will automatically switch between them based on the user's color mode selection in the web interface, ensuring optimal logo visibility and appearance in both light and dark themes. The logo appears on the same row before the project name and slogan in the header.</p><h4 id="example-4">Example</h4><pre><code class="language-json">{
+    &quot;convention&quot;: &quot;dotnet&quot;,
+    &quot;theme&quot;: &quot;classic&quot;,
+    &quot;themeSettings&quot;: {
+        &quot;projectName&quot;: &quot;MyProject&quot;,
+        &quot;projectLogoDarkUri&quot;: &quot;assets/logo-dark.png&quot;,
+        &quot;projectLogoLightUri&quot;: &quot;assets/logo-light.png&quot;
+    }
+}
+</code></pre><h3 id="faviconuri"><code>faviconUri</code></h3><p>The <code>faviconUri</code> setting specifies the URI of the favicon that will be displayed in browser tabs and bookmarks. The favicon helps users identify your documentation among multiple open tabs.</p><p>The URI can be relative to the documentation root or an absolute URL. When using relative paths, ensure the favicon file is included in your documentation assets.</p><h4 id="example-5">Example</h4><pre><code class="language-json">{
+    &quot;convention&quot;: &quot;dotnet&quot;,
+    &quot;theme&quot;: &quot;classic&quot;,
+    &quot;themeSettings&quot;: {
+        &quot;faviconUri&quot;: &quot;assets/favicon.ico&quot;
+    }
+}
+</code></pre><h3 id="styleuri"><code>styleUri</code></h3><p>The <code>styleUri</code> setting allows you to specify a custom CSS stylesheet that will extend or override the theme's default styles. This enables you to customize the visual appearance without modifying the base theme.</p><p>The custom stylesheet is loaded after the theme's default styles, allowing your rules to take precedence.</p><p>The URI can be relative to the documentation root or an absolute URL. When using relative paths, ensure the CSS file is included in your documentation assets.</p><h4 id="example-6">Example</h4><pre><code class="language-json">{
+    &quot;convention&quot;: &quot;dotnet&quot;,
+    &quot;theme&quot;: &quot;classic&quot;,
+    &quot;themeSettings&quot;: {
+        &quot;styleUri&quot;: &quot;custom/styles.css&quot;
+    }
+}
+</code></pre><h3 id="scripturi"><code>scriptUri</code></h3><p>The <code>scriptUri</code> setting allows you to specify a custom JavaScript file that will extend the theme's default functionality. This enables you to add interactive features or customize behavior without modifying the base theme.</p><p>The custom script is loaded after the theme's default scripts but before the syntax highlighting script. Your script can safely use the same global objects and APIs as the theme.</p><p>The URI can be relative to the documentation root or an absolute URL. When using relative paths, ensure the JavaScript file is included in your documentation assets.</p><h4 id="example-7">Example</h4><pre><code class="language-json">{
+    &quot;convention&quot;: &quot;dotnet&quot;,
+    &quot;theme&quot;: &quot;classic&quot;,
+    &quot;themeSettings&quot;: {
+        &quot;scriptUri&quot;: &quot;custom/enhanced-search.js&quot;
+    }
+}
+</code></pre><h3 id="pageheader"><code>pageHeader</code></h3><p>The <code>pageHeader</code> setting allows you to add custom Markdown content that will be displayed at the top of the main content area on every generated page. You can use Handlebars expressions within this content.</p><p>This is commonly used for displaying status badges (build status, version, coverage), project announcements, important notices, or contextual information that should appear prominently on all pages.</p><blockquote><p>When linking to a relative content path, the path should be relative to the current page. You can use <code>rootRelativeUrl</code> helper to convert a root-relative path to a page-relative path (e.g., <code>{{#rootRelativeUrl 'path/to/file'}}</code>).</p></blockquote><h4 id="example-8">Example</h4><pre><code class="language-json">{
+    &quot;convention&quot;: &quot;dotnet&quot;,
+    &quot;theme&quot;: &quot;classic&quot;,
+    &quot;themeSettings&quot;: {
+        &quot;pageHeader&quot;: &quot;[![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/myorg/myproject/actions) [![Version](https://img.shields.io/badge/version-2.1.0-blue)](https://github.com/myorg/myproject/releases)&quot;
+    }
+}
+</code></pre><h3 id="pagefooter"><code>pageFooter</code></h3><p>The <code>pageFooter</code> setting allows you to add custom Markdown content that will be displayed at the bottom of the main content area on every generated page. You can use Handlebars expressions within this content.</p><p>This is commonly used for copyright notices, legal information, attribution, or additional navigation links that should appear consistently across all pages.</p><p>You cam use Markdown bullet points in the footer content. For better visual integration with the theme, the footer will render bullet points as inline items separated by bullets (<code>•</code>).</p><blockquote><p>When linking to a relative content path, the path should be relative to the current page. You can use <code>rootRelativeUrl</code> helper to convert a root-relative path to a page-relative path (e.g., <code>{{#rootRelativeUrl 'path/to/file'}}</code>).</p></blockquote><h4 id="example-9">Example</h4><pre><code class="language-json">{
+    &quot;convention&quot;: &quot;dotnet&quot;,
+    &quot;theme&quot;: &quot;classic&quot;,
+    &quot;themeSettings&quot;: {
+        &quot;pageFooter&quot;: &quot;- Copyright © {{now 'yyyy'}} [Example Corp](https://example.com)\n- [MIT]({{#rootRelativeUrl 'LICENSE'}}) License&quot;
+    }
+}
+</code></pre><h3 id="menuitems"><code>menuItems</code></h3><p>The <code>menuItems</code> setting defines the structure of the top navigation menu as an array of menu items. Each item is an object with <code>title</code> and <code>url</code> properties, and can optionally contain a nested <code>items</code> array for dropdown menus.</p><h4 id="structure">Structure</h4><p>Each menu item object supports these properties:</p><ul><li><code>title</code> (string): The display text for the menu item</li><li><code>url</code> (string): The destination URL (relative or absolute)</li><li><code>items</code> (array, optional): Sub-items for dropdown menus</li></ul><p>The relative paths for the <code>url</code> properties should be defined in relation to the documentation root.</p><p>A menu item can also be a string with special values:</p><ul><li><code>&lt;topic-slug&gt;</code> - Generates a menu entry linking to the specified topic by its slug (e.g., <code>getting-started</code>), including subtopics as a dropdown</li><li><code>*</code> - Generates menu entries for all topics at the root level, including their subtopics as dropdowns</li><li><code>-</code> - Adds a visual divider</li></ul><h4 id="examples">Examples</h4><p>Simple menu with static links:</p><pre><code class="language-json">{
+    &quot;convention&quot;: &quot;dotnet&quot;,
+    &quot;theme&quot;: &quot;classic&quot;,
+    &quot;themeSettings&quot;: {
+        &quot;menuItems&quot;: [
+            {
+                &quot;title&quot;: &quot;API Reference&quot;,
+                &quot;url&quot;: &quot;api/index.html&quot;
+            },
+            {
+                &quot;title&quot;: &quot;Repository&quot;,
+                &quot;url&quot;: &quot;https://github.com/myorg/myproject&quot;
+            }
+        ]
+    }
+}
+</code></pre><p>Complex menu with dropdowns and auto-inserted topics:</p><pre><code class="language-json">{
+    &quot;convention&quot;: &quot;dotnet&quot;,
+    &quot;theme&quot;: &quot;classic&quot;,
+    &quot;themeSettings&quot;: {
+        &quot;menuItems&quot;: [
+            {
+                &quot;title&quot;: &quot;Documentation&quot;,
+                &quot;items&quot;: [
+                    &quot;*&quot;, /* Auto-insert all topics here */
+                    &quot;-&quot;, /* Divider */
+                    {
+                        &quot;title&quot;: &quot;Repository&quot;,
+                        &quot;url&quot;: &quot;https://github.com/myorg/myproject&quot;
+                    }
+                ]
+            }
+        ]
+    }
+}
+</code></pre><h3 id="excludebreadcrumb"><code>excludeBreadcrumb</code></h3><p>The <code>excludeBreadcrumb</code> setting determines whether to hide the breadcrumb navigation that typically appears near the top of each page. Breadcrumbs help users understand their current location within the documentation hierarchy and provide quick navigation back to parent pages.</p><p>Set this to <code>true</code> to remove breadcrumb navigation from all pages, which can be useful for simpler documentation structures or when you prefer a cleaner page layout. By default, this setting is <code>false</code>, meaning breadcrumbs will be displayed.</p><h4 id="example-10">Example</h4><pre><code class="language-json">{
+    &quot;convention&quot;: &quot;dotnet&quot;,
+    &quot;theme&quot;: &quot;classic&quot;,
+    &quot;themeSettings&quot;: {
+        &quot;excludeBreadcrumb&quot;: true
+    }
+}
+</code></pre><h3 id="excludeleftsidebar"><code>excludeLeftSidebar</code></h3><p>The <code>excludeLeftSidebar</code> setting determines whether to hide the left sidebar that contains the main navigation menu. The left sidebar typically shows the documentation structure including namespaces, types, and topics.</p><p>Set this to <code>true</code> to create a full-width layout without the main navigation sidebar. This can be useful for documentation that relies primarily on top navigation or for presentation-focused layouts. By default, this setting is <code>false</code>, meaning the left sidebar will be displayed.</p><h4 id="example-11">Example</h4><pre><code class="language-json">{
+    &quot;convention&quot;: &quot;dotnet&quot;,
+    &quot;theme&quot;: &quot;classic&quot;,
+    &quot;themeSettings&quot;: {
+        &quot;excludeLeftSidebar&quot;: true
+    }
+}
+</code></pre><h3 id="excluderightsidebar"><code>excludeRightSidebar</code></h3><p>The <code>excludeRightSidebar</code> setting determines whether to hide the right sidebar that contains the table of contents for the current page.</p><p>Set this to <code>true</code> to remove the right sidebar and create more space for the main content area. This can be beneficial for pages with wide content or when you prefer a simpler layout. By default, this setting is <code>false</code>, meaning the right sidebar will be displayed.</p><h4 id="example-12">Example</h4><pre><code class="language-json">{
+    &quot;convention&quot;: &quot;dotnet&quot;,
+    &quot;theme&quot;: &quot;classic&quot;,
+    &quot;themeSettings&quot;: {
+        &quot;excludeRightSidebar&quot;: true
+    }
+}
+</code></pre><h3 id="grouptypesbynamespace"><code>groupTypesByNamespace</code></h3><p>The <code>groupTypesByNamespace</code> setting determines how types are organized in the left sidebar navigation. When enabled, types are grouped under their respective namespace headings. When disabled, types are listed individually in a flat structure.</p><p>Set this to <code>true</code> to organize types hierarchically by namespace, which can improve navigation for projects with many namespaces. Set to <code>false</code> for a simpler flat list that may be easier to scan for projects with fewer types. By default, this setting is <code>false</code>, meaning types will be listed individually.</p><h4 id="example-13">Example</h4><pre><code class="language-json">{
+    &quot;convention&quot;: &quot;dotnet&quot;,
+    &quot;theme&quot;: &quot;classic&quot;,
+    &quot;themeSettings&quot;: {
+        &quot;groupTypesByNamespace&quot;: true
+    }
+}
+</code></pre><h3 id="showtypememberssummary"><code>showTypeMembersSummary</code></h3><p>The <code>showTypeMembersSummary</code> setting determines whether to include a summary section of type members on type documentation pages. This setting is only relevant when each type member has its own dedicated documentation page (e.g., configured convention is <code>DotNet</code>).</p><p>When enabled, type pages will include a summary table of the type's members with brief descriptions, providing an overview before users navigate to individual member pages. This can be beneficial if the left sidebar is excluded, as it allows users to see all relevant information at a glance. By default, this setting is <code>false</code>, meaning the summary will not be displayed.</p><h4 id="example-14">Example</h4><pre><code class="language-json">{
+    &quot;convention&quot;: &quot;dotnet&quot;,
+    &quot;theme&quot;: &quot;classic&quot;,
+    &quot;themeSettings&quot;: {
+        &quot;showTypeMembersSummary&quot;: true
+    }
+}
+</code></pre><h3 id="seealsosubtopics"><code>seeAlsoSubtopics</code></h3><p>The <code>seeAlsoSubtopics</code> setting determines whether to automatically include related subtopics as &quot;See Also&quot; references on topic pages. When enabled, topic pages with child topics (subtopics) will include a &quot;See Also&quot; section with links to direct child topics of the current topic.</p><p>This feature helps improve content discoverability by automatically creating cross-references between related documentation sections.</p><h4 id="example-15">Example</h4><p>Suppose you have the following topic structure:</p><pre><code class="language-txt">- Best Practices
+  - Coding Guidelines
+    - Style Guide
+  - Testing Strategies
+    - Unit Testing
+    - Integration Testing
+</code></pre><p>After enabling the <code>seeAlsoSubtopics</code> setting as follows:</p><pre><code class="language-json">{
+    &quot;convention&quot;: &quot;dotnet&quot;,
+    &quot;theme&quot;: &quot;classic&quot;,
+    &quot;themeSettings&quot;: {
+        &quot;seeAlsoSubtopics&quot;: true
+    }
+}
+</code></pre><p>The following section will be added at the bottom of &quot;Best Practices&quot; page:</p><pre><code class="language-html">&lt;h2&gt;See Also&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;best-practices/coding-guidelines.html&quot;&gt;Coding Guidelines&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;best-practices/testing-strategies.html&quot;&gt;Testing Strategies&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</code></pre><h3 id="popupfileextensions"><code>popupFileExtensions</code></h3><p>The <code>popupFileExtensions</code> setting specifies an array of file extensions (without the leading dot) for which links to local asset files should open in a modal overlay. This keeps users within the documentation context rather than navigating away or triggering a download.</p><p>When a user clicks a link to a file with one of the specified extensions, the theme fetches the file and verifies its MIME type before displaying it. Only files with text, image, or PDF MIME types will open in the modal. Files with other MIME types are ignored and use standard browser navigation behavior.</p><p>By default, the theme displays text files (<code>.txt</code>), common image formats (<code>.png</code>, <code>.jpg</code>, <code>.jpeg</code>, <code>.gif</code>, <code>.svg</code>), PDFs (<code>.pdf</code>), and files without extensions (like <code>LICENSE</code>) in a modal overlay.</p><blockquote><p>Files without extensions are interpreted as plain text when displayed in the modal. If a file without an extension contains binary or non-text data, the modal may display garbled or unreadable characters.</p></blockquote><p>To customize which extensions trigger the modal, modify the array to include only the desired file extensions. Use the empty string (<code>&quot;&quot;</code>) in the array to match files without extensions. To disable this feature entirely, set this to an empty array (<code>[]</code>).</p><blockquote><p>This setting only affects local links to non-HTML files within the documentation. External links and links to <code>.html</code> files always use standard navigation behavior.</p></blockquote><h4 id="example-16">Example</h4><pre><code class="language-json">{
+    &quot;convention&quot;: &quot;dotnet&quot;,
+    &quot;theme&quot;: &quot;classic&quot;,
+    &quot;themeSettings&quot;: {
+        &quot;popupFileExtensions&quot;: [&quot;txt&quot;, &quot;json&quot;]
+    }
+}
+</code></pre><h2 id="file-protocol-limitations">File Protocol Limitations</h2><p>When viewing the generated documentation locally using the <code>file://</code> protocol, be aware that browsers impose restrictions on pages loaded from the local file system. Many browsers block or limit access to localStorage, fetch/XHR requests, and service workers for <code>file://</code> pages. As a result, theme preferences may not persist across page navigations, and the navigation sidebar might briefly flicker.</p><p>For realistic testing and reliable deployment, serve the documentation via an HTTP(S) server, or use a browser that permits localStorage access for <code>file://</code> pages.</p><h4 id="example-17">Example</h4><p>Install the official dotnet static file server tool and run a simple HTTP server:</p><pre><code class="language-bash"># Install once (global tool)
+dotnet tool install --global dotnet-serve
+
+# Run from the documentation output folder
+dotnet-serve --directory . --port 8000 --open-browser:index.html
+</code></pre><p>Many static servers (including <code>dotnet-serve</code>) accept certificate files so you can run HTTPS locally by pointing the server at the cert/key files.</p><footer class="content-footer" role="contentinfo"><ul><li>Copyright © 2025 <a href="https://kampute.com">Kampute</a></li><li>Site built with <a href="https://kampute.github.io/kampose">Kampose</a>.</li></ul></footer></main><aside class="sidebar sidebar-right" role="complementary" aria-label="In this article" tabindex="-1"><div class="sidebar-header" aria-hidden="true"><h3>In this article</h3></div><nav id="article-navigation" class="sidebar-nav" data-max-level="3"></nav></aside></div><div id="modal-overlay" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-hidden="true"><div class="modal-container"><div class="modal-header"><h3 id="modal-title"></h3><button id="modal-close" type="button" class="modal-close-btn" aria-label="Close dialog">&times;</button></div><div class="modal-content"><div id="modal-body" class="modal-body"><iframe id="modal-iframe" frameborder="0" title="Dialog content"></iframe></div></div></div></div></body></html>

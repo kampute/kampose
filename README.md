@@ -73,7 +73,7 @@ Please visit [the official documentation site](https://kampute.github.io/kampose
 - [Theme Customization](https://kampute.github.io/kampose/themes.html)
 - [Best Practices](https://kampute.github.io/kampose/best-practices.html)
 
-For technical details on the core DocToolkit library, see the [DocToolkit documentation](https://kampute.github.io/doc-toolkit/).
+For technical details on the core [DocToolkit](https://github.com/kampute/doc-toolkit) library, see the [DocToolkit documentation](https://kampute.github.io/doc-toolkit/).
 
 ## Contributing
 

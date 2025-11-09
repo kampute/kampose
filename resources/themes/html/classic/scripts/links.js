@@ -69,7 +69,8 @@ function setupLinks() {
                 if (!isDisplayable && blob.size <= 16384) {
                     try {
                         const text = await blob.text();
-                        // A simple check to avoid binary files
+                        // Heuristic: check for null bytes to avoid obvious binary files.
+                        // This may not catch all binary files, and some text files could be misclassified.
                         if (!text.includes('\0')) {
                             blob = new Blob([text], { type: 'text/plain' });
                             isDisplayable = true;

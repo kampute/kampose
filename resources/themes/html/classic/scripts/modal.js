@@ -61,7 +61,7 @@ function setupPopup() {
  */
 function openPopup(src, caption, onClose) {
     if (!src) return;
-    const iframe = document.getElementById('modal-iframe')
+    const iframe = document.getElementById('modal-iframe');
     if (iframe) {
         iframe.src = src;
         const title = document.getElementById('modal-title');

@@ -35,6 +35,16 @@ function setupPopup() {
         setTimeout(() => {
             document.getElementById('modal-iframe').src = '';
         }, 300);
+
+        if (overlay.onClose) {
+            const callback = overlay.onClose;
+            overlay.onClose = null;
+            try {
+                callback();
+            } catch (e) {
+                console.error('Error in modal onClose callback:', e);
+            }
+        }
     }
 
     return true;
@@ -47,8 +57,9 @@ function setupPopup() {
  *
  * @param {string} src The source URL to display in the popup.
  * @param {string} caption The caption or title for the popup.
+ * @param {function} onClose A callback function to execute when the popup is closed.
  */
-function openPopup(src, caption) {
+function openPopup(src, caption, onClose) {
     if (!src) return;
     const iframe = document.getElementById('modal-iframe')
     if (iframe) {
@@ -60,6 +71,7 @@ function openPopup(src, caption) {
         const overlay = document.getElementById('modal-overlay');
         overlay.classList.add('open');
         overlay.setAttribute('aria-hidden', 'false');
+        overlay.onClose = onClose ?? null;
     } else {
         const width = window.innerWidth * 0.6;
         const height = window.innerHeight * 0.7;

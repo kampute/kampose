@@ -69,7 +69,7 @@ function setupLinks() {
                 if (!isDisplayable && blob.size <= 16384) {
                     try {
                         const text = await blob.text();
-                        // Check for null characters to avoid binary files
+                        // A simple check to avoid binary files
                         if (!text.includes('\0')) {
                             blob = new Blob([text], { type: 'text/plain' });
                             isDisplayable = true;
@@ -81,7 +81,7 @@ function setupLinks() {
 
                 if (isDisplayable) {
                     const blobUrl = URL.createObjectURL(blob);
-                    openPopup(blobUrl, title);
+                    openPopup(blobUrl, title, () => URL.revokeObjectURL(blobUrl));
                 } else {
                     window.location.href = href;
                 }

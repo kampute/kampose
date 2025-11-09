@@ -11,14 +11,14 @@
 
 {{>summary_list members=model}}
 
-{{#unless member.doc.remarks.isEmpty}}
-{{{level}}} Remarks
-{{member.doc.remarks}}
+{{#unless model.doc.remarks.isEmpty}}
+## Remarks
+{{model.doc.remarks}}
 {{/unless}}
 
-{{#unless member.doc.example.isEmpty}}
-{{{level}}} Examples
-{{member.doc.example}}
+{{#unless model.doc.example.isEmpty}}
+## Examples
+{{model.doc.example}}
 {{/unless}}
 
 {{>detail_list level='##' members=model}}

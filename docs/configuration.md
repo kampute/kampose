@@ -237,7 +237,7 @@ Certain filenames have special significance when organizing topics:
 
 Specifies the explicit ordering for topics in the documentation navigation.
 
-Topics are displayed in the order specified in this list. If a topic is not listed, it maintains its discovery order.
+Topics are displayed in the order specified in this list. If a topic is not listed, it maintains its alphabetical position after the ordered topics.
 
 ##### Example
 

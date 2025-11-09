@@ -1,6 +1,6 @@
-# Kampose
+# Welcome to Kampose
 
-Kampose `/kam-pohz/` is a cross-platform command-line documentation generator for .NET projects that transforms XML comments and assembly metadata into professional API documentation. Built with an extensible architecture and powered by Handlebars templating, Kampose enables development teams to maintain high-quality documentation as part of their continuous integration workflows.
+Kampose `/kam-pohz/` is a cross-platform command-line documentation composer for .NET projects that transforms XML comments and assembly metadata into professional API documentation. Built with an extensible architecture and powered by Handlebars templating, Kampose enables development teams to maintain high-quality documentation as part of their continuous integration workflows.
 
 ## Overview
 
@@ -69,19 +69,19 @@ For detailed usage instructions and examples, see the [Command-Line Interface](c
 
 This guide organizes Kampose's documentation into key areas to help you navigate and find the information you need efficiently.
 
-#### Getting Started
+### Getting Started
 - **[Command-Line Interface](command-line.md)** - Commands, options, and usage patterns
 - **[Configuration Guide](configuration.md)** - Complete configuration reference with examples
 - **[Glob Patterns](globe-patterns.md)** - File selection patterns for assemblies, XML docs, and topics
 
-#### Integration and Automation
+### Integration and Automation
 - **[CI/CD Integration](ci-cd-integration.md)** - Automate documentation generation in GitHub Actions, Azure Pipelines, and GitLab CI/CD
 
-#### Writing Documentation
+### Writing Documentation
 - **[XML Documentation Tags](xmldoc-tags.md)** - Supported XML tags with usage examples
 - **[Best Practices](best-practices.md)** - Guidelines for effective XML documentation
 
-#### Customizing Output
+### Customizing Output
 - **[Themes Overview](themes.md)** - Available themes and configuration
 - **[Classic HTML Theme](themes/classic-html-theme.md)** - HTML theme customization
 - **[Classic Markdown Theme](themes/classic-md-theme.md)** - Markdown theme and DevOps wiki integration
@@ -100,5 +100,6 @@ Kampose is built on outstanding open-source projects maintained by the .NET and 
 - **[Markdig](https://github.com/xoofx/markdig)** - Fast and extensible Markdown processing
 - **[Microsoft.Extensions.FileSystemGlobbing](https://github.com/dotnet/runtime)** - Flexible file pattern matching for assembly and content discovery
 - **[NUglify](https://github.com/trullock/NUglify)** - Asset minification and optimization
+- **[PrismJS](https://prismjs.com/)** - Syntax highlighting for code samples in documentation
 
 The dedication and expertise of these project maintainers and contributors make Kampose possible. Thank you to everyone who contributes to the open-source ecosystem.

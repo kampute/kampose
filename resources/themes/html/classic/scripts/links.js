@@ -7,7 +7,7 @@
 function setupLinks() {
     const origin = window.location.origin;
     const links = document.querySelectorAll('a');
-    const popupExtensions = window.kampose.config.popupFileExtensions || [];
+    const popupAssetNames = (window.kampose.config.popupAssetNames || []).map(name => name.toLowerCase());
 
     links.forEach(link => {
         if (!link.href) {
@@ -18,7 +18,7 @@ function setupLinks() {
 
         if (origin !== url.origin) {
             link.classList.add('external-link');
-        } else if (!url.pathname.endsWith('.html') && isPopupFileType(url.pathname, popupExtensions)) {
+        } else if (isPopupFileType(url.pathname, popupAssetNames)) {
             link.classList.add('popup-link');
         }
     });
@@ -30,34 +30,62 @@ function setupLinks() {
         });
     });
 
-    function isPopupFileType(path, extensions) {
-        const lastDot = path.lastIndexOf('.');
-        const lastSegment = path.lastIndexOf('/');
-        const ext = lastDot > lastSegment ? path.substring(lastDot + 1) : '';
-        return extensions.includes(ext.toLowerCase());
+    function isPopupFileType(path, patterns) {
+        if (patterns.length === 0 || path.endsWith('/')) {
+            return false;
+        }
+
+        const filename = path.substring(path.lastIndexOf('/') + 1).toLowerCase();
+        for (const pattern of patterns) {
+            if (pattern.startsWith('*')) {
+                const ext = pattern.slice(1);
+                if (filename.endsWith(ext)) {
+                    return true;
+                }
+            } else if (filename === pattern) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     function openLinkInPopup(href) {
-        const title = href.split('/').pop();
+        const url = new URL(href);
+        const title = url.pathname.split('/').pop();
+
         fetch(href)
             .then(response => response.blob())
-            .then(blob => {
-                const blobType = blob.type || 'application/octet-stream';
-                switch (true) {
-                    case blobType.startsWith('text/'):
-                    case blobType.startsWith('image/'):
-                    case blobType === 'application/pdf':
-                        break;
-                    case blobType === 'application/octet-stream' && !href.split('/').pop().includes('.'):
-                        blob = new Blob([blob], { type: 'text/plain' });
-                        break;
-                    default:
-                        window.location.href = href;
-                        return;
+            .then(async blob => {
+                const mimeType = blob.type || '';
+
+                let isDisplayable = mimeType.startsWith('image/') || [
+                    'text/plain',
+                    'application/pdf',
+                    'application/svg+xml'
+                ].includes(mimeType);
+
+                // Attempt to display small files as text (max. 16 KiB)
+                if (!isDisplayable && blob.size <= 16384) {
+                    try {
+                        const text = await blob.text();
+                        // Heuristic: check for null bytes to avoid obvious binary files.
+                        // This may not catch all binary files, and some text files could be misclassified.
+                        if (!text.includes('\0')) {
+                            blob = new Blob([text], { type: 'text/plain' });
+                            isDisplayable = true;
+                        }
+                    } catch {
+                        // Ignore conversion errors
+                    }
                 }
 
-                const objectUrl = URL.createObjectURL(blob)
-                openPopup(objectUrl, title);
+                if (isDisplayable) {
+                    const blobUrl = URL.createObjectURL(blob);
+                    openPopup(blobUrl, title, () => URL.revokeObjectURL(blobUrl));
+                } else {
+                    window.location.href = href;
+                }
             })
             .catch(() => openPopup(href, title));
     }

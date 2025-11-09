@@ -6,26 +6,26 @@ The Classic HTML theme produces responsive, interactive HTML documentation suita
 
 The theme supports the following customization settings:
 
-| Name                                                        | Type     | Default                                                  | Description                                                                                                              |
-|-------------------------------------------------------------|----------|----------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------|
-| [`projectName`](#projectname)                               | string   |                                                          | The name of the project displayed in the header and navigation.                                                          |
-| [`projectSlogan`](#projectslogan)                           | string   |                                                          | The slogan or tagline of the project displayed alongside the project name.                                               |
-| [`projectLogoUri`](#projectlogouri)                         | uri      |                                                          | The URI of the project logo regardless of color mode.                                                                    |
-| [`projectLogoDarkUri`](#projectlogodarkuri)                 | uri      |                                                          | The URI of the project logo for dark color mode (requires projectLogoLightUri).                                          |
-| [`projectLogoLightUri`](#projectlogolighturi)               | uri      |                                                          | The URI of the project logo for light color mode (requires projectLogoDarkUri).                                          |
-| [`faviconUri`](#faviconuri)                                 | uri      |                                                          | The URI of the favicon displayed in browser tabs.                                                                        |
-| [`styleUri`](#styleuri)                                     | uri      |                                                          | The URI of a custom stylesheet to extend or override default styles.                                                     |
-| [`scriptUri`](#scripturi)                                   | uri      |                                                          | The URI of a custom script to extend the default functionality.                                                          |
-| [`pageHeader`](#pageheader)                                 | markdown |                                                          | Markdown content displayed at the top of the main content area on every page.                                            |
-| [`pageFooter`](#pagefooter)                                 | markdown |                                                          | Markdown content displayed at the bottom of the main content area on every page.                                         |
-| [`menuItems`](#menuitems)                                   | array    | `[]`                                                     | Defines the menu bar structure as an array of items with titles, URLs, and optional sub-items.                           |
-| [`excludeBreadcrumb`](#excludebreadcrumb)                   | boolean  | `false`                                                  | Determines whether to avoid rendering the breadcrumb navigation.                                                         |
-| [`excludeLeftSidebar`](#excludeleftsidebar)                 | boolean  | `false`                                                  | Determines whether to avoid rendering the left sidebar containing main navigation.                                       |
-| [`excludeRightSidebar`](#excluderightsidebar)               | boolean  | `false`                                                  | Determines whether to avoid rendering the right sidebar containing page-specific navigation.                             |
-| [`groupTypesByNamespace`](#grouptypesbynamespace)           | boolean  | `false`                                                  | Determines whether to group types by their namespace in the left sidebar.                                                |
-| [`showTypeMembersSummary`](#showtypememberssummary)         | boolean  | `false`                                                  | Determines whether to include a summary of type members in type documentation pages when each member has its own page.   |
-| [`seeAlsoSubtopics`](#seealsosubtopics)                     | boolean  | `false`                                                  | Determines whether to automatically include related subtopics as "See Also" references.                                  |
-| [`popupFileExtensions`](#popupfileextensions)               | array    | `["", "txt", "png", "jpeg", "jpg", "gif", "svg", "pdf"]` | An array of file extensions (without the leading dot) for which links to local asset files should open in a modal pop-up. |
+| Name                                                | Type     | Default                     | Description                                                                                                              |
+|-----------------------------------------------------|----------|-----------------------------|--------------------------------------------------------------------------------------------------------------------------|
+| [`projectName`](#projectname)                       | string   |                             | The name of the project displayed in the header and navigation.                                                          |
+| [`projectSlogan`](#projectslogan)                   | string   |                             | The slogan or tagline of the project displayed alongside the project name.                                               |
+| [`projectLogoUri`](#projectlogouri)                 | uri      |                             | The URI of the project logo regardless of color mode.                                                                    |
+| [`projectLogoDarkUri`](#projectlogodarkuri)         | uri      |                             | The URI of the project logo for dark color mode (requires projectLogoLightUri).                                          |
+| [`projectLogoLightUri`](#projectlogolighturi)       | uri      |                             | The URI of the project logo for light color mode (requires projectLogoDarkUri).                                          |
+| [`faviconUri`](#faviconuri)                         | uri      |                             | The URI of the favicon displayed in browser tabs.                                                                        |
+| [`styleUri`](#styleuri)                             | uri      |                             | The URI of a custom stylesheet to extend or override default styles.                                                     |
+| [`scriptUri`](#scripturi)                           | uri      |                             | The URI of a custom script to extend the default functionality.                                                          |
+| [`pageHeader`](#pageheader)                         | markdown |                             | Markdown content displayed at the top of the main content area on every page.                                            |
+| [`pageFooter`](#pagefooter)                         | markdown |                             | Markdown content displayed at the bottom of the main content area on every page.                                         |
+| [`menuItems`](#menuitems)                           | array    | `[]`                        | Defines the menu bar structure as an array of items with titles, URLs, and optional sub-items.                           |
+| [`excludeBreadcrumb`](#excludebreadcrumb)           | boolean  | `false`                     | Determines whether to avoid rendering the breadcrumb navigation.                                                         |
+| [`excludeLeftSidebar`](#excludeleftsidebar)         | boolean  | `false`                     | Determines whether to avoid rendering the left sidebar containing main navigation.                                       |
+| [`excludeRightSidebar`](#excluderightsidebar)       | boolean  | `false`                     | Determines whether to avoid rendering the right sidebar containing page-specific navigation.                             |
+| [`groupTypesByNamespace`](#grouptypesbynamespace)   | boolean  | `false`                     | Determines whether to group types by their namespace in the left sidebar.                                                |
+| [`showTypeMembersSummary`](#showtypememberssummary) | boolean  | `false`                     | Determines whether to include a summary of type members in type documentation pages when each member has its own page.   |
+| [`seeAlsoSubtopics`](#seealsosubtopics)             | boolean  | `false`                     | Determines whether to automatically include related subtopics as "See Also" references.                                  |
+| [`popupAssetNames`](#popupassetnames)               | array    | `["LICENSE", "DISCLAIMER"]` | An array of asset file names that should open in a modal overlay when linked.                                            |
 
 ### `projectName`
 
@@ -207,7 +207,7 @@ The `pageFooter` setting allows you to add custom Markdown content that will be 
 
 This is commonly used for copyright notices, legal information, attribution, or additional navigation links that should appear consistently across all pages.
 
-You cam use Markdown bullet points in the footer content. For better visual integration with the theme, the footer will render bullet points as inline items separated by bullets (`•`).
+You can use Markdown bullet points in the footer content. For better visual integration with the theme, the footer will render bullet points as inline items separated by bullets (`•`).
 
 > When linking to a relative content path, the path should be relative to the current page. You can use `rootRelativeUrl` helper to convert a root-relative path to a page-relative path (e.g., `{{#rootRelativeUrl 'path/to/file'}}`).
 
@@ -419,19 +419,15 @@ The following section will be added at the bottom of "Best Practices" page:
 </ul>
 ```
 
-### `popupFileExtensions`
+### `popupAssetNames`
 
-The `popupFileExtensions` setting specifies an array of file extensions (without the leading dot) for which links to local asset files should open in a modal overlay. This keeps users within the documentation context rather than navigating away or triggering a download.
+The `popupAssetNames` setting specifies an array of file names for which links to local asset files should open in a modal pop-up overlay. This feature enhances the user experience by allowing users to view certain file types (like text files, images, or PDFs) directly within the documentation without navigating away from the current page.
 
-When a user clicks a link to a file with one of the specified extensions, the theme fetches the file and verifies its MIME type before displaying it. Only files with text, image, or PDF MIME types will open in the modal. Files with other MIME types are ignored and use standard browser navigation behavior.
+The array should contain files that have been included as documentation assets and can be rendered as text, images, or PDFs by the browser. You may include specific file names (e.g., `LICENSE`, `diagram.png`) or use wildcard patterns (e.g., `*.png`, `*.pdf`) to match multiple files of the same type. The matching is case-insensitive.
 
-By default, the theme displays text files (`.txt`), common image formats (`.png`, `.jpg`, `.jpeg`, `.gif`, `.svg`), PDFs (`.pdf`), and files without extensions (like `LICENSE`) in a modal overlay.
+By default, this setting displays `LICENSE` and `DISCLAIMER` files in a pop-up overlay when linked. To disable this feature, set the array to an empty list (`[]`).
 
-> Files without extensions are interpreted as plain text when displayed in the modal. If a file without an extension contains binary or non-text data, the modal may display garbled or unreadable characters.
-
-To customize which extensions trigger the modal, modify the array to include only the desired file extensions. Use the empty string (`""`) in the array to match files without extensions. To disable this feature entirely, set this to an empty array (`[]`).
-
-> This setting only affects local links to non-HTML files within the documentation. External links and links to `.html` files always use standard navigation behavior.
+> If the MIME type of a file is not recognized as displayable (text, image, PDF, or SVG), the system will attempt to display small files (up to 16 KiB) as plain text. This may occur for files without an extension or with unrecognized extensions.
 
 #### Example
 
@@ -440,7 +436,7 @@ To customize which extensions trigger the modal, modify the array to include onl
     "convention": "dotnet",
     "theme": "classic",
     "themeSettings": {
-        "popupFileExtensions": ["txt", "json"]
+        "popupAssetNames": ["LICENSE", "*.png"]
     }
 }
 ```
@@ -460,7 +456,7 @@ Install the official dotnet static file server tool and run a simple HTTP server
 dotnet tool install --global dotnet-serve
 
 # Run from the documentation output folder
-dotnet-serve --directory . --port 8000 --open-browser:index.html
+dotnet-serve --directory . --port 8000 --open-browser
 ```
 
 Many static servers (including `dotnet-serve`) accept certificate files so you can run HTTPS locally by pointing the server at the cert/key files.

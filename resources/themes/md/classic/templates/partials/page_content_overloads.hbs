@@ -11,6 +11,16 @@
 
 {{>summary_list members=model}}
 
+{{#unless model.doc.remarks.isEmpty}}
+## Remarks
+{{model.doc.remarks}}
+{{/unless}}
+
+{{#unless model.doc.example.isEmpty}}
+## Examples
+{{model.doc.example}}
+{{/unless}}
+
 {{>detail_list level='##' members=model}}
 
 {{#if model.doc.seeAlso}}

@@ -73,7 +73,7 @@ Please visit [the official documentation site](https://kampute.github.io/kampose
 - [Theme Customization](https://kampute.github.io/kampose/themes.html)
 - [Best Practices](https://kampute.github.io/kampose/best-practices.html)
 
-For technical details on the core DocToolkit library, see the [DocToolkit documentation](https://kampute.github.io/doc-toolkit/).
+For technical details on the core [DocToolkit](https://github.com/kampute/doc-toolkit) library, see the [DocToolkit documentation](https://kampute.github.io/doc-toolkit/).
 
 ## Contributing
 
@@ -92,5 +92,6 @@ Kampose is built on outstanding open-source projects maintained by the .NET and 
 - **[Markdig](https://github.com/xoofx/markdig)** - Fast and extensible Markdown processing
 - **[Microsoft.Extensions.FileSystemGlobbing](https://github.com/dotnet/runtime)** - Flexible file pattern matching for assembly and content discovery
 - **[NUglify](https://github.com/trullock/NUglify)** - Asset minification and optimization
+- **[PrismJS](https://prismjs.com/)** - Syntax highlighting for code samples in documentation
 
 The dedication and expertise of these project maintainers and contributors make Kampose possible. Thank you to everyone who contributes to the open-source ecosystem.

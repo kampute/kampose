@@ -49,7 +49,7 @@ namespace Kampose.Support
                 remaining.Remove(matchingTopic);
             }
 
-            return explicitlyOrdered.Concat(remaining);
+            return explicitlyOrdered.Concat(remaining.OrderBy(topic => topic.Title, StringComparer.OrdinalIgnoreCase));
         }
 
         /// <summary>

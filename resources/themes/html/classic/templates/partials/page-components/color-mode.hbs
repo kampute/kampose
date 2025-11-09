@@ -1,0 +1,28 @@
+{{!--
+  This partial renders the color mode menu item.
+  @param {object} this - The template context
+--}}
+
+<li id="color-mode" class="menu-item has-submenu" role="menuitem" aria-hidden="true" tabindex="-1">
+  <a><span class="icon selected-icon" aria-hidden="true"></span></a>
+  <ul class="menu" role="menu" aria-labelledby="color-mode" tabindex="-1">
+    <li class="menu-item" data-mode="light" role="menuitemradio" aria-label="Light Color Mode" tabindex="-1">
+      <a>
+        <span class="icon icon-light-color" aria-hidden="true"></span>
+        <span>Light</span>
+      </a>
+    </li>
+    <li class="menu-item" data-mode="dark" role="menuitemradio" aria-label="Dark Color Mode" tabindex="-1">
+      <a>
+        <span class="icon icon-dark-color" aria-hidden="true"></span>
+        <span>Dark</span>
+      </a>
+    </li>
+    <li class="menu-item" data-mode="system" role="menuitemradio" aria-label="System Color Mode" tabindex="-1">
+      <a>
+        <span class="icon icon-system-color" aria-hidden="true"></span>
+        <span>System</span>
+      </a>
+    </li>
+  </ul>
+</li>

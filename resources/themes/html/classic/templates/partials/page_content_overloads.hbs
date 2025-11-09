@@ -13,6 +13,21 @@
 {{/unless}}
 
 {{>summary_list members=model}}
+
+{{#unless model.doc.remarks.isEmpty}}
+<h2 id="remarks">Remarks</h2>
+<div class="doc-comment">
+  {{model.doc.remarks}}
+</div>
+{{/unless}}
+
+{{#unless model.doc.example.isEmpty}}
+<h2 id="examples">Examples</h2>
+<div class="doc-comment">
+  {{model.doc.example}}
+</div>
+{{/unless}}
+
 {{>detail_list level=3 members=model}}
 
 {{#if model.doc.seeAlso}}

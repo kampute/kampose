@@ -30,6 +30,10 @@ body {
   gap: 4rem
 }
 
+.header .header-main .menu-bar {
+  margin-left: auto;
+}
+
 .header .header-main:empty {
   display: none;
 }

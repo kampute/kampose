@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
     <Company>Kampute</Company>
     <Authors>Kambiz Khojasteh</Authors>
     <Copyright>Copyright (c) 2025 Kampute</Copyright>
@@ -29,7 +29,7 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageIcon>ICON.png</PackageIcon>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <NoDefaultExcludes>true</NoDefaultExcludes>
   </PropertyGroup>
 

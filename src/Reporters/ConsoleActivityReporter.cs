@@ -39,26 +39,11 @@ namespace Kampose.Reporters
         {
             ValidateConsoleCapabilities();
             Console.CursorVisible = false;
-            try
-            {
-                primaryBullet = '•';
-                secondaryBullet = '‣';
-                filledProgressCell = '█';
-                emptyProgressCell = '░';
-                Console.OutputEncoding.GetBytes([
-                    primaryBullet,
-                    secondaryBullet,
-                    filledProgressCell,
-                    emptyProgressCell
-                ]);
-            }
-            catch
-            {
-                primaryBullet = '*';
-                secondaryBullet = '-';
-                filledProgressCell = '#';
-                emptyProgressCell = '.';
-            }
+
+            primaryBullet = SelectChar('•', '*');
+            secondaryBullet = SelectChar('‣', '-');
+            filledProgressCell = SelectChar('█', '#');
+            emptyProgressCell = SelectChar('░', '.');
         }
 
         /// <inheritdoc/>
@@ -421,6 +406,27 @@ namespace Kampose.Reporters
         /// </summary>
         /// <exception cref="ObjectDisposedException">Thrown if the reporter has been disposed.</exception>
         private void ThrowIfDisposed() => ObjectDisposedException.ThrowIf(disposed, nameof(IActivityReporter));
+
+        /// <summary>
+        /// Selects the preferred character if it can be rendered by the console; otherwise, returns the fallback character.
+        /// </summary>
+        /// <param name="preferred">The preferred character to use.</param>
+        /// <param name="fallback">The fallback character to use if the preferred character cannot be rendered.</param>
+        /// <returns>The preferred character if it can be rendered; otherwise, the fallback character.</returns>
+        private static char SelectChar(char preferred, char fallback)
+        {
+            try
+            {
+                var encoding = Console.OutputEncoding;
+                var bytes = encoding.GetBytes([preferred]);
+                var decoded = encoding.GetString(bytes);
+                return decoded.Length == 1 && decoded[0] == preferred ? preferred : fallback;
+            }
+            catch
+            {
+                return fallback;
+            }
+        }
 
         /// <summary>
         /// Validates that the console supports required capabilities.

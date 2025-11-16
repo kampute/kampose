@@ -24,10 +24,25 @@ namespace Kampose.Support
         /// <param name="explicitOrder">The explicit ordering list containing filenames or file paths.</param>
         /// <returns>A sorted collection of topics.</returns>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="topics"/> or <paramref name="explicitOrder"/> is <see langword="null"/>.</exception>
+        /// <remarks>
+        /// The sorting algorithm processes topics in two phases. First, topics explicitly listed in <paramref name="explicitOrder"/> 
+        /// appear in the returned collection, maintaining the order specified. Then, any remaining topics not found in the explicit 
+        /// list are appended, sorted alphabetically by their <see cref="FileTopic.Title"/> property using case-insensitive comparison.
+        /// <para>
+        /// Path matching is flexible and case-insensitive. Each entry in <paramref name="explicitOrder"/> can specify full relative 
+        /// paths or filenames, with or without file extensions. Both backslash and forward slash path separators are supported. 
+        /// Entries that do not match any topic are silently ignored.
+        /// </para>
+        /// </remarks>
         public static IEnumerable<FileTopic> SortTopics(IEnumerable<FileTopic> topics, IReadOnlyList<string> explicitOrder)
         {
             ArgumentNullException.ThrowIfNull(topics);
             ArgumentNullException.ThrowIfNull(explicitOrder);
+
+            var comparer = StringComparer.OrdinalIgnoreCase;
+
+            if (explicitOrder.Count == 0)
+                return topics.OrderBy(topic => topic.Title, comparer);
 
             var remaining = new List<FileTopic>(topics);
             var explicitlyOrdered = new List<FileTopic>();
@@ -46,7 +61,8 @@ namespace Kampose.Support
                 remaining.Remove(matchingTopic);
             }
 
-            return explicitlyOrdered.Concat(remaining.OrderBy(topic => topic.Title, StringComparer.OrdinalIgnoreCase));
+            remaining.Sort((a, b) => comparer.Compare(a.Title, b.Title));
+            return explicitlyOrdered.Concat(remaining);
         }
 
         /// <summary>

@@ -7,6 +7,7 @@ namespace Kampose.Reporters
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     /// <summary>
     /// Provides extension methods for the <see cref="IActivityReporter"/> interface.
@@ -100,7 +101,11 @@ namespace Kampose.Reporters
             ArgumentNullException.ThrowIfNull(reporter);
             ArgumentNullException.ThrowIfNull(exception);
 
-            reporter.Report(ReportType.Error, string.Join('\n', GetExceptionMessages(exception)));
+            var messages = GetExceptionMessages(exception);
+            if (reporter.Verbose && !string.IsNullOrEmpty(exception.StackTrace))
+                messages = messages.Concat([exception.StackTrace]);
+
+            reporter.Report(ReportType.Error, string.Join('\n', messages));
         }
 
         /// <summary>
@@ -110,7 +115,7 @@ namespace Kampose.Reporters
         /// <returns>An enumerable sequence of error messages from the exception and its inner exceptions, in order of nesting.</returns>
         private static IEnumerable<string> GetExceptionMessages(Exception exception)
         {
-            for (var current = exception; current != null; current = current.InnerException)
+            for (var current = exception; current is not null; current = current.InnerException)
                 yield return current.Message;
         }
     }

@@ -19,17 +19,15 @@ jobs:
 
     - name: Setup .NET 8.0
       uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: '8.0.x'
 
-    - name: Restore dependencies
+    - name: Restore Dependencies
       run: dotnet restore
 
-    - name: Build solution
+    - name: Build Solution
       run: dotnet build --no-restore -c Release
 
-    - name: Run unit tests
-      run: dotnet test --no-restore --verbosity minimal
+    - name: Test Solution
+      run: dotnet test --no-restore --no-build -c Release --verbosity minimal
 
     - name: Generate Documentation
       run: dotnet run --project src --no-build -c Release -- build

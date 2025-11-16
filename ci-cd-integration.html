@@ -1,51 +1,65 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Kampose - CI/CD Integration</title><link rel="icon" href="ICON.png"/><link rel="stylesheet" href="style.css"/><script src="script.js"></script><script src="prism.min.js"></script><meta name="generator" content="Kampose [Version 0.1.2.0]"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="description" content=""/></head><body class="has-right-sidebar has-breadcrumb"><a href="#article" class="skip-link" aria-label="Skip to main content" tabindex="0">Skip to main content</a><header class="header" role="banner"><div class="header-main"><div class="brand" aria-label="Project title and logo"><img src="logo-light.png" alt="Kampose logo" class="logo dark-mode"/> <img src="logo-dark.png" alt="Kampose logo" class="logo light-mode"/><div class="project-info"><span class="project-name">Kampose</span> <span class="project-slogan">A tool to bring your code’s story to light.</span></div></div><nav id="menubar" class="menu-bar" role="navigation" aria-label="Main Menu" data-base-url="" tabindex="-1"><ul class="menu" role="menubar" aria-labelledby="menubar"><li class="divider" role="separator" tabindex="-1"></li><li id="color-mode" class="menu-item has-submenu" role="menuitem" aria-hidden="true" tabindex="-1"><a><span class="icon selected-icon" aria-hidden="true"></span></a><ul class="menu" role="menu" aria-labelledby="color-mode" tabindex="-1"><li class="menu-item" data-mode="light" role="menuitemradio" aria-label="Light Color Mode" tabindex="-1"><a><span class="icon icon-light-color" aria-hidden="true"></span> <span>Light</span></a></li><li class="menu-item" data-mode="dark" role="menuitemradio" aria-label="Dark Color Mode" tabindex="-1"><a><span class="icon icon-dark-color" aria-hidden="true"></span> <span>Dark</span></a></li><li class="menu-item" data-mode="system" role="menuitemradio" aria-label="System Color Mode" tabindex="-1"><a><span class="icon icon-system-color" aria-hidden="true"></span> <span>System</span></a></li></ul></li></ul></nav></div><nav class="breadcrumb" role="navigation" aria-label="Breadcrumb" tabindex="-1"><ol><li class="is-topic"><a href="index.html"><span class="name">Welcome to Kampose</span></a></li><li class="is-topic current-page" aria-current="page"><a href="ci-cd-integration.html"><span class="name">CI/CD Integration</span></a></li></ol></nav></header><div class="content"><main id="article" role="main" class="article"><h1 id="cicd-integration">CI/CD Integration</h1><p>Kampose integrates seamlessly into automated build and deployment pipelines, enabling documentation generation as part of your continuous integration workflow. This guide provides examples for popular CI/CD platforms.</p><h2 id="github-actions">GitHub Actions</h2><h3 id="basic-workflow">Basic Workflow</h3><pre><code class="language-yaml">name: Documentation
-
-on:
-  push:
-    branches: [ main ]
-
-jobs:
-  generate-docs:
-    runs-on: ubuntu-latest
-
-    permissions:
-      contents: write
-
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0.x'
-
-      - name: Install Kampose
-        run: dotnet tool install --global kampose
-
-      - name: Build Solution
-        run: dotnet build -c Release
-
-      - name: Generate Documentation
-        run: kampose build
-
-      - name: Deploy Documentation to GitHub Pages
-        if: github.ref == 'refs/heads/main'
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs
-</code></pre><h3 id="workflow-with-quality-gates">Workflow with Quality Gates</h3><p>Configure auditing in your <code>kampose.json</code> to enforce documentation standards:</p><pre><code class="language-json">{
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Kampose - CI/CD Integration</title><link rel="icon" href="ICON.png"/><link rel="stylesheet" href="style.css"/><script src="script.js"></script><script src="prism.min.js"></script><meta name="generator" content="Kampose [Version 0.1.3.0]"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="description" content=""/></head><body class="has-right-sidebar has-breadcrumb"><a href="#article" class="skip-link" aria-label="Skip to main content" tabindex="0">Skip to main content</a><header class="header" role="banner"><div class="header-main"><div class="brand" aria-label="Project title and logo"><img src="logo-light.png" alt="Kampose logo" class="logo dark-mode"/> <img src="logo-dark.png" alt="Kampose logo" class="logo light-mode"/><div class="project-info"><span class="project-name">Kampose</span> <span class="project-slogan">A tool to bring your code’s story to light.</span></div></div><nav id="menubar" class="menu-bar" role="navigation" aria-label="Main Menu" data-base-url="" tabindex="-1"><ul class="menu" role="menubar" aria-labelledby="menubar"><li class="divider" role="separator" tabindex="-1"></li><li id="color-mode" class="menu-item has-submenu" role="menuitem" aria-hidden="true" tabindex="-1"><a><span class="icon selected-icon" aria-hidden="true"></span></a><ul class="menu" role="menu" aria-labelledby="color-mode" tabindex="-1"><li class="menu-item" data-mode="light" role="menuitemradio" aria-label="Light Color Mode" tabindex="-1"><a><span class="icon icon-light-color" aria-hidden="true"></span> <span>Light</span></a></li><li class="menu-item" data-mode="dark" role="menuitemradio" aria-label="Dark Color Mode" tabindex="-1"><a><span class="icon icon-dark-color" aria-hidden="true"></span> <span>Dark</span></a></li><li class="menu-item" data-mode="system" role="menuitemradio" aria-label="System Color Mode" tabindex="-1"><a><span class="icon icon-system-color" aria-hidden="true"></span> <span>System</span></a></li></ul></li></ul></nav></div><nav class="breadcrumb" role="navigation" aria-label="Breadcrumb" tabindex="-1"><ol><li class="is-topic"><a href="index.html"><span class="name">Welcome to Kampose</span></a></li><li class="is-topic current-page" aria-current="page"><a href="ci-cd-integration.html"><span class="name">CI/CD Integration</span></a></li></ol></nav></header><div class="content"><main id="article" role="main" class="article"><h1 id="cicd-integration">CI/CD Integration</h1><p>Kampose integrates seamlessly into automated build and deployment pipelines, enabling documentation generation as part of your continuous integration workflow. This guide provides examples for popular CI/CD platforms.</p><h2 id="project-assumptions">Project Assumptions</h2><p>The examples in this guide assume a standard .NET project structure:</p><ul><li>Solution file in the repository root</li><li>Project source code in <code>src/</code> directory</li><li>Build output in <code>bin/Release/</code> directories</li><li>XML documentation files generated alongside assemblies</li></ul><h3 id="configuration-file">Configuration File</h3><p>All examples use this <code>kampose.json</code> configuration file in the repository root:</p><pre><code class="language-json">{
   &quot;convention&quot;: &quot;dotNet&quot;,
-  &quot;outputDirectory&quot;: &quot;docs&quot;,
-  &quot;assemblies&quot;: [&quot;bin/Release/**/*.dll&quot;],
+  &quot;outputDirectory&quot;: &quot;.doc-site&quot;,
+  &quot;assemblies&quot;: [&quot;src/**/bin/Release/**/*.dll&quot;],
   &quot;theme&quot;: &quot;classic&quot;,
   &quot;audit&quot;: {
     &quot;options&quot;: [&quot;recommended&quot;],
     &quot;stopOnIssues&quot;: true
   }
 }
-</code></pre><p>When <code>stopOnIssues</code> is <code>true</code>, the build fails if documentation issues are detected.</p><p>For all available audit options, see the <a href="configuration.html#audit">Configuration Guide</a>.</p><h2 id="azure-pipelines">Azure Pipelines</h2><h3 id="basic-pipeline">Basic Pipeline</h3><pre><code class="language-yaml">trigger:
+</code></pre><p>This configuration:</p><ul><li>Uses the <code>dotNet</code> convention for .NET-style documentation structure</li><li>Outputs generated documentation to the <code>.doc-site</code> directory</li><li>Collects all assemblies and XML documentation files from Release build outputs</li><li>Uses the <code>classic</code> theme for documentation styling</li><li>Enables recommended audit options with quality gates (<code>stopOnIssues: true</code>) to fail builds if documentation issues are detected</li></ul><h2 id="github-actions">GitHub Actions</h2><h3 id="basic-workflow">Basic Workflow</h3><p>Generate documentation on each push to the <code>main</code> branch and deploy to GitHub Pages:</p><pre><code class="language-yaml">name: build
+
+on:
+  workflow_dispatch:  # Allow manual trigger
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-test-document:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write  # Required for GitHub Pages deployment
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET 8.0
+      uses: actions/setup-dotnet@v4
+
+    - name: Restore Dependencies
+      run: dotnet restore
+
+    - name: Build Solution
+      run: dotnet build --no-restore -c Release
+
+    - name: Test Solution
+      run: dotnet test --no-restore --no-build -c Release --verbosity minimal
+
+    - name: Install Kampose for Documentation Generation
+      run: dotnet tool install --global kampose
+
+    - name: Generate Documentation
+      run: kampose build
+
+    # Only deploy to GitHub Pages on main branch (not on PRs)
+    - name: Deploy Documentation to GitHub Pages
+      if: github.ref == 'refs/heads/main' &amp;&amp; github.event_name != 'pull_request'
+      uses: peaceiris/actions-gh-pages@v4
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./.doc-site
+</code></pre><h2 id="azure-pipelines">Azure Pipelines</h2><h3 id="basic-pipeline">Basic Pipeline</h3><p>Generate documentation on each push to the <code>main</code> branch and publish as a build artifact:</p><pre><code class="language-yaml"># Trigger on pushes to main branch
+trigger:
+  branches:
+    include:
+      - main
+
+# Trigger on pull requests to main branch
+pr:
   branches:
     include:
       - main
@@ -59,27 +73,46 @@ steps:
     inputs:
       version: '8.0.x'
 
-  - script: dotnet tool install --global kampose
-    displayName: 'Install Kampose'
+  - script: dotnet restore
+    displayName: 'Restore Dependencies'
 
-  - script: dotnet build -c Release
+  - script: dotnet build --no-restore -c Release
     displayName: 'Build Solution'
+
+  - script: dotnet test --no-restore --no-build -c Release --verbosity minimal
+    displayName: 'Test Solution'
+
+  - script: dotnet tool install --global kampose
+    displayName: 'Install Kampose for Documentation Generation'
 
   - script: kampose build
     displayName: 'Generate Documentation'
 
+  # Only publish artifact on main branch (not on PRs)
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Documentation Artifact'
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
     inputs:
-      pathToPublish: 'docs'
+      pathToPublish: '.doc-site'
       artifactName: 'documentation'
-</code></pre><h3 id="pipeline-with-wiki-publishing">Pipeline with Wiki Publishing</h3><p>For Azure DevOps wiki integration, use the <code>devOps</code> convention in your <code>kampose.json</code> configuration file:</p><pre><code class="language-json">{
+</code></pre><h3 id="pipeline-with-wiki-publishing">Pipeline with Wiki Publishing</h3><p>Publish documentation directly to Azure DevOps Wiki. Update your <code>kampose.json</code> to use the <code>devOps</code> convention and wiki-compatible output directory:</p><pre><code class="language-json">{
   &quot;convention&quot;: &quot;devOps&quot;,
-  &quot;outputDirectory&quot;: &quot;docs&quot;,
-  &quot;assemblies&quot;: [&quot;bin/Release/**/*.dll&quot;],
-  &quot;theme&quot;: &quot;classic&quot;
+  &quot;outputDirectory&quot;: &quot;.doc-site&quot;,
+  &quot;assemblies&quot;: [&quot;src/**/bin/Release/**/*.dll&quot;],
+  &quot;theme&quot;: &quot;classic&quot;,
+  &quot;audit&quot;: {
+    &quot;options&quot;: [&quot;recommended&quot;],
+    &quot;stopOnIssues&quot;: true
+  }
 }
-</code></pre><p>See the <a href="configuration.html#convention">Configuration Guide</a> for more details about conventions.</p><pre><code class="language-yaml">trigger:
+</code></pre><p>The <code>devOps</code> convention generates documentation optimized for Azure DevOps Wiki integration. See the <a href="configuration.html#convention">Configuration Guide</a> for more details about conventions.</p><pre><code class="language-yaml"># Trigger on pushes to main branch
+trigger:
+  branches:
+    include:
+      - main
+
+# Trigger on pull requests to main branch
+pr:
   branches:
     include:
       - main
@@ -89,21 +122,29 @@ pool:
 
 steps:
   - task: UseDotNet@2
+    displayName: 'Install .NET SDK'
     inputs:
       version: '8.0.x'
 
-  - script: dotnet tool install --global kampose
-    displayName: 'Install Kampose'
+  - script: dotnet restore
+    displayName: 'Restore Dependencies'
 
-  - script: dotnet build -c Release
+  - script: dotnet build --no-restore -c Release
     displayName: 'Build Solution'
+
+  - script: dotnet test --no-restore --no-build -c Release --verbosity minimal
+    displayName: 'Test Solution'
+
+  - script: dotnet tool install --global kampose
+    displayName: 'Install Kampose for Documentation Generation'
 
   - script: kampose build
     displayName: 'Generate Documentation'
 
+  # Only publish to wiki on main branch (not on PRs)
   - script: |
       git clone https://$(System.AccessToken)@dev.azure.com/yourorg/yourproject/_git/yourproject.wiki wiki
-      cp -r docs/* wiki/
+      cp -r .doc-site/* wiki/
       cd wiki
       git config user.email &quot;pipeline@azuredevops.com&quot;
       git config user.name &quot;Azure Pipeline&quot;
@@ -112,19 +153,36 @@ steps:
       git push origin HEAD:wikiMaster
     displayName: 'Publish Documentation to Wiki'
     condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
-</code></pre><h2 id="gitlab-cicd">GitLab CI/CD</h2><pre><code class="language-yaml">stages:
+</code></pre><h2 id="gitlab-cicd">GitLab CI/CD</h2><h3 id="basic-pipeline-1">Basic Pipeline</h3><p>Generate documentation on each push to the <code>main</code> branch and deploy to GitLab Pages:</p><pre><code class="language-yaml"># Run pipeline on merge requests and main branch commits
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == &quot;merge_request_event&quot;
+    - if: $CI_COMMIT_BRANCH == &quot;main&quot;
+
+stages:
   - build
+  - test
   - documentation
+  - deploy
 
 build:
   stage: build
   image: mcr.microsoft.com/dotnet/sdk:8.0
   script:
-    - dotnet build -c Release
+    - dotnet restore
+    - dotnet build --no-restore -c Release
   artifacts:
     paths:
-      - bin/
+      - &quot;src/**/bin/Release/&quot;
     expire_in: 1 hour
+
+test:
+  stage: test
+  image: mcr.microsoft.com/dotnet/sdk:8.0
+  needs:
+    - build
+  script:
+    - dotnet test --no-restore --no-build -c Release --verbosity minimal
 
 documentation:
   stage: documentation
@@ -137,18 +195,20 @@ documentation:
     - kampose build
   artifacts:
     paths:
-      - docs/
+      - .doc-site/
+    expire_in: 1 day
 
+# Only deploy to GitLab Pages on main branch (not on merge requests)
 pages:
-  stage: documentation
+  stage: deploy
   needs:
     - documentation
   script:
     - mkdir -p public
-    - cp -r docs/* public/
+    - cp -r .doc-site/* public/
   artifacts:
     paths:
       - public
-  only:
-    - main
-</code></pre><blockquote><p>The <code>pages</code> job is a special job in GitLab CI/CD that is automatically used to deploy to GitLab Pages when a <code>public</code> directory with content is found.</p></blockquote><footer class="content-footer" role="contentinfo"><ul><li>Copyright © 2025 <a href="https://kampute.com/">Kampute</a></li><li>Site built with <a href="https://kampute.github.io/kampose/">Kampose</a>.</li></ul></footer></main><aside class="sidebar sidebar-right" role="complementary" aria-label="In this article" tabindex="-1"><div class="sidebar-header" aria-hidden="true"><h3>In this article</h3></div><nav id="article-navigation" class="sidebar-nav" data-max-level="3"></nav></aside></div><div id="modal-overlay" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-hidden="true"><div class="modal-container"><div class="modal-header"><h3 id="modal-title"></h3><button id="modal-close" type="button" class="modal-close-btn" aria-label="Close dialog">&times;</button></div><div class="modal-content"><div id="modal-body" class="modal-body"><iframe id="modal-iframe" frameborder="0" title="Dialog content"></iframe></div></div></div></div></body></html>
+  rules:
+    - if: $CI_COMMIT_BRANCH == &quot;main&quot;
+</code></pre><footer class="content-footer" role="contentinfo"><ul><li>Copyright © 2025 <a href="https://kampute.com/">Kampute</a></li><li>Site built with <a href="https://kampute.github.io/kampose/">Kampose</a>.</li></ul></footer></main><aside class="sidebar sidebar-right" role="complementary" aria-label="In this article" tabindex="-1"><div class="sidebar-header" aria-hidden="true"><h3>In this article</h3></div><nav id="article-navigation" class="sidebar-nav" data-max-level="3"></nav></aside></div><div id="modal-overlay" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-hidden="true"><div class="modal-container"><div class="modal-header"><h3 id="modal-title"></h3><button id="modal-close" type="button" class="modal-close-btn" aria-label="Close dialog">&times;</button></div><div class="modal-content"><div id="modal-body" class="modal-body"><iframe id="modal-iframe" frameborder="0" title="Dialog content"></iframe></div></div></div></div></body></html>

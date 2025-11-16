@@ -55,16 +55,22 @@ namespace Kampose
         /// </summary>
         /// <returns>An <see cref="IActivityReporter"/> instance suitable for the current console output configuration.</returns>
         /// <remarks>
-        /// If the console output is redirected, a <see cref="TextWriterActivityReporter"/> is returned with verbose logging enabled
-        /// and separate writers for standard output and error streams.
-        /// If the console output is not redirected, a <see cref="ConsoleActivityReporter"/> is attempted to be created.
-        /// If the creation of <see cref="ConsoleActivityReporter"/> fails, a <see cref="TextWriterActivityReporter"/> is returned
-        /// with verbose logging disabled.
+        /// When output is redirected, a <see cref="TextWriterActivityReporter"/> is created with the following behavior:
+        /// <list type="bullet">
+        ///   <item>If only one stream is redirected: Both normal output and errors use the same writer to keep all output together.</item>
+        ///   <item>If both streams are redirected: Each uses its own writer (normal output to stdout, errors/warnings to stderr).</item>
+        /// </list>
+        /// When output is not redirected, a <see cref="ConsoleActivityReporter"/> provides output with progress bars and colors.
+        /// If console reporter creation fails, a basic <see cref="TextWriterActivityReporter"/> is used as fallback.
         /// </remarks>
         private static IActivityReporter CreateActivityReporter()
         {
-            if (Console.IsOutputRedirected)
-                return new TextWriterActivityReporter(Console.Out, Console.Error);
+            if (Console.IsOutputRedirected || Console.IsErrorRedirected)
+            {
+                return Console.IsOutputRedirected && Console.IsErrorRedirected
+                    ? new TextWriterActivityReporter(Console.Out, Console.Error)
+                    : new TextWriterActivityReporter(Console.IsOutputRedirected ? Console.Out : Console.Error);
+            }
 
             try
             {

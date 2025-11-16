@@ -18,21 +18,22 @@ namespace Kampose.Support
     public static class TopicSorter
     {
         /// <summary>
-        /// Sorts a collection of file topics according to an explicit ordering list.
+        /// Sorts a collection of file topics according to an explicit ordering list, with non-listed topics sorted alphabetically by title.
         /// </summary>
         /// <param name="topics">The collection of topics to sort.</param>
         /// <param name="explicitOrder">The explicit ordering list containing filenames or file paths.</param>
         /// <returns>A sorted collection of topics.</returns>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="topics"/> or <paramref name="explicitOrder"/> is <see langword="null"/>.</exception>
         /// <remarks>
-        /// The sorting algorithm processes topics in two phases. First, topics explicitly listed in <paramref name="explicitOrder"/> 
-        /// appear in the returned collection, maintaining the order specified. Then, any remaining topics not found in the explicit 
+        /// The sorting algorithm processes topics in two phases. First, topics explicitly listed in <paramref name="explicitOrder"/>
+        /// appear in the returned collection, maintaining the order specified. Then, any remaining topics not found in the explicit
         /// list are appended, sorted alphabetically by their <see cref="FileTopic.Title"/> property using case-insensitive comparison.
         /// <para>
-        /// Path matching is flexible and case-insensitive. Each entry in <paramref name="explicitOrder"/> can specify full relative 
-        /// paths or filenames, with or without file extensions. Both backslash and forward slash path separators are supported. 
+        /// Path matching is flexible and case-insensitive. Each entry in <paramref name="explicitOrder"/> can specify full relative
+        /// paths or filenames, with or without file extensions. Both backslash and forward slash path separators are supported.
         /// Entries that do not match any topic are silently ignored.
         /// </para>
+        /// When <paramref name="explicitOrder"/> is empty, all topics are returned sorted alphabetically by title.
         /// </remarks>
         public static IEnumerable<FileTopic> SortTopics(IEnumerable<FileTopic> topics, IReadOnlyList<string> explicitOrder)
         {

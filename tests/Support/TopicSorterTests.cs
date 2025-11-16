@@ -55,11 +55,7 @@ namespace Kampose.Test.Support
             var topic2 = CreateMockTopic("Installation", "docs/installation.md");
             var topic3 = CreateMockTopic("Configuration", "docs/configuration.md");
             var topics = new[] { topic1, topic2, topic3 };
-            var explicitOrder = new[]
-            {
-                "docs/configuration.md",
-                "docs/getting-started.md"
-            };
+            var explicitOrder = new[] { "docs/configuration.md", "docs/getting-started.md" };
 
             var result = TopicSorter.SortTopics(topics, explicitOrder);
 
@@ -73,11 +69,7 @@ namespace Kampose.Test.Support
             var topic2 = CreateMockTopic("Installation", "docs/installation.md");
             var topic3 = CreateMockTopic("Configuration", "docs/configuration.md");
             var topics = new[] { topic1, topic2, topic3 };
-            var explicitOrder = new[]
-            {
-                "configuration.md",
-                "getting-started.md"
-            };
+            var explicitOrder = new[] { "configuration.md", "getting-started.md" };
 
             var result = TopicSorter.SortTopics(topics, explicitOrder);
 
@@ -195,14 +187,14 @@ namespace Kampose.Test.Support
         [Test]
         public void SortTopics_WithCaseSensitivePath_SortsAlphabeticallyByTitle()
         {
-            var topic1 = CreateMockTopic("Zebra", "docs/Zebra.md");
-            var topic2 = CreateMockTopic("Apple", "docs/apple.md");
+            var topic1 = CreateMockTopic("Zebra", "docs/zebra.md");
+            var topic2 = CreateMockTopic("apple", "docs/apple.md");
             var topics = new[] { topic1, topic2 };
             var explicitOrder = Array.Empty<string>();
 
             var result = TopicSorter.SortTopics(topics, explicitOrder);
 
-            Assert.That(result.Select(t => t.Title), Is.EqualTo(["Zebra", "Apple"]));
+            Assert.That(result.Select(t => t.Title), Is.EqualTo(["apple", "Zebra"]));
         }
 
         [Test]

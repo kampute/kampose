@@ -29,9 +29,6 @@ namespace Kampose.Support
             ArgumentNullException.ThrowIfNull(topics);
             ArgumentNullException.ThrowIfNull(explicitOrder);
 
-            if (explicitOrder.Count == 0)
-                return topics;
-
             var remaining = new List<FileTopic>(topics);
             var explicitlyOrdered = new List<FileTopic>();
 

@@ -62,9 +62,7 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Setup .NET 8.0
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: '8.0.x'
+      uses: actions/setup-dotnet@v4
 
     - name: Restore Dependencies
       run: dotnet restore

@@ -92,7 +92,7 @@ namespace Kampose.Support
                 throw new ValidationException($"{typeof(T).Name} file could not be parsed: {path}", [error.Message]);
             }
 
-            if (validator?.Invoke(jsonDocument) is IReadOnlyDictionary<string, string> errors)
+            if (validator?.Invoke(jsonDocument) is Dictionary<string, string> { Count: > 0 } errors)
                 throw new ValidationException($"{typeof(T).Name} file contains errors: {path}", errors.Values);
 
             try
@@ -121,8 +121,8 @@ namespace Kampose.Support
         /// </summary>
         /// <typeparam name="T">The type of the object to validate.</typeparam>
         /// <param name="jsonDocument">The JSON document to validate.</param>
-        /// <returns>The validation errors, if any; otherwise, <see langword="null"/>.</returns>
-        private static IReadOnlyDictionary<string, string>? ValidateJsonSchema<T>(JsonDocument jsonDocument)
+        /// <returns>The validation errors, if any.</returns>
+        private static Dictionary<string, string>? ValidateJsonSchema<T>(JsonDocument jsonDocument)
         {
             var evaluationOptions = new EvaluationOptions
             {
@@ -133,7 +133,7 @@ namespace Kampose.Support
             using var schemaStream = GetJsonSchemaStream<T>();
             var schema = JsonSerializer.Deserialize<JsonSchema>(schemaStream, DeserializationOptions)!;
             var validation = schema.Evaluate(jsonDocument.RootElement, evaluationOptions);
-            return validation.HasErrors ? validation.Errors : null;
+            return validation.Errors;
         }
 
         /// <summary>

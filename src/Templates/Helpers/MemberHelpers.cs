@@ -176,6 +176,7 @@ namespace Kampose.Templates.Helpers
             public bool IsUnsafe => throw new NotSupportedException();
             public bool IsSpecialName => throw new NotSupportedException();
             public bool IsDirectDeclaration => false;
+            public bool IsCompilerGenerated => false;
             public IReadOnlyList<ICustomAttribute> CustomAttributes => [];
             public bool HasCustomAttribute(string attributeFullName) => false;
             public bool Represents(System.Reflection.MemberInfo reflection) => false;

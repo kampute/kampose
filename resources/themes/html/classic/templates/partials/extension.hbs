@@ -1,0 +1,12 @@
+{{!--
+  This partial renders the extension block information.
+  @param {object} block - The extension block information.
+  @param {object} doc - The documentation information for the extension block.
+--}}
+
+<dl class="param-list">
+  <dt><span class="param-type">{{block.receiver.type}}</span></dt>
+  {{#if (lookup doc.parameters block.receiver.name)}}
+  <dd>{{#lookup doc.parameters block.receiver.name}}</dd>
+  {{/if}}
+</dl>

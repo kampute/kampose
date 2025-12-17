@@ -17,6 +17,11 @@
 </div>
 {{/if}}
 
+{{#if member.metadata.extensionBlock}}
+<h{{level}} id="extended-type">Extended Type</h{{level}}>
+{{>extension block=member.metadata.extensionBlock doc=member.doc.extensionBlock}}
+{{/if}}
+
 {{#if member.metadata.parameters}}
 <h{{level}} id="parameters">Index Parameters</h{{level}}>
 {{>parameter_list parameters=member.metadata.parameters descriptions=member.doc.parameters}}

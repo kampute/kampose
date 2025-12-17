@@ -136,6 +136,7 @@ namespace Kampose.Templates.Helpers
                 IField _ => "Field",
                 IOperator _ => "Operator",
                 IType _ => "Type",
+                IExtensionBlock _ => "Extension Block",
                 _ => "Member"
             };
         }

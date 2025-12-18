@@ -325,7 +325,7 @@ namespace Kampose.Builders
         /// </summary>
         /// <param name="homeTopic">The home topic, if available; otherwise, a warning is logged.</param>
         /// <param name="apiTopic">The API topic, if available; otherwise, a default API topic will be created.</param>
-        /// <param name="requiresApiTopic">Indicates whether an API page is required.</param>
+        /// <param name="requiresApiPage">Indicates whether an API page is required.</param>
         private void AddSpecialTopics(FileTopic? homeTopic, FileTopic? apiTopic, bool requiresApiPage)
         {
             if (homeTopic is not null)

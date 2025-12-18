@@ -5,6 +5,9 @@
 
 namespace Kampose.Reporters
 {
+    /// <summary>
+    /// Specifies the type of report being recorded.
+    /// </summary>
     public enum ReportType
     {
         /// <summary>

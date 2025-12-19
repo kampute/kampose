@@ -13,6 +13,7 @@
     <OutputType>Exe</OutputType>
     <AssemblyName>kampose</AssemblyName>
     <ApplicationIcon>Kampose.ico</ApplicationIcon>
+    <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
 
     <!-- .NET Global Tool Configuration -->
     <PackAsTool>true</PackAsTool>
@@ -51,8 +52,8 @@
 
   <ItemGroup>
     <PackageReference Include="Handlebars.Net" Version="2.1.6" />
-    <PackageReference Include="JsonSchema.Net" Version="8.0.3" />
-    <PackageReference Include="Kampute.DocToolkit" Version="2.0.0" />
+    <PackageReference Include="JsonSchema.Net" Version="8.0.4" />
+    <PackageReference Include="Kampute.DocToolkit" Version="2.0.1" />
     <PackageReference Include="Markdig.Signed" Version="0.44.0" />
     <PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" Version="10.0.1" />
     <PackageReference Include="NUglify" Version="1.21.17" />

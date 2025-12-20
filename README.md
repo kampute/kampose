@@ -1,6 +1,8 @@
 # Kampose
 
-A cross-platform .NET tool that transforms XML documentation comments into professional API documentation. Generate beautiful HTML or Markdown documentation with minimal configuration.
+Kampose is a cross-platform .NET command-line tool that transforms XML documentation comments into professional API documentation. It generates production-ready, standards-compliant HTML or Markdown documentation with minimal configuration and integrates seamlessly with CI/CD pipelines.
+
+Kampose targets .NET 10.0 and fully supports C# 14 while remaining compatible with earlier .NET and C# versions.
 
 ## Why Kampose
 

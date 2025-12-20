@@ -126,8 +126,8 @@ namespace Kampose.Commands
             Console.WriteLine(Description);
             Console.WriteLine();
             Console.WriteLine("OPTIONS:");
-            Console.WriteLine("  -c, --clean                 Clean the output directory before generating documentation.");
-            Console.WriteLine("  -d, --debug                 Enables detailed logging to help diagnose issues during the documentation generation process.");
+            Console.WriteLine("  -c, --clean                 Clear the output directory before generating documentation.");
+            Console.WriteLine("  -d, --debug                 Enable detailed logging to help diagnose issues during the documentation generation process.");
             Console.WriteLine("  -h, --help                  Display this help message and exit.");
             Console.WriteLine();
             Console.WriteLine($"If no configuration file is specified, the tool defaults to '{DefaultConfigFile}' in the current directory.");
@@ -136,7 +136,7 @@ namespace Kampose.Commands
             Console.WriteLine($"  {nameof(Kampose)} {Name}                      Use the default configuration file '{DefaultConfigFile}' in the current directory.");
             Console.WriteLine($"  {nameof(Kampose)} {Name} custom-config.json   Use 'custom-config.json' as the configuration file.");
             Console.WriteLine($"  {nameof(Kampose)} {Name} --debug              Generate documentation with debug output.");
-            Console.WriteLine($"  {nameof(Kampose)} {Name} --clean              Clean the output directory before generating documentation.");
+            Console.WriteLine($"  {nameof(Kampose)} {Name} --clean              Clear the output directory before generating documentation.");
             Console.WriteLine();
         }
 

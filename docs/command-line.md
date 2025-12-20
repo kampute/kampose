@@ -25,7 +25,7 @@ kampose build [OPTIONS] [config-file]
 - `config-file` - Path to your configuration file. Defaults to `kampose.json` in the current directory if not specified. You can omit the `.json` extension and it will be added automatically.
 
 ##### Options:
-- `-c, --clean` - Clean the output directory before generating documentation.
+- `-c, --clean` - Clear the output directory before generating documentation.
 - `-d, --debug` - Enable detailed logging to help diagnose issues during the documentation generation process.
 - `-h, --help` - Show help information for the build command
 

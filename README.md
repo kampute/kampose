@@ -53,7 +53,7 @@ dotnet tool install --global kampose
 }
 ```
 
-For more configuration options and examples, refer to the [Configuration](https://kampute.github.io/kampose/configuration.html) guide.
+For more configuration options and examples, refer to the [Configuration](https://kampute.github.io/kampose/configuration) guide.
 
 **Step 3**: Build your project and generate documentation:
 ```shell
@@ -61,19 +61,17 @@ dotnet build -c Release
 kampose build
 ```
 
-See the [Command-Line Interface](command-line.md) guide.
-
-See the [Getting Started Guide](https://kampute.github.io/kampose/command-line.html) for detailed instructions and examples.
+See the [Command-Line Interface](https://kampute.github.io/kampose/command-line) guide for additional commands and options.
 
 ## Documentation
 
-Please visit [the official documentation site](https://kampute.github.io/kampose) for detailed guides and references:
+Please visit [the official documentation site](https://kampute.github.io/kampose/) for detailed guides and references:
 
-- [Getting Started Guide](https://kampute.github.io/kampose/welcome.html)
-- [Configuration Reference](https://kampute.github.io/kampose/configuration.html)
-- [CI/CD Integration](https://kampute.github.io/kampose/ci-cd-integration.html)
-- [Theme Customization](https://kampute.github.io/kampose/themes.html)
-- [Best Practices](https://kampute.github.io/kampose/best-practices.html)
+- [Getting Started Guide](https://kampute.github.io/kampose/)
+- [Configuration Reference](https://kampute.github.io/kampose/configuration)
+- [CI/CD Integration](https://kampute.github.io/kampose/ci-cd-integration)
+- [Theme Customization](https://kampute.github.io/kampose/themes/theme-authoring/)
+- [Best Practices](https://kampute.github.io/kampose/best-practices)
 
 For technical details on the core [DocToolkit](https://github.com/kampute/doc-toolkit) library, see the [DocToolkit documentation](https://kampute.github.io/doc-toolkit/).
 

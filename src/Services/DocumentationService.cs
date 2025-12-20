@@ -82,7 +82,7 @@ namespace Kampose.Services
         /// <param name="outputDir">The output directory where documentation will be generated.</param>
         private void GeneratePages(TemplateRenderer renderer, DocContext context, string outputDir)
         {
-            reporter.BeginActivity("Writing documentation pages");
+            using var _ = reporter.BeginActivity("Writing documentation pages");
             var generator = new FileSystemDocumentationComposer(renderer);
 
             currentRenderer.Value = renderer;
@@ -108,7 +108,7 @@ namespace Kampose.Services
             if (theme.ScriptFiles.Count == 0)
                 return;
 
-            reporter.BeginActivity("Writing script bundles");
+            using var _ = reporter.BeginActivity("Writing script bundles");
 
             var scriptPrelude = GenerateGlobalVariablesScript(context, templateData);
             foreach (var (targetPath, sourceFiles) in theme.ScriptFiles)
@@ -129,7 +129,7 @@ namespace Kampose.Services
             if (theme.StyleFiles.Count == 0)
                 return;
 
-            reporter.BeginActivity("Writing style bundles");
+            using var _ = reporter.BeginActivity("Writing style bundles");
 
             foreach (var (targetPath, sourceFiles) in theme.StyleFiles)
             {
@@ -147,11 +147,11 @@ namespace Kampose.Services
             if (context.Assets.Count == 0)
                 return;
 
-            reporter.BeginActivity("Copying assets");
+            using var _ = reporter.BeginActivity("Copying assets");
 
             foreach (var asset in context.Assets)
             {
-                using var _ = reporter.BeginStep(asset.TargetPath);
+                using var __ = reporter.BeginStep(asset.TargetPath);
                 try
                 {
                     CopyFile(asset.SourcePath, asset.TargetPath);

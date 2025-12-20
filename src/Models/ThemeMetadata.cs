@@ -27,7 +27,7 @@ namespace Kampose.Models
 
         /// <summary>
         /// The display name of the theme.
-        /// <summary>
+        /// </summary>
         /// <value>
         /// The display name of the theme, which is typically used in user interfaces or documentation.
         /// </value>

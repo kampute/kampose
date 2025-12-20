@@ -233,7 +233,7 @@ namespace Kampose.Builders
             if (config.Assemblies.Count == 0)
                 return;
 
-            reporter.BeginActivity("Collecting assemblies for documentation");
+            using var _ = reporter.BeginActivity("Collecting assemblies for documentation");
 
             foreach (var assemblyFilePath in config.Assemblies.FindMatchingFiles(config.BaseDirectory, ".dll"))
             {
@@ -258,7 +258,7 @@ namespace Kampose.Builders
             if (config.XmlDocs.Count == 0)
                 return;
 
-            reporter.BeginActivity("Collecting additional XML documentation files");
+            using var _ = reporter.BeginActivity("Collecting additional XML documentation files");
 
             foreach (var xmlDocFilePath in config.XmlDocs.FindMatchingFiles(config.BaseDirectory, ".xml"))
             {
@@ -277,7 +277,7 @@ namespace Kampose.Builders
             if (config.Topics.Count == 0)
                 return;
 
-            reporter.BeginActivity("Collecting topic files");
+            using var _ = reporter.BeginActivity("Collecting topic files");
 
             FileTopic? homeTopic = null;
             FileTopic? apiTopic = null;
@@ -285,7 +285,7 @@ namespace Kampose.Builders
 
             foreach (var topicPath in config.Topics.FindMatchingFiles(config.BaseDirectory, ".md"))
             {
-                using var _ = reporter.BeginStep(topicPath);
+                using var __ = reporter.BeginStep(topicPath);
 
                 var fileExtension = Path.GetExtension(topicPath);
                 if (!FileExtensions.MarkdownExtensions.Contains(fileExtension, StringComparer.OrdinalIgnoreCase))
@@ -325,7 +325,7 @@ namespace Kampose.Builders
         /// </summary>
         /// <param name="homeTopic">The home topic, if available; otherwise, a warning is logged.</param>
         /// <param name="apiTopic">The API topic, if available; otherwise, a default API topic will be created.</param>
-        /// <param name="requiresApiTopic">Indicates whether an API page is required.</param>
+        /// <param name="requiresApiPage">Indicates whether an API page is required.</param>
         private void AddSpecialTopics(FileTopic? homeTopic, FileTopic? apiTopic, bool requiresApiPage)
         {
             if (homeTopic is not null)
@@ -369,12 +369,12 @@ namespace Kampose.Builders
             if (theme.AssetFiles.Count == 0 && config.Assets.Count == 0)
                 return;
 
-            reporter.BeginActivity("Collecting asset files");
+            using var _ = reporter.BeginActivity("Collecting asset files");
 
             // Collect assets of the theme
             foreach (var (targetRelativePath, sourceFullPath) in theme.AssetFiles)
             {
-                using var _ = reporter.BeginStep(sourceFullPath);
+                using var __ = reporter.BeginStep(sourceFullPath);
                 var targetFullPath = Path.GetFullPath(Path.Combine(config.OutputDirectory, targetRelativePath));
                 AddAsset(sourceFullPath, targetFullPath);
             }
@@ -384,7 +384,7 @@ namespace Kampose.Builders
             {
                 foreach (var sourceFullPath in filter.Source.FindMatchingFiles(config.BaseDirectory))
                 {
-                    using var _ = reporter.BeginStep(sourceFullPath);
+                    using var __ = reporter.BeginStep(sourceFullPath);
                     var targetFullPath = Path.GetFullPath(Path.Combine(config.OutputDirectory, filter.TargetPath, Path.GetFileName(sourceFullPath)));
                     AddAsset(sourceFullPath, targetFullPath);
                 }

@@ -34,6 +34,7 @@ namespace Kampose.Models
         /// <param name="assemblies">The assemblies to document.</param>
         /// <param name="topics">The topics to include.</param>
         /// <param name="assets">The supplementary files to include in the documentation.</param>
+        /// <param name="metadata">Optional metadata associated with the documentation.</param>
         /// <exception cref="ArgumentNullException">Thrown when any of the parameters are <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException">Thrown when <paramref name="topics"/> contains duplicate topic names.</exception>
         public DocContext

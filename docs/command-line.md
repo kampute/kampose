@@ -2,7 +2,7 @@
 
 The Kampose CLI follows a command-based structure where you specify a command followed by command-specific options and arguments:
 
-```bash
+```shell
 kampose <command> [OPTIONS] [ARGUMENTS]
 ```
 
@@ -17,7 +17,7 @@ Generates documentation from .NET assemblies and XML comments.
 The `build` command processes your .NET assemblies and XML documentation files to create API documentation using your chosen theme.
 
 ##### Usage:
-```bash
+```shell
 kampose build [OPTIONS] [config-file]
 ```
 
@@ -25,13 +25,16 @@ kampose build [OPTIONS] [config-file]
 - `config-file` - Path to your configuration file. Defaults to `kampose.json` in the current directory if not specified. You can omit the `.json` extension and it will be added automatically.
 
 ##### Options:
+- `-c, --clean` - Clear the output directory before generating documentation.
 - `-d, --debug` - Enable detailed logging to help diagnose issues during the documentation generation process.
 - `-h, --help` - Show help information for the build command
 
-> The `--debug` option only affects the verbosity of the output when redirected (e.g., to a log file or CI/CD system).
+> Be cautious when using the `--clean` option, as it deletes all contents of the configured output directory before generating new documentation. This can cause data loss if the output directory contains important files or is misconfigured.
+
+> The `--debug` option increases logging verbosity when output is redirected (for example, to a log file or CI system). For normal console output it only enables stack traces for unhandled exceptions.
 
 ##### Examples:
-```bash
+```shell
 # Use the default configuration file (kampose.json)
 kampose build
 
@@ -43,6 +46,9 @@ kampose build my-config
 
 # Generate documentation with debug output
 kampose build my-config --debug > log.txt
+
+# Clean the output directory before generating documentation
+kampose build --clean
 ```
 
 ### `help`
@@ -52,7 +58,7 @@ Shows help information about commands.
 Use the `help` command to learn about Kampose's commands. When called without arguments, it lists all available commands. Specify a command name to see detailed help for that specific command.
 
 ##### Usage:
-```bash
+```shell
 kampose help [command]
 ```
 
@@ -63,7 +69,7 @@ kampose help [command]
 - `-h, --help` - Show help information for the help command
 
 ##### Examples:
-```bash
+```shell
 # Show general help and list all commands
 kampose help
 
@@ -80,14 +86,14 @@ kampose -h
 Shows the current version of Kampose.
 
 ##### Usage:
-```bash
+```shell
 kampose version [OPTIONS]
 ```
 ##### Options:
 - `-h, --help` - Show help information for the version command
 
 ##### Examples:
-```bash
+```shell
 # Show version information
 kampose version
 

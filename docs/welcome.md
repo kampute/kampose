@@ -21,13 +21,13 @@ Kampose automates API documentation generation from XML documentation comments, 
 
 Install Kampose as a .NET Global Tool:
 
-```bash
+```shell
 dotnet tool install --global kampose
 ```
 
 To update to the latest version, run:
 
-```bash
+```shell
 dotnet tool update --global kampose
 ```
 
@@ -58,7 +58,7 @@ For more configuration options and examples, refer to the [Configuration](config
 
 **Step 3**: Build your project and generate documentation:
 
-```bash
+```shell
 dotnet build -c Release
 kampose build
 ```

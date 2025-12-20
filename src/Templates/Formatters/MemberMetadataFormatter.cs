@@ -23,7 +23,9 @@ namespace Kampose.Templates.Formatters
     {
         private readonly IDocumentationContext context;
 
+        /// <summary>
         /// Initializes a new instance of the <see cref="MemberMetadataFormatter"/> class.
+        /// </summary>
         /// <param name="context">The documentation context used for resolving URLs and encoding.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="context"/> is <see langword="null"/>.</exception>
         public MemberMetadataFormatter(IDocumentationContext context)

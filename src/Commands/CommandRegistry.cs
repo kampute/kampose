@@ -52,8 +52,7 @@ namespace Kampose.Commands
         /// <summary>
         /// Registers a command.
         /// </summary>
-        /// <param name="command">The command to register.</param>
-        /// <exception cref="ArgumentNullException">Thrown when <paramref name="command"/> is <see langword="null"/>.</exception>
+        /// <typeparam name="TCommand">The type of the command to register.</typeparam>
         /// <exception cref="ArgumentException">Thrown when a command with the same name is already registered.</exception>
         private static void RegisterCommand<TCommand>() where TCommand : Command, new()
         {

@@ -10,6 +10,7 @@ namespace Kampose.Models
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Text.Json.Serialization;
 
     /// <summary>
     /// Represents the configuration for the documentation generation process.
@@ -90,7 +91,8 @@ namespace Kampose.Models
         /// The default pattern is "*.md", which matches Markdown files in the base directory.
         /// </para>
         /// </remarks>
-        public FileGlobFilter Topics { get; } = ["*.md"];
+        [JsonConverter(typeof(OverwritingCollectionJsonConverter<FileGlobFilter, string>))]
+        public FileGlobFilter Topics { get; init; } = ["*.md"];
 
         /// <summary>
         /// Gets the explicit ordering list for topic files in the documentation.

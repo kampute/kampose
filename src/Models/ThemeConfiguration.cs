@@ -114,6 +114,14 @@ namespace Kampose.Models
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="path"/> is <see langword="null"/>.</exception>
         /// <exception cref="FileNotFoundException">Thrown when the file does not exist.</exception>
         /// <exception cref="ValidationException">Thrown when the file is empty or invalid.</exception>
-        public static ThemeConfiguration LoadFromFile(string path) => Json.ReadFileWithSchemaValidation<ThemeConfiguration>(path);
+        public static ThemeConfiguration LoadFromFile(string path)
+        {
+            var themeConfiguration = Json.ReadFileWithSchemaValidation<ThemeConfiguration>(path);
+
+            if (string.IsNullOrEmpty(themeConfiguration.Base) && themeConfiguration.Templates.Count == 0)
+                throw new ValidationException($"Theme configuration file is invalid: {path}", ["Templates: A standalone theme must define template patterns."]);
+
+            return themeConfiguration;
+        }
     }
 }

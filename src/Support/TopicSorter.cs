@@ -27,7 +27,7 @@ namespace Kampose.Support
         /// <remarks>
         /// The sorting algorithm processes topics in two phases. First, topics explicitly listed in <paramref name="explicitOrder"/>
         /// appear in the returned collection, maintaining the order specified. Then, any remaining topics not found in the explicit
-        /// list are appended, sorted alphabetically by their <see cref="FileTopic.Title"/> property using case-insensitive comparison.
+        /// list are appended, sorted alphabetically by their <see cref="ITopic.Title"/> property using case-insensitive comparison.
         /// <para>
         /// Path matching is flexible and case-insensitive. Each entry in <paramref name="explicitOrder"/> can specify full relative
         /// paths or filenames, with or without file extensions. Both backslash and forward slash path separators are supported.

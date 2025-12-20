@@ -11,6 +11,11 @@ Attributes: {{>attribute_list member.metadata.explicitCustomAttributes}}
 This property has a default implementation in the interface.
 {{/if}}
 
+{{#if member.metadata.extensionBlock}}
+{{{level}}} Extended Type
+{{>extension block=member.metadata.extensionBlock doc=member.doc.extensionBlock}}
+{{/if}}
+
 {{#if member.metadata.parameters}}
 {{{level}}} Index Parameters
 {{>parameter_list parameters=member.metadata.parameters descriptions=member.doc.parameters}}

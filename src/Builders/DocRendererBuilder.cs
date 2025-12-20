@@ -43,7 +43,7 @@ namespace Kampose.Builders
         /// </summary>
         /// <param name="context">The documentation context to use for rendering.</param>
         /// <param name="theme">The theme to apply to the renderer.</param>
-        /// <param name="parameters">A dictionary of custom parameters to add to the template renderer.</param>
+        /// <param name="themeSettings">A dictionary of custom parameters to add to the template renderer.</param>
         /// <returns>A fully configured template renderer ready for documentation generation.</returns>
         /// <exception cref="ArgumentNullException">Thrown when any parameter is <see langword="null"/>.</exception>
         /// <remarks>
@@ -54,7 +54,7 @@ namespace Kampose.Builders
         ///   <item><description>Theme bundle information (scripts and styles)</description></item>
         ///   <item><description>Default and custom theme settings</description></item>
         /// </list>
-        /// The resulting renderer is ready to generate documentation pages with consistent theming.
+        /// The resulting renderer is ready to generate documentation pages.
         /// </remarks>
         public TemplateRenderer Build(DocContext context, Theme theme, IReadOnlyDictionary<string, object?> themeSettings)
         {

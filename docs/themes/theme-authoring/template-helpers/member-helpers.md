@@ -123,6 +123,7 @@ A string representing the category of the member, such as:
 - `Property`
 - `Event`
 - `Operator`
+- `Extension Block`
 
 **Examples:**
 ```hbs

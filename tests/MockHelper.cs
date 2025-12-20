@@ -30,7 +30,9 @@ namespace Kampose.Test
         public static IDocumentationContext CreateDocumentationContext<TFormat>()
             where TFormat : IDocumentFormatter, new()
         {
-            return new DocumentationContext(new CSharp(), CreateAddressProvider(), CreateXmlDocProvider(), new TFormat(), [], []);
+            var addressProvider = CreateAddressProvider();
+            var xmlDocProvider = new XmlDocProvider(CreateXmlDocResolver());
+            return new DocumentationContext(new CSharp(), addressProvider, xmlDocProvider, new TFormat(), [], []);
         }
 
         /// <summary>
@@ -56,7 +58,7 @@ namespace Kampose.Test
                 {
                     if (member.IsDirectDeclaration)
                     {
-                        var resourceName = member.CodeReference[2..].ReplaceMany(['`', '#'], '-').ToLowerInvariant();
+                        var resourceName = member.CodeReference[2..].ReplaceChars(['`', '#'], '-').ToLowerInvariant();
                         url = new RawUri($"https://example.com/{resourceName}", UriKind.Absolute);
                         return true;
                     }
@@ -81,7 +83,7 @@ namespace Kampose.Test
                 {
                     if (member.IsDirectDeclaration)
                     {
-                        path = member.CodeReference[2..].ReplaceMany(['`', '#'], '-').ToLowerInvariant();
+                        path = member.CodeReference[2..].ReplaceChars(['`', '#'], '-').ToLowerInvariant();
                         return true;
                     }
 
@@ -98,29 +100,28 @@ namespace Kampose.Test
         }
 
         /// <summary>
-        /// Creates a mocked XML documentation provider.
+        /// Creates a mocked XML documentation resolver.
         /// </summary>
-        /// <returns>A mocked XML documentation provider.</returns>
-        public static IXmlDocProvider CreateXmlDocProvider()
+        /// <returns>A mocked XML documentation resolver.</returns>
+        public static IXmlDocResolver CreateXmlDocResolver()
         {
-            var contentProviderMock = new Mock<IXmlDocProvider>();
+            var xmlDocResolverMock = new Mock<IXmlDocResolver>();
 
-            contentProviderMock.SetupGet(x => x.HasDocumentation).Returns(true);
-            contentProviderMock.Setup(x => x.TryGetDoc(It.IsAny<string>(), out It.Ref<XmlDocEntry?>.IsAny))
-                .Returns((string cref, out XmlDocEntry? doc) =>
+            xmlDocResolverMock.SetupGet(x => x.HasDocumentation).Returns(true);
+            xmlDocResolverMock.Setup(x => x.TryGetXmlDoc(It.IsAny<string>(), out It.Ref<XElement?>.IsAny))
+                .Returns((string cref, out XElement? xmlDoc) =>
                 {
                     if (CodeReference.IsValid(cref))
                     {
-                        var xmlComment = XElement.Parse($"<member name=\"{cref}\"><summary>Description of <c>{cref[2..]}</c>.</summary></member>");
-                        doc = new XmlDocEntry(xmlComment);
+                        xmlDoc = XElement.Parse($"<member name=\"{cref}\"><summary>Description of <c>{cref[2..]}</c>.</summary></member>");
                         return true;
                     }
 
-                    doc = null;
+                    xmlDoc = null;
                     return false;
                 });
 
-            return contentProviderMock.Object;
+            return xmlDocResolverMock.Object;
         }
     }
 }

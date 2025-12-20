@@ -136,6 +136,7 @@ namespace Kampose.Templates.Helpers
                 IField _ => "Field",
                 IOperator _ => "Operator",
                 IType _ => "Type",
+                IExtensionBlock _ => "Extension Block",
                 _ => "Member"
             };
         }
@@ -176,6 +177,7 @@ namespace Kampose.Templates.Helpers
             public bool IsUnsafe => throw new NotSupportedException();
             public bool IsSpecialName => throw new NotSupportedException();
             public bool IsDirectDeclaration => false;
+            public bool IsCompilerGenerated => false;
             public IReadOnlyList<ICustomAttribute> CustomAttributes => [];
             public bool HasCustomAttribute(string attributeFullName) => false;
             public bool Represents(System.Reflection.MemberInfo reflection) => false;

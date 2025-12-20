@@ -55,15 +55,16 @@ namespace Kampose.Models
 
         /// <summary>
         /// Gets the JavaScript files of the theme.
-        /// summary>
+        /// </summary>
         /// <value>
         /// A read-only dictionary containing the JavaScript files of the theme, where the key is the path of the minified file and the value is a collection of full
         /// paths to the JavaScript files that will be included in the minified file.
+        /// </value>
         public IReadOnlyDictionary<string, IReadOnlyList<string>> ScriptFiles => scriptFiles;
 
         /// <summary>
         /// Gets the stylesheet files of the theme.
-        /// <summary>
+        /// </summary>
         /// <value>
         /// A read-only dictionary containing the stylesheet files of the theme, where the key is the path of the minified file and the value is a collection of full
         /// paths to the stylesheet files that will be included in the minified file.

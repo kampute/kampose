@@ -14,6 +14,11 @@
 {{>type_members_detail}}
 {{/if}}
 
+{{#if type.extensionProperties}}
+{{{level}}} Extension Properties
+{{>summary_list name='Extension Property' members=type.extensionProperties}}
+{{/if}}
+
 {{#if type.extensionMethods}}
 {{{level}}} Extension Methods
 {{>summary_list name='Extension Method' members=type.extensionMethods}}

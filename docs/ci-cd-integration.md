@@ -35,6 +35,26 @@ This configuration:
 - Uses the `classic` theme for documentation styling
 - Enables recommended audit options with quality gates (`stopOnIssues: true`) to fail builds if documentation issues are detected
 
+### .NET SDK Requirements
+
+Kampose is built with .NET 10.0 and requires the .NET 10.0 SDK to be installed. The workflow examples install .NET 10.0 for this purpose. If your project targets a different .NET version (e.g., .NET 8.0), you can install multiple SDK versions in the same pipeline.
+
+## Version Pinning
+
+The workflow examples in this guide install the latest version of Kampose:
+
+```shell
+dotnet tool install --global kampose
+```
+
+While this is convenient for getting started, it's recommended to pin to a specific version in production pipelines:
+
+```shell
+dotnet tool install --global kampose --version 0.2.0
+```
+
+Pinning to a specific version prevents builds from failing unexpectedly if a newer version introduces breaking changes. When you're ready to upgrade, you can test the new version in a separate branch before updating your main pipeline.
+
 ## GitHub Actions
 
 ### Basic Workflow
@@ -61,8 +81,10 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Setup .NET 8.0
+    - name: Setup .NET SDK
       uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '10.0.x'
 
     - name: Restore Dependencies
       run: dotnet restore
@@ -114,7 +136,7 @@ steps:
   - task: UseDotNet@2
     displayName: 'Install .NET SDK'
     inputs:
-      version: '8.0.x'
+      version: '10.0.x'
 
   - script: dotnet restore
     displayName: 'Restore Dependencies'
@@ -179,7 +201,7 @@ steps:
   - task: UseDotNet@2
     displayName: 'Install .NET SDK'
     inputs:
-      version: '8.0.x'
+      version: '10.0.x'
 
   - script: dotnet restore
     displayName: 'Restore Dependencies'
@@ -231,7 +253,7 @@ stages:
 
 build:
   stage: build
-  image: mcr.microsoft.com/dotnet/sdk:8.0
+  image: mcr.microsoft.com/dotnet/sdk:10.0
   script:
     - dotnet restore
     - dotnet build --no-restore -c Release
@@ -242,7 +264,7 @@ build:
 
 test:
   stage: test
-  image: mcr.microsoft.com/dotnet/sdk:8.0
+  image: mcr.microsoft.com/dotnet/sdk:10.0
   needs:
     - build
   script:
@@ -250,7 +272,7 @@ test:
 
 documentation:
   stage: documentation
-  image: mcr.microsoft.com/dotnet/sdk:8.0
+  image: mcr.microsoft.com/dotnet/sdk:10.0
   needs:
     - build
   script:

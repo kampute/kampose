@@ -8,6 +8,7 @@ namespace Kampose.Models
     using Kampute.DocToolkit.XmlDoc;
     using System;
     using System.Collections.Generic;
+    using System.Text.Json.Serialization;
 
     /// <summary>
     /// Represents the audit settings for XML documentation analysis.
@@ -21,7 +22,8 @@ namespace Kampose.Models
         /// A list of strings representing the documentation elements to check during the audit process.
         /// By default, only minimum requirements are checked.
         /// </value>
-        public HashSet<string> Options { get; } = new(StringComparer.OrdinalIgnoreCase)
+        [JsonConverter(typeof(Support.OverwritingCollectionJsonConverter<HashSet<string>, string>))]
+        public HashSet<string> Options { get; init; } = new(StringComparer.OrdinalIgnoreCase)
         {
             nameof(XmlDocInspectionOptions.Required)
         };

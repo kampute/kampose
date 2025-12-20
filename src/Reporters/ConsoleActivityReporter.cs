@@ -47,14 +47,7 @@ namespace Kampose.Reporters
         }
 
         /// <inheritdoc/>
-        /// <remarks>
-        /// This implementation does not support verbose reporting; setting this property has no effect.
-        /// </remarks>
-        public bool Verbose
-        {
-            get => false;
-            set { /* No-op */ }
-        }
+        public bool Verbose { get; set; }
 
         /// <summary>
         /// Gets the number of warnings reported during the operation.

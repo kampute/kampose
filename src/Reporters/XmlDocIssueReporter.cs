@@ -37,6 +37,10 @@ namespace Kampose.Reporters
         /// </value>
         public int ReportedIssueCount => issueCount;
 
+        /// <summary>
+        /// Reports the specified XML documentation inspection issue.
+        /// </summary>
+        /// <param name="issue">The XML documentation inspection issue to report.</param>
         public void Report(in XmlDocInspectionIssue issue)
         {
             issueCount++;

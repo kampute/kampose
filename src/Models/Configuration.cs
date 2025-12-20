@@ -91,7 +91,7 @@ namespace Kampose.Models
         /// The default pattern is "*.md", which matches Markdown files in the base directory.
         /// </para>
         /// </remarks>
-        [JsonConverter(typeof(ClearableCollectionJsonConverter<FileGlobFilter, string>))]
+        [JsonConverter(typeof(OverwritingCollectionJsonConverter<FileGlobFilter, string>))]
         public FileGlobFilter Topics { get; init; } = ["*.md"];
 
         /// <summary>

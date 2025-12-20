@@ -11,16 +11,19 @@ namespace Kampose.Support
     using System.Text.Json.Serialization;
 
     /// <summary>
-    /// Provides a JSON converter for collections that clears existing items before deserialization.
-    /// This ensures that explicit collection assignments in JSON overwrite existing items rather than merging with them.
+    /// Provides a JSON converter for collections that replaces existing items with new ones during deserialization.
     /// </summary>
     /// <typeparam name="TCollection">The type of the collection.</typeparam>
     /// <typeparam name="TItem">The type of the items in the collection.</typeparam>
-    internal sealed class ClearableCollectionJsonConverter<TCollection, TItem> : JsonConverter<TCollection>
+    /// <remarks>
+    /// This converter ensures that explicit collection assignments in JSON overwrite existing items rather than merging with them
+    /// regardless of configuration settings.
+    /// </remarks>
+    internal sealed class OverwritingCollectionJsonConverter<TCollection, TItem> : JsonConverter<TCollection>
         where TCollection : ICollection<TItem>, new()
     {
         /// <summary>
-        /// Reads and deserializes a JSON array into a collection, clearing it first.
+        /// Reads and deserializes a JSON array into a collection, replacing existing items.
         /// </summary>
         /// <param name="reader">The JSON reader.</param>
         /// <param name="typeToConvert">The type to convert.</param>

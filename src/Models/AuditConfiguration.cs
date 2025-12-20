@@ -22,7 +22,7 @@ namespace Kampose.Models
         /// A list of strings representing the documentation elements to check during the audit process.
         /// By default, only minimum requirements are checked.
         /// </value>
-        [JsonConverter(typeof(Support.ClearableCollectionJsonConverter<HashSet<string>, string>))]
+        [JsonConverter(typeof(Support.OverwritingCollectionJsonConverter<HashSet<string>, string>))]
         public HashSet<string> Options { get; init; } = new(StringComparer.OrdinalIgnoreCase)
         {
             nameof(XmlDocInspectionOptions.Required)

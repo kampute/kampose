@@ -136,7 +136,7 @@ namespace Kampose.Test.Models
         [Test]
         public void LoadFromFile_WithEmptyAuditOptions_ReturnsConfigurationWithNoAuditOptions()
         {
-            var filePath = GenerateJsonFile("audit.json", @"{
+            var filePath = GenerateJsonFile("empty-audit-options.json", @"{
                 ""outputDirectory"": ""./output"",
                 ""convention"": ""dotNet"",
                 ""assemblies"": [""bin/**/*.dll""],
@@ -262,7 +262,7 @@ namespace Kampose.Test.Models
         [Test]
         public void LoadFromFile_WithInvalidBaseUrl_ThrowsValidationException()
         {
-            var filePath = GenerateJsonFile("invalid-url.json", @"{
+            var filePath = GenerateJsonFile("invalid-base-url.json", @"{
                 ""outputDirectory"": ""./output"",
                 ""convention"": ""dotNet"",
                 ""baseUrl"": ""not a valid url"",
@@ -278,7 +278,7 @@ namespace Kampose.Test.Models
         [Test]
         public void LoadFromFile_WithRelativeBaseUrl_ThrowsValidationException()
         {
-            var filePath = GenerateJsonFile("relative-base.json", @"{
+            var filePath = GenerateJsonFile("relative-base-url.json", @"{
                 ""outputDirectory"": ""./output"",
                 ""convention"": ""dotNet"",
                 ""baseUrl"": ""/relative/path"",
@@ -308,7 +308,7 @@ namespace Kampose.Test.Models
         [Test]
         public void LoadFromFile_WithReferenceWithoutNamespaces_ThrowsValidationException()
         {
-            var filePath = GenerateJsonFile("ref-no-namespaces.json", @"{
+            var filePath = GenerateJsonFile("reference-without-namespaces.json", @"{
                 ""outputDirectory"": ""./output"",
                 ""convention"": ""dotNet"",
                 ""assemblies"": [""bin/**/*.dll""],
@@ -330,7 +330,7 @@ namespace Kampose.Test.Models
         [Test]
         public void LoadFromFile_WithReferenceWithRelativeUrl_ThrowsValidationException()
         {
-            var filePath = GenerateJsonFile("ref-relative-url.json", @"{
+            var filePath = GenerateJsonFile("reference-relative-url.json", @"{
                 ""outputDirectory"": ""./output"",
                 ""convention"": ""dotNet"",
                 ""assemblies"": [""bin/**/*.dll""],
@@ -352,7 +352,7 @@ namespace Kampose.Test.Models
         [Test]
         public void LoadFromFile_WithEmptyOutputDirectory_ThrowsValidationException()
         {
-            var filePath = GenerateJsonFile("empty-output.json", @"{
+            var filePath = GenerateJsonFile("empty-output-directory.json", @"{
                 ""outputDirectory"": """",
                 ""convention"": ""dotNet"",
                 ""assemblies"": [""bin/**/*.dll""]
@@ -367,7 +367,7 @@ namespace Kampose.Test.Models
         [Test]
         public void LoadFromFile_WithWhitespaceOnlyOutputDirectory_ThrowsValidationException()
         {
-            var filePath = GenerateJsonFile("whitespace-output.json", @"{
+            var filePath = GenerateJsonFile("whitespace-output-directory.json", @"{
                 ""outputDirectory"": ""   "",
                 ""convention"": ""dotNet"",
                 ""assemblies"": [""bin/**/*.dll""]

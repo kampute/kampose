@@ -174,7 +174,7 @@ namespace Kampose.Test.Models
         [Test]
         public void LoadFromFile_WithScriptsMissingTargetPath_LoadsDefaultTargetPath()
         {
-            var filePath = GenerateJsonFile("scripts-no-target.json", @"{
+            var filePath = GenerateJsonFile("theme-scripts-no-target.json", @"{
                 ""templates"": [""**/*.hbs""],
                 ""scripts"": {
                     ""source"": [""scripts/**/*.js""]
@@ -207,7 +207,7 @@ namespace Kampose.Test.Models
         [Test]
         public void LoadFromFile_WithStylesMissingTargetPath_LoadsDefaultTargetPath()
         {
-            var filePath = GenerateJsonFile("scripts-no-target.json", @"{
+            var filePath = GenerateJsonFile("theme-styles-no-target.json", @"{
                 ""templates"": [""**/*.hbs""],
                 ""styles"": {
                     ""source"": [""styles/**/*.css""]

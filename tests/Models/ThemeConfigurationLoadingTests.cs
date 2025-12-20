@@ -312,7 +312,11 @@ namespace Kampose.Test.Models
         [Test]
         public void LoadFromFile_WithoutBothTemplatesAndBaseTheme_ThrowsValidationException()
         {
-            var filePath = GenerateJsonFile("invalid-param-type.json", @"{}");
+            var filePath = GenerateJsonFile("missing-templates-and-base.json", @"{
+                ""metadata"": {
+                    ""name"": ""Theme Without Templates or Base""
+                }
+            }");
 
             Assert.That(
                 () => ThemeConfiguration.LoadFromFile(filePath),

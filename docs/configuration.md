@@ -4,7 +4,7 @@ This document describes the Kampose JSON configuration file, covering the fields
 
 By default, Kampose reads the configuration from the `kampose.json` file in the current working directory. You can specify an alternate file path on the command line:
 
-```bash
+```shell
 kampose build MyConfig.json
 ```
 

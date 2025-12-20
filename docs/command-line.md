@@ -2,7 +2,7 @@
 
 The Kampose CLI follows a command-based structure where you specify a command followed by command-specific options and arguments:
 
-```bash
+```shell
 kampose <command> [OPTIONS] [ARGUMENTS]
 ```
 
@@ -17,7 +17,7 @@ Generates documentation from .NET assemblies and XML comments.
 The `build` command processes your .NET assemblies and XML documentation files to create API documentation using your chosen theme.
 
 ##### Usage:
-```bash
+```shell
 kampose build [OPTIONS] [config-file]
 ```
 
@@ -34,7 +34,7 @@ kampose build [OPTIONS] [config-file]
 > The `--debug` option increases logging verbosity when output is redirected (for example, to a log file or CI system). For normal console output it only enables stack traces for unhandled exceptions.
 
 ##### Examples:
-```bash
+```shell
 # Use the default configuration file (kampose.json)
 kampose build
 
@@ -58,7 +58,7 @@ Shows help information about commands.
 Use the `help` command to learn about Kampose's commands. When called without arguments, it lists all available commands. Specify a command name to see detailed help for that specific command.
 
 ##### Usage:
-```bash
+```shell
 kampose help [command]
 ```
 
@@ -69,7 +69,7 @@ kampose help [command]
 - `-h, --help` - Show help information for the help command
 
 ##### Examples:
-```bash
+```shell
 # Show general help and list all commands
 kampose help
 
@@ -86,14 +86,14 @@ kampose -h
 Shows the current version of Kampose.
 
 ##### Usage:
-```bash
+```shell
 kampose version [OPTIONS]
 ```
 ##### Options:
 - `-h, --help` - Show help information for the version command
 
 ##### Examples:
-```bash
+```shell
 # Show version information
 kampose version
 

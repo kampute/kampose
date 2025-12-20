@@ -43,13 +43,13 @@ Kampose is built with .NET 10.0 and requires the .NET 10.0 SDK to be installed. 
 
 The workflow examples in this guide install the latest version of Kampose:
 
-```bash
+```shell
 dotnet tool install --global kampose
 ```
 
 While this is convenient for getting started, it's recommended to pin to a specific version in production pipelines:
 
-```bash
+```shell
 dotnet tool install --global kampose --version 0.2.0
 ```
 

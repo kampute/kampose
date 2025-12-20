@@ -451,7 +451,7 @@ For realistic testing and reliable deployment, serve the documentation via an HT
 
 Install the official dotnet static file server tool and run a simple HTTP server:
 
-```bash
+```shell
 # Install once (global tool)
 dotnet tool install --global dotnet-serve
 

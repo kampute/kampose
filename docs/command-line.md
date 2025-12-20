@@ -25,10 +25,13 @@ kampose build [OPTIONS] [config-file]
 - `config-file` - Path to your configuration file. Defaults to `kampose.json` in the current directory if not specified. You can omit the `.json` extension and it will be added automatically.
 
 ##### Options:
+- `-c, --clean` - Clean the output directory before generating documentation.
 - `-d, --debug` - Enable detailed logging to help diagnose issues during the documentation generation process.
 - `-h, --help` - Show help information for the build command
 
-> The `--debug` option only affects the verbosity of the output when redirected (e.g., to a log file or CI/CD system).
+> Be cautious when using the `--clean` option, as it deletes all contents of the configured output directory before generating new documentation. This can cause data loss if the output directory contains important files or is misconfigured.
+
+> The `--debug` option increases logging verbosity when output is redirected (for example, to a log file or CI system). For normal console output it only enables stack traces for unhandled exceptions.
 
 ##### Examples:
 ```bash
@@ -43,6 +46,9 @@ kampose build my-config
 
 # Generate documentation with debug output
 kampose build my-config --debug > log.txt
+
+# Clean the output directory before generating documentation
+kampose build --clean
 ```
 
 ### `help`

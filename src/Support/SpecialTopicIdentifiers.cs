@@ -27,7 +27,7 @@ namespace Kampose.Support
         /// </summary>
         /// <param name="topicId">The identifier of the topic to evaluate.</param>
         /// <returns><see langword="true"/> if the topic identifier belongs to a special topic; otherwise, <see langword="false"/>.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when <paramref name="topicId"/> is <see langword="null"/>.</exception>"
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="topicId"/> is <see langword="null"/>.</exception>
         public static bool IsSpecialTopic(string topicId)
         {
             ArgumentNullException.ThrowIfNull(topicId, nameof(topicId));

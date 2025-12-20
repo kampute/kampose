@@ -39,7 +39,9 @@ namespace Kampose.Commands
                 if (arg.StartsWith('-'))
                 {
                     if (arg is "-d" or "--debug")
-                        options.Verbose = true;
+                        options.Debug = true;
+                    else if (arg is "-c" or "--clean")
+                        options.Clean = true;
                     else
                         throw new CommandException($"Unknown option '{arg}'.", this);
                 }
@@ -71,7 +73,7 @@ namespace Kampose.Commands
             WriteApplicationHeader();
 
             // Set reporter verbosity
-            reporter.Verbose = options.Verbose;
+            reporter.Verbose = options.Debug;
 
             // Load configuration
             var config = Configuration.LoadFromFile(options.ConfigPath);
@@ -89,6 +91,10 @@ namespace Kampose.Commands
                 throw new ValidationException("No assemblies were found in the specified directories.");
             else if (!context.Topics.Any(static topic => !SpecialTopicIdentifiers.IsSpecialTopic(topic.Id)))
                 throw new ValidationException("Without any assemblies, at least one topic must be provided to generate documentation.");
+
+            // Clean output directory if requested
+            if (options.Clean)
+                CleanOutputDirectory(config.OutputDirectory, reporter);
 
             // Create renderer and generate documentation
             var renderer = new DocRendererBuilder(reporter)
@@ -120,6 +126,7 @@ namespace Kampose.Commands
             Console.WriteLine(Description);
             Console.WriteLine();
             Console.WriteLine("OPTIONS:");
+            Console.WriteLine("  -c, --clean                 Clean the output directory before generating documentation.");
             Console.WriteLine("  -d, --debug                 Enables detailed logging to help diagnose issues during the documentation generation process.");
             Console.WriteLine("  -h, --help                  Display this help message and exit.");
             Console.WriteLine();
@@ -129,16 +136,17 @@ namespace Kampose.Commands
             Console.WriteLine($"  {nameof(Kampose)} {Name}                      Use the default configuration file '{DefaultConfigFile}' in the current directory.");
             Console.WriteLine($"  {nameof(Kampose)} {Name} custom-config.json   Use 'custom-config.json' as the configuration file.");
             Console.WriteLine($"  {nameof(Kampose)} {Name} --debug              Generate documentation with debug output.");
+            Console.WriteLine($"  {nameof(Kampose)} {Name} --clean              Clean the output directory before generating documentation.");
             Console.WriteLine();
         }
 
         /// <summary>
-        /// Validates the XML documentation files and reports any issues found.
+        /// Validates the XML documentation files in the context based on the audit configuration.
         /// </summary>
-        /// <param name="context">The documentation context containing the XML documentation files.</param>
-        /// <param name="auditConfig">The audit configuration specifying options for XML documentation auditing.</param>
-        /// <param name="reporter">The activity reporter for logging warnings or errors.</param>
-        /// <exception cref="ValidationException">Thrown when no XML documentation files are found or when issues are found and the audit configuration is set to stop on issues.</exception>
+        /// <param name="context">The documentation context.</param>
+        /// <param name="auditConfig">The audit configuration.</param>
+        /// <param name="reporter">The activity reporter for logging.</param>
+        /// <exception cref="ValidationException">Thrown if validation fails and stopping on issues is enabled.</exception>
         private static void ValidateXmlDocumentation(DocContext context, AuditConfiguration auditConfig, IActivityReporter reporter)
         {
             if (!context.ContentProvider.HasDocumentation)
@@ -164,6 +172,22 @@ namespace Kampose.Commands
         }
 
         /// <summary>
+        /// Cleans the output directory by deleting all files and subdirectories.
+        /// </summary>
+        /// <param name="outputDirectory">The output directory to clean.</param>
+        /// <param name="reporter">The activity reporter for logging.</param>
+        private static void CleanOutputDirectory(string outputDirectory, IActivityReporter reporter)
+        {
+            if (Directory.Exists(outputDirectory))
+            {
+                reporter.BeginActivity("Cleaning output directory");
+                Directory.Delete(outputDirectory, true);
+            }
+
+            Directory.CreateDirectory(outputDirectory);
+        }
+
+        /// <summary>
         /// Represents the options for the build command.
         /// </summary>
         public sealed class Options
@@ -177,12 +201,20 @@ namespace Kampose.Commands
             public string ConfigPath { get; set; } = DefaultConfigFile;
 
             /// <summary>
-            /// Gets or sets a value indicating whether verbose reporting is enabled.
+            /// Gets or sets a value indicating whether the output directory should be cleaned before generating documentation.
             /// </summary>
             /// <value>
-            /// <see langword="true"/> if verbose reporting is enabled; otherwise, <see langword="false"/>.
+            /// <see langword="true"/> if the output directory should be cleaned; otherwise, <see langword="false"/>.
             /// </value>
-            public bool Verbose { get; set; } = false;
+            public bool Clean { get; set; } = false;
+
+            /// <summary>
+            /// Gets or sets a value indicating whether detailed logging is enabled.
+            /// </summary>
+            /// <value>
+            /// <see langword="true"/> if detailed logging is enabled; otherwise, <see langword="false"/>.
+            /// </value>
+            public bool Debug { get; set; } = false;
         }
     }
 }

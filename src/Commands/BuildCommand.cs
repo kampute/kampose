@@ -158,7 +158,7 @@ namespace Kampose.Commands
             }
             else if (auditConfig.Options.Count != 0)
             {
-                reporter.BeginActivity("Auditing XML documentation");
+                using var _ = reporter.BeginActivity("Auditing XML documentation");
 
                 var issueReporter = new XmlDocIssueReporter(reporter);
                 foreach (var issue in context.InspectDocumentations(auditConfig.InspectionOptions))
@@ -180,7 +180,7 @@ namespace Kampose.Commands
         {
             if (Directory.Exists(outputDirectory))
             {
-                reporter.BeginActivity("Cleaning output directory");
+                using var _ = reporter.BeginActivity("Cleaning output directory");
                 Directory.Delete(outputDirectory, true);
             }
 

@@ -32,7 +32,7 @@ namespace Kampose.Test.Reporters
             using var writer = new StringWriter();
             using var reporter = new TextWriterActivityReporter(writer);
 
-            reporter.BeginActivity("Test Activity");
+            using var activity = reporter.BeginActivity("Test Activity");
 
             var output = writer.ToString();
             Assert.That(output, Does.Contain("Test Activity..."));
@@ -44,8 +44,8 @@ namespace Kampose.Test.Reporters
             using var writer = new StringWriter();
             using var reporter = new TextWriterActivityReporter(writer) { Verbose = true };
 
-            reporter.BeginActivity("Test Activity");
-            reporter.BeginStep("Test Step");
+            using var activity = reporter.BeginActivity("Test Activity");
+            using var step = reporter.BeginStep("Test Step");
 
             var output = writer.ToString();
             Assert.That(output, Does.Contain("  Test Step"));
@@ -57,8 +57,8 @@ namespace Kampose.Test.Reporters
             using var writer = new StringWriter();
             using var reporter = new TextWriterActivityReporter(writer) { Verbose = false };
 
-            reporter.BeginActivity("Test Activity");
-            reporter.BeginStep("Test Step");
+            using var activity = reporter.BeginActivity("Test Activity");
+            using var step = reporter.BeginStep("Test Step");
 
             var output = writer.ToString();
             Assert.That(output, Does.Not.Contain("Test Step"));
@@ -186,11 +186,11 @@ namespace Kampose.Test.Reporters
             using var writer = new FlushTrackingWriter();
             using var reporter = new TextWriterActivityReporter(writer) { Verbose = true };
 
-            reporter.BeginActivity("Activity");
+            using var activity = reporter.BeginActivity("Activity");
             Assert.That(writer.FlushCount, Is.GreaterThan(0), "Activity should flush output");
 
             var flushCountAfterActivity = writer.FlushCount;
-            reporter.BeginStep("Step");
+            using var step = reporter.BeginStep("Step");
             Assert.That(writer.FlushCount, Is.GreaterThan(flushCountAfterActivity), "Step should flush output");
 
             var flushCountAfterStep = writer.FlushCount;
@@ -253,10 +253,10 @@ namespace Kampose.Test.Reporters
             using var writer = new StringWriter();
             using var reporter = new TextWriterActivityReporter(writer);
 
-            reporter.BeginActivity("Activity");
+            using var activity1 = reporter.BeginActivity("Activity");
             var outputAfterFirst = writer.ToString();
 
-            reporter.BeginActivity("Activity");
+            using var activity2 = reporter.BeginActivity("Activity");
             var outputAfterSecond = writer.ToString();
 
             Assert.That(outputAfterFirst, Is.EqualTo(outputAfterSecond));

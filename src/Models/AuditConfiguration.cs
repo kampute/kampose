@@ -11,7 +11,7 @@ namespace Kampose.Models
     using System.Text.Json.Serialization;
 
     /// <summary>
-    /// Represents the audit settings for XML documentation analysis.
+    /// Represents the audit settings for URL and XML documentation analysis.
     /// </summary>
     public sealed class AuditConfiguration
     {
@@ -36,6 +36,19 @@ namespace Kampose.Models
         /// Default is <see langword="false"/>.
         /// </value>
         public bool IncludeImplicitConstructors { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to verify external links found in the XML documentation comments or markdown files.
+        /// </summary>
+        /// <value>
+        /// <see langword="true"/> to verify external links; otherwise, <see langword="false"/>.
+        /// Default is <see langword="false"/>.
+        /// </value>
+        /// <remarks>
+        /// Enabling this option may increase the time taken for the audit process, as it involves making network requests to validate
+        /// each external link.
+        /// </remarks>
+        public bool VerifyExternalLinks { get; set; } = false;
 
         /// <summary>
         /// Gets or sets a value indicating whether to stop documentation generation when audit issues are found.

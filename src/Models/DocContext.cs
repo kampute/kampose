@@ -73,5 +73,20 @@ namespace Kampose.Models
         /// The enumerable collection of tuples representing the source and target paths of the supplementary files.
         /// </value>
         public IReadOnlyCollection<AssetReference> Assets { get; }
+
+        /// <summary>
+        /// Gets the collection of URLs found in the XML documentation comments and markdown files.
+        /// </summary>
+        /// <value>
+        /// The read-only collection of <see cref="UrlReference"/> instances representing the URLs in the XML documentation
+        /// comments and markdown files.
+        /// </value>
+        public IReadOnlyCollection<UrlReference> UrlReferences => ((UrlReferenceCollector)UrlTransformer).Urls;
+
+        /// <summary>
+        /// Creates the URL transformer for collecting URL references.
+        /// </summary>
+        /// <returns>An instance of <see cref="IUrlTransformer"/> that collects URL references.</returns>
+        protected override IUrlTransformer CreateUrlTransformer() => new UrlReferenceCollector(this, base.CreateUrlTransformer());
     }
 }

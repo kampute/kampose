@@ -168,13 +168,13 @@ namespace Kampose.Models
         /// </summary>
         /// <value>
         /// The <see cref="DocConvention"/> value that determines the site URL patterns and page grouping used when generating
-        /// documentation.
+        /// documentation. Default is <see cref="DocConvention.DocFx"/>.
         /// </value>
         /// <remarks>
         /// This property is required for configuration to be valid. The chosen convention affects how documentation pages
         /// are organized, how URLs are constructed, and the overall structure of the documentation site.
         /// </remarks>
-        public required DocConvention Convention { get; set; }
+        public DocConvention Convention { get; set; } = DocConvention.DocFx;
 
         /// <summary>
         /// Gets or sets the theme to be used for the documentation.

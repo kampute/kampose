@@ -6,6 +6,8 @@ Kampose `/kam-pohz/` is a cross-platform command-line documentation composer for
 
 Kampose automates API documentation generation from XML documentation comments, eliminating manual documentation maintenance. Whether building libraries, frameworks, or internal APIs, Kampose creates professional documentation that integrates seamlessly with modern development workflows.
 
+Kampose includes comprehensive auditing capabilities to ensure documentation quality, validating XML documentation completeness, verifying external links, and enforcing customizable quality standards that can halt builds on issues in CI/CD pipelines.
+
 ### Key Capabilities
 
 - **Multiple Output Formats** - Generate HTML for websites or Markdown for wikis (GitHub, Azure DevOps)

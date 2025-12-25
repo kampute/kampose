@@ -44,19 +44,13 @@ namespace Kampose.Test.Models
         public void LoadFromFile_WithMinimalValidConfig_ReturnsConfiguration()
         {
             var filePath = GenerateJsonFile("minimal.json", @"{
-                ""outputDirectory"": ""./output"",
-                ""convention"": ""dotNet"",
-                ""assemblies"": [""bin/**/*.dll""]
+                ""outputDirectory"": ""./output""
             }");
 
             var config = Configuration.LoadFromFile(filePath);
 
             Assert.That(config, Is.Not.Null);
-            using (Assert.EnterMultipleScope())
-            {
-                Assert.That(config.OutputDirectory, Does.EndWith("output"));
-                Assert.That(config.Convention, Is.EqualTo(DocConvention.DotNet));
-            }
+            Assert.That(config.OutputDirectory, Does.EndWith("output"));
         }
 
         [Test]
@@ -64,7 +58,7 @@ namespace Kampose.Test.Models
         {
             var filePath = GenerateJsonFile("full.json", @"{
                 ""outputDirectory"": ""./docs"",
-                ""convention"": ""docFx"",
+                ""convention"": ""dotnet"",
                 ""theme"": ""custom"",
                 ""baseUrl"": ""https://docs.example.com/"",
                 ""assemblies"": [""bin/**/*.dll""],
@@ -78,6 +72,7 @@ namespace Kampose.Test.Models
                 ""audit"": {
                     ""options"": [""recommended""],
                     ""includeImplicitConstructors"": true,
+                    ""verifyExternalLinks"": true,
                     ""stopOnIssues"": true
                 }
             }");
@@ -87,7 +82,7 @@ namespace Kampose.Test.Models
             using (Assert.EnterMultipleScope())
             {
                 Assert.That(config.OutputDirectory, Does.EndWith("docs"));
-                Assert.That(config.Convention, Is.EqualTo(DocConvention.DocFx));
+                Assert.That(config.Convention, Is.EqualTo(DocConvention.DotNet));
                 Assert.That(config.Theme, Is.EqualTo("custom"));
                 Assert.That(config.BaseUrl?.ToString(), Is.EqualTo("https://docs.example.com/"));
                 Assert.That(config.TopicOrder, Has.Count.EqualTo(2));
@@ -95,6 +90,7 @@ namespace Kampose.Test.Models
                 Assert.That(config.ThemeSettings["siteTitle"]?.ToString(), Is.EqualTo("My Docs"));
                 Assert.That(config.Audit.InspectionOptions, Is.EqualTo(XmlDocInspectionOptions.Recommended));
                 Assert.That(config.Audit.IncludeImplicitConstructors, Is.True);
+                Assert.That(config.Audit.VerifyExternalLinks, Is.True);
                 Assert.That(config.Audit.StopOnIssues, Is.True);
             }
         }
@@ -104,7 +100,6 @@ namespace Kampose.Test.Models
         {
             var filePath = GenerateJsonFile("defaults.json", @"{
                 ""outputDirectory"": ""./output"",
-                ""convention"": ""dotNet"",
                 ""assemblies"": [""bin/**/*.dll""]
             }");
 
@@ -112,6 +107,7 @@ namespace Kampose.Test.Models
 
             using (Assert.EnterMultipleScope())
             {
+                Assert.That(config.Convention, Is.EqualTo(DocConvention.DocFx));
                 Assert.That(config.Theme, Is.EqualTo("classic"));
                 Assert.That(config.Topics, Is.Not.Empty); // Has default pattern
                 Assert.That(config.Audit.Options, Is.Not.Empty); // Has default options
@@ -123,7 +119,6 @@ namespace Kampose.Test.Models
         {
             var filePath = GenerateJsonFile("empty-topics.json", @"{
                 ""outputDirectory"": ""./output"",
-                ""convention"": ""dotNet"",
                 ""assemblies"": [""bin/**/*.dll""],
                 ""topics"": []
             }");
@@ -138,7 +133,6 @@ namespace Kampose.Test.Models
         {
             var filePath = GenerateJsonFile("empty-audit-options.json", @"{
                 ""outputDirectory"": ""./output"",
-                ""convention"": ""dotNet"",
                 ""assemblies"": [""bin/**/*.dll""],
                 ""audit"": {
                     ""options"": []
@@ -155,7 +149,6 @@ namespace Kampose.Test.Models
         {
             var filePath = GenerateJsonFile("multiple-refs.json", @"{
                 ""outputDirectory"": ""./output"",
-                ""convention"": ""dotNet"",
                 ""assemblies"": [""bin/**/*.dll""],
                 ""references"": [
                     {
@@ -264,7 +257,6 @@ namespace Kampose.Test.Models
         {
             var filePath = GenerateJsonFile("invalid-base-url.json", @"{
                 ""outputDirectory"": ""./output"",
-                ""convention"": ""dotNet"",
                 ""baseUrl"": ""not a valid url"",
                 ""assemblies"": [""bin/**/*.dll""]
             }");
@@ -280,7 +272,6 @@ namespace Kampose.Test.Models
         {
             var filePath = GenerateJsonFile("relative-base-url.json", @"{
                 ""outputDirectory"": ""./output"",
-                ""convention"": ""dotNet"",
                 ""baseUrl"": ""/relative/path"",
                 ""assemblies"": [""bin/**/*.dll""]
             }");
@@ -294,7 +285,6 @@ namespace Kampose.Test.Models
         {
             var filePath = GenerateJsonFile("empty-assemblies-topics.json", @"{
                 ""outputDirectory"": ""./output"",
-                ""convention"": ""dotNet"",
                 ""assemblies"": [],
                 ""topics"": []
             }");
@@ -310,7 +300,6 @@ namespace Kampose.Test.Models
         {
             var filePath = GenerateJsonFile("reference-without-namespaces.json", @"{
                 ""outputDirectory"": ""./output"",
-                ""convention"": ""dotNet"",
                 ""assemblies"": [""bin/**/*.dll""],
                 ""references"": [
                     {
@@ -332,7 +321,6 @@ namespace Kampose.Test.Models
         {
             var filePath = GenerateJsonFile("reference-relative-url.json", @"{
                 ""outputDirectory"": ""./output"",
-                ""convention"": ""dotNet"",
                 ""assemblies"": [""bin/**/*.dll""],
                 ""references"": [
                     {
@@ -354,7 +342,6 @@ namespace Kampose.Test.Models
         {
             var filePath = GenerateJsonFile("empty-output-directory.json", @"{
                 ""outputDirectory"": """",
-                ""convention"": ""dotNet"",
                 ""assemblies"": [""bin/**/*.dll""]
             }");
 
@@ -369,7 +356,6 @@ namespace Kampose.Test.Models
         {
             var filePath = GenerateJsonFile("whitespace-output-directory.json", @"{
                 ""outputDirectory"": ""   "",
-                ""convention"": ""dotNet"",
                 ""assemblies"": [""bin/**/*.dll""]
             }");
 

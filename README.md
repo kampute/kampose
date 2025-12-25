@@ -2,15 +2,17 @@
 
 Kampose is a cross-platform .NET command-line tool that transforms XML documentation comments into professional API documentation. It generates production-ready, standards-compliant HTML or Markdown documentation with minimal configuration and integrates seamlessly with CI/CD pipelines.
 
+Kampose includes comprehensive auditing capabilities to ensure documentation quality, validating XML documentation completeness, verifying external links, and enforcing customizable quality standards that can halt builds on issues in CI/CD pipelines.
+
 Kampose targets .NET 10.0 and fully supports C# 14 while remaining compatible with earlier .NET and C# versions.
 
-## Why Kampose
+## Key Features
 
 - **Zero Configuration Start** - Works out of the box with sensible defaults
 - **Multiple Output Formats** - HTML for websites, Markdown for wikis
 - **CI/CD Ready** - Integrate seamlessly into your build pipelines
 - **Extensible Themes** - Customize appearance to match your brand
-- **Quality Enforcement** - Audit documentation completeness automatically
+- **Quality Enforcement** - Audit documentation completeness and correctness
 - **Topic Integration** - Combine API docs with guides and tutorials
 
 ## Common Use Cases
@@ -62,6 +64,8 @@ kampose build
 ```
 
 See the [Command-Line Interface](https://kampute.github.io/kampose/command-line) guide for additional commands and options.
+
+**Step 4**: Open `docs/index.html` in your browser to view the generated documentation.
 
 ## Documentation
 

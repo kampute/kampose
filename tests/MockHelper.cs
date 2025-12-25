@@ -43,60 +43,96 @@ namespace Kampose.Test
         {
             var urlContext = new ContextAwareUrlNormalizer();
             var addressProviderMock = new Mock<IDocumentAddressProvider>();
+            var addressProvider = addressProviderMock.Object;
+
             addressProviderMock.SetupGet(x => x.Granularity).Returns(PageGranularity.NamespaceTypeMember);
             addressProviderMock.SetupGet(x => x.ActiveScope).Returns(() => urlContext.ActiveScope);
+
             addressProviderMock.Setup(x => x.BeginScope(It.IsAny<string>(), It.IsAny<IDocumentModel?>()))
                 .Returns((string directory, IDocumentModel? model) => urlContext.BeginScope(directory, model));
-            addressProviderMock.Setup(x => x.TryGetNamespaceUrl(It.IsAny<string>(), out It.Ref<Uri?>.IsAny))
-                .Returns((string ns, out Uri? url) =>
-                {
-                    url = new RawUri($"https://example.com/{ns.ToLowerInvariant()}", UriKind.Absolute);
-                    return true;
-                });
-            addressProviderMock.Setup(x => x.TryGetMemberUrl(It.IsAny<IMember>(), out It.Ref<Uri?>.IsAny))
-                .Returns((IMember member, out Uri? url) =>
-                {
-                    if (member.IsDirectDeclaration)
-                    {
-                        var resourceName = member.CodeReference[2..].ReplaceChars(['`', '#'], '-').ToLowerInvariant();
-                        url = new RawUri($"https://example.com/{resourceName}", UriKind.Absolute);
-                        return true;
-                    }
 
-                    url = null;
-                    return false;
-                });
-            addressProviderMock.Setup(x => x.TryGetTopicUrl(It.IsAny<ITopic>(), out It.Ref<Uri?>.IsAny))
-                .Returns((ITopic topic, out Uri? url) =>
-                {
-                    url = new RawUri($"~/{topic.Id.ToLowerInvariant()}", UriKind.Relative);
-                    return true;
-                });
             addressProviderMock.Setup(x => x.TryGetNamespaceFile(It.IsAny<string>(), out It.Ref<string?>.IsAny))
                 .Returns((string ns, out string? path) =>
                 {
                     path = ns.ToLowerInvariant();
+                    if (!addressProvider.ActiveScope.IsRoot)
+                        path = $"{addressProvider.ActiveScope.Directory}/{path}";
+
                     return true;
                 });
+
             addressProviderMock.Setup(x => x.TryGetMemberFile(It.IsAny<IMember>(), out It.Ref<string?>.IsAny))
                 .Returns((IMember member, out string? path) =>
                 {
                     if (member.IsDirectDeclaration)
                     {
                         path = member.CodeReference[2..].ReplaceChars(['`', '#'], '-').ToLowerInvariant();
+                        if (!addressProvider.ActiveScope.IsRoot)
+                            path = $"{addressProvider.ActiveScope.Directory}/{path}";
+
                         return true;
                     }
 
                     path = null;
                     return false;
                 });
+
             addressProviderMock.Setup(x => x.TryGetTopicFile(It.IsAny<ITopic>(), out It.Ref<string?>.IsAny))
                 .Returns((ITopic topic, out string? path) =>
                 {
-                    path = topic.Id.ToLowerInvariant();
+                    var segments = new System.Collections.Generic.List<string>();
+
+                    for (var current = topic; current is not null; current = current.ParentTopic)
+                        segments.Add(current.Id);
+
+                    if (!addressProvider.ActiveScope.IsRoot)
+                        segments.Add(addressProvider.ActiveScope.Directory);
+
+                    segments.Reverse();
+                    path = string.Join('/', segments).ToLowerInvariant();
+                    return true;
+                });
+
+            addressProviderMock.Setup(x => x.TryGetNamespaceUrl(It.IsAny<string>(), out It.Ref<Uri?>.IsAny))
+                .Returns((string ns, out Uri? url) =>
+                {
+                    if (addressProvider.TryGetNamespaceFile(ns, out var path))
+                    {
+                        url = new RawUri($"https://example.com/{path}", UriKind.Absolute);
+                        return true;
+                    }
+
+                    url = null;
                     return false;
                 });
-            return addressProviderMock.Object;
+
+            addressProviderMock.Setup(x => x.TryGetMemberUrl(It.IsAny<IMember>(), out It.Ref<Uri?>.IsAny))
+                .Returns((IMember member, out Uri? url) =>
+                {
+                    if (addressProvider.TryGetMemberFile(member, out var path))
+                    {
+                        url = new RawUri($"https://example.com/{path}", UriKind.Absolute);
+                        return true;
+                    }
+
+                    url = null;
+                    return false;
+                });
+
+            addressProviderMock.Setup(x => x.TryGetTopicUrl(It.IsAny<ITopic>(), out It.Ref<Uri?>.IsAny))
+                .Returns((ITopic topic, out Uri? url) =>
+                {
+                    if (addressProvider.TryGetTopicFile(topic, out var path))
+                    {
+                        url = new RawUri($"https://example.com/{path}", UriKind.Absolute);
+                        return true;
+                    }
+
+                    url = null;
+                    return false;
+                });
+
+            return addressProvider;
         }
 
         /// <summary>

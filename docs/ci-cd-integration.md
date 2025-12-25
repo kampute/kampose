@@ -108,6 +108,7 @@ jobs:
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./.doc-site
+        keep_files: false
 ```
 
 ## Azure Pipelines

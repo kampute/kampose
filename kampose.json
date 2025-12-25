@@ -1,5 +1,4 @@
 {
-  "convention": "dotNet",
   "outputDirectory": ".site",
   "topicHierarchy": "directory",
   "topics": [

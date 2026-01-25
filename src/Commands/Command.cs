@@ -1,4 +1,4 @@
-// Copyright (C) 2025 Kampute
+// Copyright (C) Kampute
 //
 // Released under the terms of the MIT license.
 // See the LICENSE file in the project root for the full license text.
@@ -56,7 +56,7 @@ namespace Kampose.Commands
         protected static void WriteApplicationHeader()
         {
             Console.WriteLine($"{nameof(Kampose)} v{Program.Version}");
-            Console.WriteLine("(c) 2025 Kampute. All rights reserved.");
+            Console.WriteLine("Copyright (C) Kampute.");
             Console.WriteLine();
         }
     }

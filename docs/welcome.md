@@ -1,3 +1,5 @@
+[![Version](https://img.shields.io/github/v/release/kampute/kampose?label=Version&color=darkred)](https://github.com/kampute/kampose/releases)
+
 # Welcome to Kampose
 
 Kampose `/kam-pohz/` is a cross-platform command-line documentation composer for .NET projects that transforms XML comments and assembly metadata into professional API documentation. Built with an extensible architecture and powered by Handlebars templating, Kampose enables development teams to maintain high-quality documentation as part of their continuous integration workflows.

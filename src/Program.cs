@@ -1,4 +1,4 @@
-﻿// Copyright (C) 2025 Kampute
+﻿// Copyright (C) Kampute
 //
 // Released under the terms of the MIT license.
 // See the LICENSE file in the project root for the full license text.
@@ -13,8 +13,22 @@ namespace Kampose
     /// <summary>
     /// The main entry point for the application.
     /// </summary>
-    public class Program
+    public static class Program
     {
+        /// <summary>
+        /// The current version of the application.
+        /// </summary>
+        public static readonly string Version;
+
+        /// <summary>
+        /// Initializes static members of the <see cref="Program"/> class.
+        /// </summary>
+        static Program()
+        {
+            var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+            Version = version is not null ? $"{version.Major}.{version.Minor}.{version.Build}" : "unknown";
+        }
+
         /// <summary>
         /// Main entry point for the application.
         /// </summary>

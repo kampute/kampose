@@ -1,4 +1,4 @@
-// Copyright (C) 2025 Kampute
+// Copyright (C) Kampute
 //
 // Released under the terms of the MIT license.
 // See the LICENSE file in the project root for the full license text.
@@ -13,7 +13,6 @@ namespace Kampose.Builders
     using Kampute.DocToolkit.Support;
     using System;
     using System.Collections.Generic;
-    using System.Reflection;
 
     /// <summary>
     /// Builder responsible for creating and configuring template renderers for documentation generation.
@@ -97,7 +96,7 @@ namespace Kampose.Builders
         private static void AddCommonData(TemplateRenderer renderer, DocContext context)
         {
             renderer.CommonData["language"] = context.Language;
-            renderer.CommonData["generator"] = $"{nameof(Kampose)} [Version {Assembly.GetExecutingAssembly().GetName().Version}]";
+            renderer.CommonData["generator"] = $"{nameof(Kampose)} v{Program.Version}";
             renderer.CommonData["absoluteUrls"] = context.AddressProvider.ActiveScope.RootUrl.IsAbsoluteUri;
             renderer.CommonData["hasNamespacePages"] = context.Assemblies.Count > 0 && context.AddressProvider.Granularity.HasFlag(PageGranularity.Namespace);
             renderer.CommonData["hasTypePages"] = context.Assemblies.Count > 0 && context.AddressProvider.Granularity.HasFlag(PageGranularity.Type);

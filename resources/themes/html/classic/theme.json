@@ -4,7 +4,7 @@
     "format": "html",
     "name": "Classic",
     "description": "A classic theme for rendering API documentation in HTML format.",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "author": "Kambiz Khojasteh",
     "license": "MIT",
     "homepage": "https://kampute.github.io/dot-doc/themes/classic-html.html"

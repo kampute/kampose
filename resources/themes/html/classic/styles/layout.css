@@ -56,6 +56,11 @@ body {
   position: relative;
 }
 
+.content main p:first-child:has(img):has(+ h1) {
+  float: right;
+  margin: 2rem 0 1rem 1rem;
+}
+
 .content-header:empty {
   display: none;
 }

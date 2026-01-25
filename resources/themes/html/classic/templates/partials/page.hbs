@@ -37,9 +37,10 @@
 
       {{> (concat 'page_content_' pageType)}}
 
-      {{#if pageFooter}}
+      {{#if (or pageFooter pageFooterRight)}}
       <footer class="content-footer" role="contentinfo">
-        {{{>pageFooter_partial}}}
+        {{#if pageFooter}}<div class="content-footer-left">{{{>pageFooter_partial}}}</div>{{/if}}
+        {{#if pageFooterRight}}<div class="content-footer-right">{{{>pageFooterRight_partial}}}</div>{{/if}}
       </footer>
       {{/if}}
     </main>

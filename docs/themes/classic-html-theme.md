@@ -17,7 +17,8 @@ The theme supports the following customization settings:
 | [`styleUri`](#styleuri)                             | uri      |                             | The URI of a custom stylesheet to extend or override default styles.                                                     |
 | [`scriptUri`](#scripturi)                           | uri      |                             | The URI of a custom script to extend the default functionality.                                                          |
 | [`pageHeader`](#pageheader)                         | markdown |                             | Markdown content displayed at the top of the main content area on every page.                                            |
-| [`pageFooter`](#pagefooter)                         | markdown |                             | Markdown content displayed at the bottom of the main content area on every page.                                         |
+| [`pageFooter`](#pagefooter)                         | markdown |                             | Markdown content for the left side of the page footer on every page.                                                     |
+| [`pageFooterRight`](#pagefooterright)               | markdown |                             | Markdown content for the right side of the page footer on every page.                                                    |
 | [`menuItems`](#menuitems)                           | array    | `[]`                        | Defines the menu bar structure as an array of items with titles, URLs, and optional sub-items.                           |
 | [`excludeBreadcrumb`](#excludebreadcrumb)           | boolean  | `false`                     | Determines whether to avoid rendering the breadcrumb navigation.                                                         |
 | [`excludeLeftSidebar`](#excludeleftsidebar)         | boolean  | `false`                     | Determines whether to avoid rendering the left sidebar containing main navigation.                                       |
@@ -203,7 +204,7 @@ This is commonly used for displaying status badges (build status, version, cover
 
 ### `pageFooter`
 
-The `pageFooter` setting allows you to add custom Markdown content that will be displayed at the bottom of the main content area on every generated page. You can use Handlebars expressions within this content.
+The `pageFooter` setting allows you to add custom Markdown content that will be displayed on the left side of the page footer on every generated page. You can use Handlebars expressions within this content.
 
 This is commonly used for copyright notices, legal information, attribution, or additional navigation links that should appear consistently across all pages.
 
@@ -219,6 +220,28 @@ You can use Markdown bullet points in the footer content. For better visual inte
     "theme": "classic",
     "themeSettings": {
         "pageFooter": "- Copyright © {{now 'yyyy'}} [Example Corp](https://example.com)\n- [MIT]({{#rootRelativeUrl 'LICENSE'}}) License"
+    }
+}
+```
+
+### `pageFooterRight`
+
+The `pageFooterRight` setting allows you to add custom Markdown content that will be displayed on the right side of the page footer on every generated page. You can use Handlebars expressions within this content.
+
+This is commonly used for version information, last updated dates, or secondary navigation links that complement the main footer content.
+
+You can use Markdown bullet points in the footer content. For better visual integration with the theme, the footer will render bullet points as inline items separated by bullets (`•`).
+
+> When linking to a relative content path, the path should be relative to the current page. You can use `rootRelativeUrl` helper to convert a root-relative path to a page-relative path (e.g., `{{#rootRelativeUrl 'path/to/file'}}`).
+
+#### Example
+
+```json
+{
+    "convention": "dotnet",
+    "theme": "classic",
+    "themeSettings": {
+        "pageFooterRight": "Last updated: {{now 'yyyy-MM-dd'}}"
     }
 }
 ```

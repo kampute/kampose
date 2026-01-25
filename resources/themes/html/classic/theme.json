@@ -57,7 +57,12 @@
     },
     "pageFooter": {
       "type": "markdown",
-      "description": "The markdown content for the page footer. Template functions and variables can be used here.",
+      "description": "The markdown content for the left side of the page footer. Template functions and variables can be used here.",
+      "defaultValue": null
+    },
+    "pageFooterRight": {
+      "type": "markdown",
+      "description": "The markdown content for the right side of the page footer. Template functions and variables can be used here.",
       "defaultValue": null
     },
     "menuItems": {

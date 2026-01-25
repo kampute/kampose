@@ -8,7 +8,6 @@ namespace Kampose.Commands
     using Kampose.Reporters;
     using System;
     using System.Linq;
-    using System.Reflection;
 
     /// <summary>
     /// Provides a base implementation for commands with common functionality.
@@ -56,7 +55,7 @@ namespace Kampose.Commands
         /// </summary>
         protected static void WriteApplicationHeader()
         {
-            Console.WriteLine($"{nameof(Kampose)} [Version {Assembly.GetExecutingAssembly().GetName().Version}]");
+            Console.WriteLine($"{nameof(Kampose)} v{Program.Version}");
             Console.WriteLine("(c) 2025 Kampute. All rights reserved.");
             Console.WriteLine();
         }

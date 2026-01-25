@@ -7,7 +7,6 @@ namespace Kampose.Commands
 {
     using Kampose.Reporters;
     using System;
-    using System.Reflection;
 
     /// <summary>
     /// Implements the version command for displaying version information.
@@ -39,8 +38,7 @@ namespace Kampose.Commands
         /// <inheritdoc />
         protected override int ExecuteCommand(Options options, IActivityReporter reporter)
         {
-            var version = Assembly.GetExecutingAssembly().GetName().Version;
-            Console.WriteLine($"{nameof(Kampose)} {version}");
+            Console.WriteLine(Program.Version);
             return 0;
         }
 

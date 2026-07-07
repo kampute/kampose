@@ -1,3 +1,8 @@
+---
+title: Supported XML Documentation Tags
+summary: "Reference for standard and extended XML documentation tags supported by Kampose."
+---
+
 # Supported XML Documentation Tags
 
 This reference guide details XML documentation tags supported by Kampose, and their usage.

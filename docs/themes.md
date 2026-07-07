@@ -1,3 +1,8 @@
+---
+title: Themes
+summary: "Overview of Kampose HTML and Markdown themes, theme selection, configuration, and rich content settings."
+---
+
 # Themes
 
 Kampose themes define the convention, content structure, and visual presentation of generated documentation. Themes control how your API documentation appears and behaves in the final output.

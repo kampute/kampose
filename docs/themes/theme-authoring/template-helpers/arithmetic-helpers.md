@@ -1,3 +1,8 @@
+---
+title: Arithmetic Helpers
+summary: "Reference for numeric Handlebars helpers that increment, decrement, add, subtract, multiply, divide, calculate modulus, and return absolute values."
+---
+
 # Arithmetic Helpers
 
 Arithmetic helpers provide basic mathematical operations for integer values.

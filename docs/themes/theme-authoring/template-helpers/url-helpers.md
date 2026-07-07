@@ -1,3 +1,8 @@
+---
+title: URL Helpers
+summary: "Reference for Handlebars URL helpers that resolve documentation root URLs, convert root-relative links, and extract URL fragments."
+---
+
 # URL Helpers
 
 URL generation and manipulation functions that handle path resolution and fragment extraction.

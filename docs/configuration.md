@@ -1,3 +1,8 @@
+---
+title: Configuration
+summary: "Complete reference for the Kampose JSON configuration file, including source discovery, topics, assets, themes, and auditing."
+---
+
 # Configuration
 
 This document describes the Kampose JSON configuration file, covering the fields used to locate source assemblies and topics, control output formatting and layout, configure references, and customize themes.
@@ -222,6 +227,28 @@ The following example includes documentation from multiple directories while exc
     "!docs/drafts/**"
   ]
 }
+```
+
+#### Topic Front Matter
+
+Markdown topic files may start with YAML front matter. Kampose reads this front matter as topic metadata and removes it from the rendered Markdown body.
+
+The following keys have meaning to Kampose:
+
+| Key       | Description                                                                                 |
+|-----------|---------------------------------------------------------------------------------------------|
+| `title`   | Sets the topic page title. If omitted, Kampose uses the first Markdown heading or filename. |
+| `summary` | Sets the topic summary metadata and could be used by some themes.                           |
+
+##### Example
+
+```md
+---
+title: Quick Start
+summary: Learn how to configure and run Kampose for a .NET project.
+---
+
+# Getting Started
 ```
 
 #### Special Topic Filenames

@@ -1,4 +1,9 @@
-# Command Line Interface
+---
+title: Command-Line Interface
+summary: "Reference for Kampose CLI commands, options, arguments, examples, and exit codes."
+---
+
+# Command-Line Interface
 
 The Kampose CLI follows a command-based structure where you specify a command followed by command-specific options and arguments:
 

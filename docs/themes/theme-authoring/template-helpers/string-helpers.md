@@ -1,3 +1,8 @@
+---
+title: String Helpers
+summary: "Reference for Handlebars string helpers that format values, split text, concatenate values, and change text casing."
+---
+
 # String Helpers
 
 String manipulation and formatting functions that transform text values and return processed strings.

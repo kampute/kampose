@@ -1,3 +1,8 @@
+---
+title: Glob Patterns
+summary: "Supported glob syntax and examples for selecting assemblies, XML documentation files, topics, and assets."
+---
+
 # Glob Patterns
 
 A glob pattern describes which files or folders to select. Patterns can combine wildcards, directory traversal, and exclusion rules. This guide explains the supported syntax and provides usage examples.

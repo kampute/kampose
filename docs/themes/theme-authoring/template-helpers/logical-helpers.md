@@ -1,3 +1,8 @@
+---
+title: Logical Helpers
+summary: "Reference for Handlebars comparison and boolean helpers, including truthiness rules and conditional expression examples."
+---
+
 # Logical Helpers
 
 Conditional logic and comparison functions that evaluate expressions and return boolean values. These helpers support truthiness evaluation and allow controlling template flow with complex conditional logic.

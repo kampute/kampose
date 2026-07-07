@@ -125,16 +125,22 @@ namespace Kampose.Test.Templates.Helpers
         [TestCase(null, "", "   ", ExpectedResult = "")]
         [TestCase("first", "second", "third", ExpectedResult = "first")]
         [TestCase("", "second", "third", ExpectedResult = "second")]
+        [TestCase("first", "second", "third", "fourth", ExpectedResult = "first")]
+        [TestCase("", null, "\n", "fourth", ExpectedResult = "fourth")]
         [TestCase(null, null, null, ExpectedResult = "")]
         [TestCase(null, "", 42, ExpectedResult = "42")]
-        public string FirstNonBlank_ReturnsExpectedResult(params object?[] values)
+        [TestCase(null, "", true, ExpectedResult = "True")]
+        [TestCase(null, "", 3.14, ExpectedResult = "3.14")]
+        public string? FirstNonBlank_ReturnsExpectedResult(params object?[] values)
         {
+            values ??= [null]; // Workaround: [TestCase(null, ExpectedResult = "")]
+
             var template = values.Length switch
             {
                 1 => handlebars.Compile("{{#firstNonBlank first}}"),
                 2 => handlebars.Compile("{{#firstNonBlank first second}}"),
                 3 => handlebars.Compile("{{#firstNonBlank first second third}}"),
-                _ => handlebars.Compile("{{#firstNonBlank first}}")
+                _ => handlebars.Compile("{{#firstNonBlank values}}"),
             };
 
             return template(values.Length switch
@@ -142,7 +148,7 @@ namespace Kampose.Test.Templates.Helpers
                 1 => new { first = values[0] },
                 2 => new { first = values[0], second = values[1] },
                 3 => new { first = values[0], second = values[1], third = values[2] },
-                _ => new { first = values[0] }
+                _ => new { values }
             });
         }
     }

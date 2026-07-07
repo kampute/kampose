@@ -197,9 +197,8 @@ namespace Kampose.Templates.Helpers
         /// <returns><see langword="true"/> if all values are truthy; otherwise, <see langword="false"/>.</returns>
         private static object And(Context context, Arguments arguments)
         {
-            return arguments.Length == 1 && arguments[0] is IEnumerable enumerable && arguments[0] is not string
-                ? enumerable.Cast<object>().Any() && enumerable.Cast<object>().All(TemplateHelpers.IsTruthy)
-                : arguments.Length > 0 && arguments.All(TemplateHelpers.IsTruthy);
+            var values = arguments.AsObjectSequence();
+            return values.Any() && values.All(TemplateHelpers.IsTruthy);
         }
 
         /// <summary>
@@ -210,9 +209,7 @@ namespace Kampose.Templates.Helpers
         /// <returns><see langword="true"/> if any of the values is truthy; otherwise, <see langword="false"/>.</returns>
         private static object Or(Context context, Arguments arguments)
         {
-            return arguments.Length == 1 && arguments[0] is IEnumerable enumerable && arguments[0] is not string
-                ? enumerable.Cast<object>().Any(TemplateHelpers.IsTruthy)
-                : arguments.Any(TemplateHelpers.IsTruthy);
+            return arguments.AsObjectSequence().Any(TemplateHelpers.IsTruthy);
         }
     }
 }

@@ -8,7 +8,6 @@ namespace Kampose.Templates.Helpers
     using HandlebarsDotNet;
     using Kampute.DocToolkit.Support;
     using System;
-    using System.Collections;
     using System.Globalization;
     using System.Linq;
 
@@ -67,11 +66,7 @@ namespace Kampose.Templates.Helpers
         /// <returns>The concatenated string.</returns>
         private static object Concat(Context context, Arguments arguments)
         {
-            var values = arguments.Length == 1 && arguments[0] is IEnumerable enumerable && arguments[0] is not string
-                ? enumerable.Cast<object>()
-                : arguments.AsEnumerable();
-
-            return string.Join(string.Empty, values);
+            return string.Join(string.Empty, arguments.AsObjectSequence());
         }
 
         /// <summary>
@@ -187,7 +182,9 @@ namespace Kampose.Templates.Helpers
         /// <returns>The string representation of the first argument that is not empty, whitespace, or <see langword="null"/>; otherwise, <see langword="null"/>.</returns>
         public static object? FirstNonBlank(Context context, Arguments arguments)
         {
-            return arguments.Select(arg => arg?.ToString()).FirstOrDefault(str => !string.IsNullOrWhiteSpace(str));
+            return arguments.AsObjectSequence()
+                .Select(value => value?.ToString())
+                .FirstOrDefault(str => !string.IsNullOrWhiteSpace(str));
         }
     }
 }

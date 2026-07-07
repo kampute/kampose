@@ -184,7 +184,7 @@ namespace Kampose.Test.Models
             var config = ThemeConfiguration.LoadFromFile(filePath);
 
             Assert.That(config.Scripts, Is.Not.Null);
-            Assert.That(config.Scripts.TargetPath, Is.Not.Null.Or.Empty);
+            Assert.That(config.Scripts.TargetPath, Is.Not.Null.And.Not.Empty);
         }
 
         [Test]
@@ -217,7 +217,7 @@ namespace Kampose.Test.Models
             var config = ThemeConfiguration.LoadFromFile(filePath);
 
             Assert.That(config.Styles, Is.Not.Null);
-            Assert.That(config.Styles.TargetPath, Is.Not.Null.Or.Empty);
+            Assert.That(config.Styles.TargetPath, Is.Not.Null.And.Not.Empty);
         }
 
         [Test]

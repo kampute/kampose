@@ -180,8 +180,11 @@ function getTopicFromSitemapBtSlug(slug) {
  */
 function activateDropdown(dropdown) {
     let hoverTimeout;
+    const hoverQuery = window.matchMedia('(hover: hover) and (pointer: fine) and (min-width: 1025px)');
 
     const openMenu = () => {
+        if (!hoverQuery.matches) return;
+
         clearTimeout(hoverTimeout);
         requestAnimationFrame(() => {
             dropdown.classList.add('open');
@@ -200,6 +203,13 @@ function activateDropdown(dropdown) {
     };
 
     const closeMenu = () => {
+        if (dropdown.dataset.openedByClick === 'true') return;
+
+        if (!hoverQuery.matches) {
+            dropdown.classList.remove('open');
+            return;
+        }
+
         hoverTimeout = setTimeout(() => {
             dropdown.classList.remove('open');
         }, 100);
@@ -207,6 +217,7 @@ function activateDropdown(dropdown) {
 
     dropdown.addEventListener('mouseenter', openMenu);
     dropdown.addEventListener('mouseleave', closeMenu);
+    hoverQuery.addEventListener('change', () => dropdown.classList.remove('open'));
 }
 
 /**

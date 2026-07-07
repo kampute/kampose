@@ -5,7 +5,7 @@
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{{#if projectName}}{{projectName}} - {{/if}}{{pageTitle}}</title>
+<title>{{#if (and projectName (eq model.url (rootRelativeUrl 'index.html')))}}{{projectName}}{{else}}{{#if projectName}}{{projectName}} - {{/if}}{{pageTitle}}{{/if}}</title>
 {{#if faviconUri}}
 <link rel="icon" href="{{#rootRelativeUrl faviconUri}}" />
 {{/if}}
@@ -27,3 +27,6 @@
 {{#unless model.doc.summary.isEmpty}}
 <meta name="description" content="{{#stripTags}}{{model.doc.summary}}{{/stripTags}}" />
 {{/unless}}
+{{#if model.source.frontMatter.summary}}
+<meta name="description" content="{{model.source.frontMatter.summary}}" />
+{{/if}}

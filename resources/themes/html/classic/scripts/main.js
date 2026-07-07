@@ -10,6 +10,7 @@
             setupSiteNavigation();
             setupArticleNavigation();
             setupBreadcrumbEllipsis();
+            setupMobileNavigation();
         });
 
         setupLinks();

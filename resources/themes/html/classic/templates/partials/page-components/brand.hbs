@@ -3,7 +3,7 @@
   @param {object} this - The template context
 --}}
 
-<div class="brand" aria-label="Project title and logo">
+<a class="brand" href="{{#rootRelativeUrl 'index.html'}}" aria-label="{{homePageTitle}}">
   {{#if (and projectLogoLightUri projectLogoDarkUri)}}
   <img src="{{#rootRelativeUrl projectLogoDarkUri}}" alt="{{projectName}} logo" class="logo dark-mode" />
   <img src="{{#rootRelativeUrl projectLogoLightUri}}" alt="{{projectName}} logo" class="logo light-mode" />
@@ -16,4 +16,4 @@
     <span class="project-slogan">{{projectSlogan}}</span>
   </div>
   {{/if}}
-</div>
+</a>

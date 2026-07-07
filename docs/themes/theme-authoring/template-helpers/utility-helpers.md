@@ -1,3 +1,8 @@
+---
+title: Utility Helpers
+summary: "Reference for general Handlebars helpers that inspect values, select choices, format dates, output JSON, render literals, and process content."
+---
+
 # Utility Helpers
 
 General utility functions for common operations including value selection, numeric manipulation, date formatting, and content processing.

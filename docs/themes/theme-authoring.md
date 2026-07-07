@@ -1,3 +1,8 @@
+---
+title: Creating Custom Themes
+summary: "Guide to authoring Kampose themes with theme configuration, inheritance, templates, assets, parameters, and troubleshooting."
+---
+
 # Creating Custom Themes
 
 Kampose themes define the layout, content structure, and visual presentation of generated documentation. This guide covers the complete process of creating custom themes from initial setup to advanced customization.
@@ -118,6 +123,16 @@ Each documentation page type requires a corresponding template file. Templates r
 
 Kampose uses the [Kampute.DocToolkit](https://kampute.github.io/doc-toolkit/api) library to extract reflection metadata and XML comments from .NET assemblies. To know more about each model's properties and structure, please refer to the linked API documentation.
 
+#### Topic Front Matter
+
+Topic page templates can access parsed Markdown front matter through the topic model. This allows themes to use custom topic metadata when rendering topic pages.
+
+For example, a theme can read a custom `category` key from a topic's front matter:
+
+```hbs
+{{model.source.frontMatter.category}}
+```
+
 ### API Template _(required)_
 
 In addition to the page templates listed above, `api.hbs` is a special, required template that Kampose uses to generate the API page when an explicit `api.md` topic file is not present.
@@ -142,6 +157,7 @@ All page templates have access to these global variables in addition to the page
 | `hasNamespacePages` | boolean | Whether namespaces have dedicated pages           |
 | `hasTypePages`      | boolean | Whether types have dedicated pages                |
 | `hasMemberPages`    | boolean | Whether type members have dedicated pages         |
+| `hasTopics`         | boolean | Whether conceptual topic pages are available      |
 | `homePageTitle`     | string  | Home page title if configured                     |
 | `apiPageTitle`      | string  | API page title if configured                      |
 | `theme`             | object  | Theme metadata information                        |

@@ -1,3 +1,8 @@
+---
+title: Member Helpers
+summary: "Reference for Handlebars helpers that render .NET member definitions, signatures, names, URLs, and categories."
+---
+
 # Member Helpers
 
 Member helpers work with .NET types, members, and references. These helpers provide language-specific rendering for code elements and provide proper URLs cross-referencing documentation pages.

@@ -1,3 +1,8 @@
+---
+title: Special Rendering in Templates
+summary: "How Kampose renders code members, attributes, XML documentation comments, and topics inside Handlebars templates."
+---
+
 # Special Rendering in Templates
 
 When working with Handlebars templates, most template variables render as plain text using their string representation. However, Kampose automatically applies special rendering for certain documentation entities to create properly formatted output with cross-reference links.

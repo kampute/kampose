@@ -1,4 +1,9 @@
-# Classic Theme (Markdown)
+---
+title: Classic Theme for Markdown
+summary: "Configuration reference for the Classic Markdown theme, including page headers, footers, and related subtopic links."
+---
+
+# Classic Theme for Markdown
 
 The Classic Markdown theme generates clean, portable documentation suitable for wikis, repositories, and text-based documentation systems.
 

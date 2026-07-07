@@ -1,4 +1,9 @@
-# Classic Theme (HTML)
+---
+title: Classic Theme for HTML
+summary: "Configuration reference for the Classic HTML theme, including branding, navigation, layout, assets, and local viewing behavior."
+---
+
+# Classic Theme for HTML
 
 The Classic HTML theme produces responsive, interactive HTML documentation suitable for publishing to websites and project portals.
 

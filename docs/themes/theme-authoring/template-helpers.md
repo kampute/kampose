@@ -1,3 +1,8 @@
+---
+title: Template Helper Functions
+summary: "Overview of Handlebars helper functions available to Kampose themes for strings, logic, arithmetic, URLs, members, and utilities."
+---
+
 # Template Helper Functions
 
 Kampose provides helper functions for Handlebars templates in themes. These functions simplify tasks like string manipulation, logical operations, and formatting, making template authoring easier.

@@ -1,3 +1,8 @@
+---
+title: Best Practices
+summary: "Guidelines for writing complete, maintainable XML documentation comments and linking them to conceptual topics."
+---
+
 # Best Practices
 
 To create high-quality API documentation with Kampose, follow these recommendations for writing effective and maintainable XML documentation comments.

@@ -1,3 +1,8 @@
+---
+title: Home
+summary: A command-line tool for .NET projects that composes XML documentation comments, assemblies, and custom topics into comprehensive API documentation. Supports multiple output formats (HTML, Markdown) with extensible theme system and Handlebars templating.
+---
+
 [![Version](https://img.shields.io/github/v/release/kampute/kampose?label=Version&color=darkred)](https://github.com/kampute/kampose/releases)
 
 # Welcome to Kampose

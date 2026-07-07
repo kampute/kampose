@@ -13,6 +13,7 @@ namespace Kampose.Builders
     using Kampute.DocToolkit.Support;
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     /// <summary>
     /// Builder responsible for creating and configuring template renderers for documentation generation.
@@ -101,6 +102,7 @@ namespace Kampose.Builders
             renderer.CommonData["hasNamespacePages"] = context.Assemblies.Count > 0 && context.AddressProvider.Granularity.HasFlag(PageGranularity.Namespace);
             renderer.CommonData["hasTypePages"] = context.Assemblies.Count > 0 && context.AddressProvider.Granularity.HasFlag(PageGranularity.Type);
             renderer.CommonData["hasMemberPages"] = context.Assemblies.Count > 0 && context.AddressProvider.Granularity.HasFlag(PageGranularity.Member);
+            renderer.CommonData["hasTopics"] = context.Topics.Any(static topic => !SpecialTopicIdentifiers.IsSpecialTopic(topic.Id));
 
             if (context.Topics.TryGetById(SpecialTopicIdentifiers.Home, out var homeTopic))
                 renderer.CommonData["homePageTitle"] = homeTopic.Name;

@@ -3,14 +3,17 @@
   @param {object} this - The template context
 --}}
 
-<aside class="sidebar sidebar-left" role="complementary" aria-label="Site navigation" tabindex="-1">
+<aside id="site-navigation-panel" class="sidebar sidebar-left" role="complementary" aria-label="Site navigation" tabindex="-1">
   <div class="sidebar-header">
     <div class="search-container" role="search">
+      <span class="search-icon" aria-hidden="true">
+        <span class="icon icon-search"></span>
+      </span>
       <input
         type="text"
         id="nav-search"
         class="nav-search"
-        placeholder="Search..."
+        placeholder=" "
         aria-label="Search documentation"
         title="Type to filter content (Press / to focus)"
         autocomplete="off"
@@ -18,8 +21,8 @@
       <button id="clear-search" type="button" class="clear-search hidden" aria-label="Clear search" title="Clear" tabindex="-1">
         <span class="icon icon-delete" aria-hidden="true"></span>
       </button>
-      <span class="search-icon" aria-hidden="true">
-        <span class="icon icon-search"></span>
+      <span class="search-placeholder" aria-hidden="true">
+        Type <kbd>/</kbd> to search
       </span>
     </div>
   </div>

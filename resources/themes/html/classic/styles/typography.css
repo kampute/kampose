@@ -57,6 +57,16 @@ code {
   padding: 0.2em 0.4em;
 }
 
+kbd {
+  display: inline-block;
+  min-width: 1rem;
+  padding: 0.05rem 0.3rem;
+  font-family: var(--font-family-mono);
+  font-size: 0.8em;
+  line-height: 1.35;
+  text-align: center;
+}
+
 pre {
   overflow: auto;
   padding: 1.25rem;

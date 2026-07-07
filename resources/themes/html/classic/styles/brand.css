@@ -1,6 +1,16 @@
 .brand {
   display: inline-flex;
   align-items: center;
+  min-width: 0;
+  color: inherit;
+  text-decoration: none;
+  border-bottom: none;
+}
+
+.brand:hover,
+.brand:focus {
+  color: inherit;
+  border-bottom-color: transparent;
 }
 
 .brand:empty {
@@ -11,6 +21,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  min-width: 0;
   white-space: nowrap;
   color: var(--color-text);
 }
@@ -19,13 +30,17 @@
   font-size: 1.2rem;
   line-height: 1.5rem;
   font-weight: 600;
-  opacity: 0.8
+  opacity: 0.8;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .brand .project-info .project-slogan {
   font-size: 0.8rem;
   font-weight: 400;
-  opacity: 0.6
+  opacity: 0.6;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .brand .logo {
@@ -47,6 +62,22 @@ html[data-color-mode="dark"] .brand .logo.light-mode {
 
 html[data-color-mode="dark"] .brand .logo.dark-mode {
   display: unset;
+}
+
+@media (max-width: 1024px) {
+  .brand {
+    flex: 1 1 auto;
+  }
+
+  .brand .project-info {
+    overflow: hidden;
+  }
+
+  .brand .project-info .project-name,
+  .brand .project-info .project-slogan {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 
 @media (prefers-color-scheme: dark) {

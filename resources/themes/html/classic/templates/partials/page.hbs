@@ -10,14 +10,29 @@
   {{>page_meta}}
 </head>
 
-<body class="{{#unless excludeLeftSidebar}}has-left-sidebar{{/unless}} {{#unless excludeRightSidebar}}has-right-sidebar{{/unless}} {{#unless excludeBreadcrumb}}has-breadcrumb{{/unless}}">
+<body class="{{#unless excludeLeftSidebar}}has-left-sidebar{{/unless}} {{#unless excludeRightSidebar}}has-right-sidebar{{/unless}} {{#if menuItems}}has-menu{{/if}} {{#unless excludeBreadcrumb}}has-breadcrumb{{/unless}}">
   <a href="#article" class="skip-link" aria-label="Skip to main content" tabindex="0">Skip to main content</a>
 
   <header class="header" role="banner">
     <div class="header-main">
       {{>brand}}
-      {{>menubar}}
+      <div class="header-tools" aria-label="Header tools">
+        {{#unless excludeLeftSidebar}}
+        <button id="mobile-nav-toggle" class="mobile-header-button" type="button" aria-label="Open API navigation" aria-controls="site-navigation-panel" aria-expanded="false">
+          <span class="icon icon-api-reference" aria-hidden="true"></span>
+        </button>
+        {{/unless}}
+        {{#if menuItems}}
+        <button id="mobile-menu-toggle" class="mobile-header-button" type="button" aria-label="Open documentation topics" aria-controls="menubar" aria-expanded="false">
+          <span class="icon icon-topics" aria-hidden="true"></span>
+        </button>
+        {{/if}}
+        {{>color-mode}}
+      </div>
     </div>
+    {{#if menuItems}}
+    {{>menubar}}
+    {{/if}}
     {{#unless excludeBreadcrumb}}
     {{>breadcrumb}}
     {{/unless}}
@@ -50,6 +65,7 @@
     {{/unless}}
   </div>
 
+  <div id="mobile-backdrop" class="mobile-backdrop" hidden></div>
   {{>modal_dialog}}
 </body>
 

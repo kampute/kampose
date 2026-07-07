@@ -11,6 +11,7 @@ namespace Kampose.Templates
     using Kampute.DocToolkit.IO.Writers;
     using System;
     using System.Collections;
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Runtime.CompilerServices;
@@ -90,6 +91,22 @@ namespace Kampose.Templates
             ArgumentNullException.ThrowIfNull(docContext);
 
             return docContext.ContentFormatter.CreateMarkupWriter(writer.CreateSuppressedWrapper(), disposeWriter: true);
+        }
+
+        /// <summary>
+        /// Converts the specified <see cref="Arguments"/> to an enumerable of objects.
+        /// </summary>
+        /// <remarks>
+        /// If the <see cref="Arguments"/> contains a single argument that is an <see cref="IEnumerable"/> (excluding strings),
+        /// it will be flattened into the resulting enumerable. Otherwise, the arguments will be returned as-is.
+        /// <param name="arguments">The arguments to convert.</param>
+        /// <returns>An enumerable of objects representing the arguments.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<object?> AsObjectSequence(this in Arguments arguments)
+        {
+            return arguments.Length == 1 && arguments[0] is IEnumerable enumerable && arguments[0] is not string
+                ? enumerable.Cast<object>()
+                : arguments.AsEnumerable();
         }
     }
 }

@@ -369,8 +369,17 @@ FodyWeavers.xsd
 *.pfx
 *.snk
 
+# AI
+.agents/
+.codex/
+.claude/
+.junie/
+
 # Documentation Site
 .site/
 
 # NuGet config file
 nuget.config
+
+# Lunch settings
+launchSettings.json

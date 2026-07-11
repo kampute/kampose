@@ -1,4 +1,5 @@
 {
+  "$schema": "https://kampute.github.io/kampose/json-schemas/themeConfiguration.schema.json",
   "base": null,
   "metadata": {
     "format": "html",

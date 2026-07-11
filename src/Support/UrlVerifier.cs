@@ -9,15 +9,18 @@ namespace Kampose.Support
     using Kampute.DocToolkit.Routing;
     using Kampute.DocToolkit.Support;
     using System;
+    using System.Collections.Concurrent;
     using System.IO;
     using System.Net.Http;
+    using System.Threading;
 
     /// <summary>
     /// Verifies the validity of URLs referenced in the documentation.
     /// </summary>
     public sealed class UrlVerifier : IDisposable
     {
-        private HttpClient? httpClient;
+        private readonly ConcurrentDictionary<Uri, VerificationResult> externalUrlResults = new();
+        private readonly Lazy<HttpClient> httpClient = new(CreateHttpClient, LazyThreadSafetyMode.ExecutionAndPublication);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UrlVerifier"/> class.
@@ -56,7 +59,9 @@ namespace Kampose.Support
         /// </summary>
         public void Dispose()
         {
-            httpClient?.Dispose();
+            if (httpClient.IsValueCreated)
+                httpClient.Value.Dispose();
+
             GC.SuppressFinalize(this);
         }
 
@@ -75,16 +80,22 @@ namespace Kampose.Support
                 return VerificationResult.OK;
 
             if (urlReference.TargetUrl is not null)
-                return IsFilePresent(urlReference) ? VerificationResult.OK : VerificationResult.Unreachable;
+                return IsFilePresent(urlReference)
+                    ? VerificationResult.OK
+                    : VerificationResult.Unreachable;
 
             if (!Uri.TryCreate(urlReference.SourceUrl, UriKind.RelativeOrAbsolute, out var uri))
                 return VerificationResult.Malformed;
 
             if (!uri.IsAbsoluteUri)
-                return VerificationResult.Unresolved;
+                return IsFilePresent(urlReference.BaseDirectory, uri.ToString())
+                    ? VerificationResult.OK
+                    : VerificationResult.Unreachable;
 
-            if (verifyExternalLinks && !IsUrlReachable(uri))
-                return VerificationResult.Unreachable;
+            if (verifyExternalLinks)
+                return externalUrlResults.GetOrAdd(uri, url => IsUrlReachable(url)
+                    ? VerificationResult.OK
+                    : VerificationResult.Unreachable);
 
             return VerificationResult.OK;
         }
@@ -103,8 +114,24 @@ namespace Kampose.Support
                 ? BaseUri.MakeRelativeUri(urlReference.TargetUrl).ToString()
                 : Path.Combine(urlReference.BaseDirectory, urlReference.TargetUrl.ToString());
 
-            var relativeFilePath = UriHelper.GetPathPart(relativeUrlString);
-            var absoluteFilePath = Path.Combine(BaseDir, relativeFilePath);
+            return IsFilePresent(string.Empty, relativeUrlString);
+        }
+
+        /// <summary>
+        /// Checks if a file is present at the specified document-relative URL.
+        /// </summary>
+        /// <param name="baseDirectory">The directory of the referencing document.</param>
+        /// <param name="relativeUrl">The URL relative to the referencing document.</param>
+        /// <returns><see langword="true"/> if the file is present; otherwise, <see langword="false"/>.</returns>
+        private bool IsFilePresent(string baseDirectory, string relativeUrl)
+        {
+            var relativeFilePath = UriHelper.GetPathPart(relativeUrl);
+            var absoluteBaseDir = Path.GetFullPath(BaseDir);
+            var absoluteFilePath = Path.GetFullPath(Path.Combine(absoluteBaseDir, baseDirectory, relativeFilePath));
+            var pathFromBase = Path.GetRelativePath(absoluteBaseDir, absoluteFilePath);
+
+            if (!PathHelper.IsSubpath(absoluteFilePath, pathFromBase))
+                return false;
 
             if (File.Exists(absoluteFilePath))
                 return true;
@@ -123,11 +150,10 @@ namespace Kampose.Support
             if (uri.Scheme != Uri.UriSchemeHttp && uri.Scheme != Uri.UriSchemeHttps)
                 return true; // Non-HTTP/HTTPS URIs are considered reachable.
 
-            httpClient ??= CreateHttpClient();
             try
             {
                 using var request = new HttpRequestMessage(HttpMethod.Head, uri);
-                using var response = httpClient.Send(request);
+                using var response = httpClient.Value.Send(request);
                 return response.StatusCode != System.Net.HttpStatusCode.NotFound;
             }
             catch

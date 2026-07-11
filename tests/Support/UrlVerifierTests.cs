@@ -219,6 +219,33 @@ namespace Kampose.Test.Support
             Assert.That(result, Is.EqualTo(UrlVerifier.VerificationResult.Unreachable));
         }
 
+        [TestCase(HttpStatusCode.OK, UrlVerifier.VerificationResult.OK)]
+        [TestCase(HttpStatusCode.NotFound, UrlVerifier.VerificationResult.Unreachable)]
+        [TestCase(HttpStatusCode.Unused, UrlVerifier.VerificationResult.Unreachable)]
+        public void VerifyUrl_AbsoluteUri_ExternalVerify_RepeatedUrlChecksOnce(HttpStatusCode statusCode, UrlVerifier.VerificationResult expectedResult)
+        {
+            var verifier = new UrlVerifier(context, baseDir, baseUri);
+            var messageHandlerMock = SetupHttpClient(verifier, statusCode);
+            var firstReference = new UrlReference(model, "first", "https://example.com/page");
+            var secondReference = new UrlReference(model, "second", "https://example.com/page");
+
+            var firstResult = verifier.VerifyUrl(firstReference, verifyExternalLinks: true);
+            var secondResult = verifier.VerifyUrl(secondReference, verifyExternalLinks: true);
+
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(firstResult, Is.EqualTo(expectedResult));
+                Assert.That(secondResult, Is.EqualTo(expectedResult));
+            }
+
+            messageHandlerMock.Protected().Verify(
+                "Send",
+                Times.Once(),
+                ItExpr.IsAny<HttpRequestMessage>(),
+                ItExpr.IsAny<CancellationToken>()
+            );
+        }
+
         [Test]
         public void VerifyUrl_NonHttpUri_ReturnsOK()
         {
@@ -231,17 +258,49 @@ namespace Kampose.Test.Support
         }
 
         [Test]
-        public void VerifyUrl_RelativeUri_ReturnsUnresolved()
+        public void VerifyUrl_RelativeUri_FileNotPresent_ReturnsUnreachable()
         {
             var verifier = new UrlVerifier(context, baseDir, baseUri);
             var urlReference = new UrlReference(model, "dir", "relative/path");
 
             var result = verifier.VerifyUrl(urlReference);
 
-            Assert.That(result, Is.EqualTo(UrlVerifier.VerificationResult.Unresolved));
+            Assert.That(result, Is.EqualTo(UrlVerifier.VerificationResult.Unreachable));
         }
 
-        private static void SetupHttpClient(UrlVerifier verifier, HttpStatusCode statusCode)
+        [Test]
+        public void VerifyUrl_RelativeUri_FilePresent_ReturnsOK()
+        {
+            var verifier = new UrlVerifier(context, baseDir, baseUri);
+            var urlReference = new UrlReference(model, "dir", "../page");
+            var absolutePath = Path.Combine(baseDir, "page.html");
+            Directory.CreateDirectory(Path.GetDirectoryName(absolutePath)!);
+            File.WriteAllText(absolutePath, "content");
+
+            try
+            {
+                var result = verifier.VerifyUrl(urlReference);
+
+                Assert.That(result, Is.EqualTo(UrlVerifier.VerificationResult.OK));
+            }
+            finally
+            {
+                File.Delete(absolutePath);
+            }
+        }
+
+        [Test]
+        public void VerifyUrl_RelativeUri_OutsideBaseDirectory_ReturnsUnreachable()
+        {
+            var verifier = new UrlVerifier(context, baseDir, baseUri);
+            var urlReference = new UrlReference(model, "dir", "../../outside");
+
+            var result = verifier.VerifyUrl(urlReference);
+
+            Assert.That(result, Is.EqualTo(UrlVerifier.VerificationResult.Unreachable));
+        }
+
+        private static Mock<HttpMessageHandler> SetupHttpClient(UrlVerifier verifier, HttpStatusCode statusCode)
         {
             var messageHandlerMock = new Mock<HttpMessageHandler>();
             messageHandlerMock.Protected()
@@ -265,11 +324,13 @@ namespace Kampose.Test.Support
                 )
                 .Verifiable();
 
-            var httpClient = new HttpClient(messageHandlerMock.Object);
+            var httpClient = new Lazy<HttpClient>(() => new HttpClient(messageHandlerMock.Object));
 
             typeof(UrlVerifier)
                 .GetField("httpClient", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!
                 .SetValue(verifier, httpClient);
+
+            return messageHandlerMock;
         }
     }
 }

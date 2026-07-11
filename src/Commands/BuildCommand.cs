@@ -208,7 +208,7 @@ namespace Kampose.Commands
 
             var unverifiedUrls = context.UrlReferences
                 .Where(urlRef => !UriHelper.IsQueryOrFragmentOnly(urlRef.SourceUrl))
-                .DistinctBy(urlRef => urlRef.SourceUrl)
+                .DistinctBy(urlRef => string.Join('\0', [urlRef.ReferencingModel.Url, urlRef.SourceUrl]))
                 .ToList();
 
             if (unverifiedUrls.Count == 0)

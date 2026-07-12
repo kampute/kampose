@@ -31,7 +31,8 @@ function setupLinks() {
     document.querySelectorAll('.popup-link').forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
-            openLinkInPopup(link.href);
+            const linkTitle = link.title || link.getAttribute('alt') || link.textContent;
+            openLinkInPopup(link.href, linkTitle && linkTitle.trim());
         });
     });
 
@@ -55,9 +56,12 @@ function setupLinks() {
         return false;
     }
 
-    function openLinkInPopup(href) {
+    function openLinkInPopup(href, title) {
         const url = new URL(href);
-        const title = url.pathname.split('/').pop();
+
+        if (!title) {
+            title = url.pathname.split('/').pop();
+        }
 
         fetch(href)
             .then(response => response.blob())

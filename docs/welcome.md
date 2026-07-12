@@ -1,19 +1,19 @@
 ---
 title: Home
-summary: A command-line tool for .NET projects that composes XML documentation comments, assemblies, and custom topics into comprehensive API documentation. Supports multiple output formats (HTML, Markdown) with extensible theme system and Handlebars templating.
+summary: A command-line tool that combines .NET assemblies, XML documentation comments, and conceptual topics into HTML or Markdown documentation.
 ---
 
 [![Version](https://img.shields.io/github/v/release/kampute/kampose?label=Version&color=darkred)](https://github.com/kampute/kampose/releases)
 
 # Welcome to Kampose
 
-Kampose `/kam-pohz/` is a cross-platform command-line documentation composer for .NET projects that transforms XML comments and assembly metadata into professional API documentation. Built with an extensible architecture and powered by Handlebars templating, Kampose enables development teams to maintain high-quality documentation as part of their continuous integration workflows.
+Kampose `/kam-pohz/` is a cross-platform command-line documentation composer for .NET projects. It combines assembly metadata, XML documentation comments, and conceptual topics, then renders them through configurable Handlebars themes.
 
 ## Overview
 
-Kampose automates API documentation generation from XML documentation comments, eliminating manual documentation maintenance. Whether building libraries, frameworks, or internal APIs, Kampose creates professional documentation that integrates seamlessly with modern development workflows.
+Kampose generates API reference for libraries, frameworks, and internal APIs. It can also combine that reference with guides and tutorials, or build a topic-only documentation site without assemblies.
 
-Kampose includes comprehensive auditing capabilities to ensure documentation quality, validating XML documentation completeness, verifying external links, and enforcing customizable quality standards that can halt builds on issues in CI/CD pipelines.
+Auditing can report missing or incomplete XML documentation and verify referenced URLs. Configuration controls which checks run and whether reported issues stop the build.
 
 ### Key Capabilities
 
@@ -56,6 +56,7 @@ Follow these simple steps to generate your first API documentation with Kampose.
 
 ```json
 {
+    "$schema": "https://kampute.github.io/kampose/json-schemas/configuration.schema.json",
     "convention": "dotNet",
     "outputDirectory": "docs",
     "assemblies": ["bin/Release/**/*.dll"],
@@ -78,7 +79,7 @@ For detailed usage instructions and examples, see the [Command-Line Interface](c
 
 This guide organizes Kampose's documentation into key areas to help you navigate and find the information you need efficiently.
 
-### Getting Started
+### Commands and Configuration
 - **[Command-Line Interface](command-line.md)** - Commands, options, and usage patterns
 - **[Configuration Guide](configuration.md)** - Complete configuration reference with examples
 - **[Glob Patterns](globe-patterns.md)** - File selection patterns for assemblies, XML docs, and topics
@@ -87,8 +88,8 @@ This guide organizes Kampose's documentation into key areas to help you navigate
 - **[CI/CD Integration](ci-cd-integration.md)** - Automate documentation generation in GitHub Actions, Azure Pipelines, and GitLab CI/CD
 
 ### Writing Documentation
-- **[XML Documentation Tags](xmldoc-tags.md)** - Supported XML tags with usage examples
-- **[Best Practices](best-practices.md)** - Guidelines for effective XML documentation
+- **[Writing Documentation](writing-documentation.md)** - Choose and author conceptual or API documentation
+- **[URL Resolution](url-resolution.md)** - Choose document-, site-, or documentation-root-relative URLs
 
 ### Customizing Output
 - **[Themes Overview](themes.md)** - Available themes and configuration

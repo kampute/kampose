@@ -5,7 +5,7 @@ summary: "Reference for standard and extended XML documentation tags supported b
 
 # Supported XML Documentation Tags
 
-This reference guide details XML documentation tags supported by Kampose, and their usage.
+This page lists the XML documentation elements that Kampose renders. Use [Best Practices](best-practices.md) for authoring guidance rather than treating every supported element as required.
 
 ## Standard XML Documentation Tags
 
@@ -44,8 +44,6 @@ Additionally, the following extended tags from [Sandcastle](https://github.com/E
 | [`<overloads>`](https://ewsoftware.github.io/XMLCommentsGuide/html/5b11b235-2b6c-4dfc-86b0-2e7dd98f2716.htm) | Yes | Provides common documentation for a set of overloaded members. | `<overloads>Common description for all overloads</overloads>` |
 | [`<threadsafety>`](https://ewsoftware.github.io/XMLCommentsGuide/html/fb4625cb-52d0-428e-9c7c-7a0d88e1b692.htm) | Yes | Specifies thread safety of a class or structure, detailing whether static and instance members are safe for concurrent use. | `<threadsafety static="true" instance="false"/>` |
 
-## Related Resources
+## See Also
 
 - [C# XML Documentation Guide](https://learn.microsoft.com/dotnet/csharp/language-reference/xmldoc/)
-- [Sandcastle Documentation](https://ewsoftware.github.io/XMLCommentsGuide/html/4268757F-CE8D-4E6D-8502-4F7F2E22DDA3.htm)
-- [DocFX Documentation](https://dotnet.github.io/docfx/)

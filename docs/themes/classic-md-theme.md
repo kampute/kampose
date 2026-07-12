@@ -23,7 +23,7 @@ The `pageHeader` setting allows you to customize the content at the top of each 
 
 Consider the following when using the `pageHeader` setting:
 - Verify that any HTML or raw tags you include are compatible with the Markdown processor you plan to use downstream.
-- Prefix paths relative to the documentation root with `~/`, for example `[License](~/LICENSE)`. See [URL resolution](url-resolution.md).
+- Prefix paths relative to the documentation root with `~/`, for example `[License](~/LICENSE)`. See [URL resolution](../url-resolution.md).
 
 #### Examples
 
@@ -86,7 +86,7 @@ The `pageFooter` setting allows you to add Markdown that will be appended to the
 
 Consider the following when using the `pageFooter` setting:
 - Verify that any HTML or raw tags you include are compatible with the Markdown processor you plan to use downstream.
-- Prefix paths relative to the documentation root with `~/`, for example `[License](~/LICENSE)`. See [URL resolution](url-resolution.md).
+- Prefix paths relative to the documentation root with `~/`, for example `[License](~/LICENSE)`. See [URL resolution](../url-resolution.md).
 - Do not include a horizontal rule (`---`) at the beginning of the footer content, the theme will automatically insert one for you.
 
 #### Examples

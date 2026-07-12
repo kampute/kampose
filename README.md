@@ -48,6 +48,7 @@ dotnet tool install --global kampose
 **Step 2**: Create `kampose.json` in your project root:
 ```json
 {
+    "$schema": "https://kampute.github.io/kampose/json-schemas/configuration.schema.json",
     "convention": "dotNet",
     "outputDirectory": "docs",
     "assemblies": ["bin/Release/**/*.dll"],
@@ -73,9 +74,11 @@ Please visit [the official documentation site](https://kampute.github.io/kampose
 
 - [Getting Started Guide](https://kampute.github.io/kampose/)
 - [Configuration Reference](https://kampute.github.io/kampose/configuration)
+- [Writing Documentation](https://kampute.github.io/kampose/writing-documentation)
+- [URL Resolution](https://kampute.github.io/kampose/url-resolution)
 - [CI/CD Integration](https://kampute.github.io/kampose/ci-cd-integration)
 - [Theme Customization](https://kampute.github.io/kampose/themes/theme-authoring/)
-- [Best Practices](https://kampute.github.io/kampose/best-practices)
+- [Best Practices](https://kampute.github.io/kampose/writing-documentation/best-practices)
 
 For technical details on the core [DocToolkit](https://github.com/kampute/doc-toolkit) library, see the [DocToolkit documentation](https://kampute.github.io/doc-toolkit/).
 

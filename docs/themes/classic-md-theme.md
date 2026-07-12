@@ -13,8 +13,8 @@ The theme supports the following customization settings:
 
 | Name                                    | Type     | Default | Description                                                                          |
 |-----------------------------------------|----------|---------|--------------------------------------------------------------------------------------|
-| [`pageHeader`](#pageheader)             | markdown |         | Markdown inserted at the top of every generated page.                                |
-| [`pageFooter`](#pagefooter)             | markdown |         | Markdown appended to the bottom of every generated page.                             |
+| [`pageHeader`](#pageheader)             | markdown |         | Markdown inserted at the top of every generated page (string or array of strings).   |
+| [`pageFooter`](#pagefooter)             | markdown |         | Markdown appended to the bottom of every generated page (string or array of strings).|
 | [`seeAlsoSubtopics`](#seealsosubtopics) | boolean  | `false` | Determines whether to include a "See Also" list of related subtopics on topic pages. |
 
 ### `pageHeader`
@@ -47,6 +47,22 @@ The example below inserts a table of contents using Azure DevOps specific marker
     "theme": "classic",
     "themeSettings": {
         "pageHeader": "[_TOC_]"
+    }
+}
+```
+
+You can use an array of strings for multi-section headers:
+
+```json
+{
+    "convention": "devops",
+    "theme": "classic",
+    "themeSettings": {
+        "pageHeader": [
+            "[![Build](https://dev.azure.com/ORG/PROJECT/_apis/build/status/PIPELINE)](https://dev.azure.com/ORG/PROJECT/_build)",
+            "[_TOC_]",
+            "> **Note:** This is documentation for version {{version}}."
+        ]
     }
 }
 ```
@@ -95,6 +111,22 @@ The example below demonstrates how to use template helpers in the footer:
     "theme": "classic",
     "themeSettings": {
         "pageFooter": "_Copyright (c) {{now 'yyyy'}} [Example Corp](https://example.com)_"
+    }
+}
+```
+
+You can use an array of strings for multi-line footers:
+
+```json
+{
+    "convention": "devops",
+    "theme": "classic",
+    "themeSettings": {
+        "pageFooter": [
+            "_Copyright (c) {{now 'yyyy'}} [Example Corp](https://example.com)_",
+            "See [License](~/LICENSE) for details.",
+            "[Privacy Policy](~/privacy) | [Terms of Service](~/terms)"
+        ]
     }
 }
 ```

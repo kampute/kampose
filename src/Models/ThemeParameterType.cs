@@ -27,6 +27,7 @@ namespace Kampose.Models
 
         /// <summary>
         /// A Markdown formatted text, which may contain template expressions.
+        /// Accepts either a string or an array of strings (which will be joined with newlines).
         /// </summary>
         Markdown,
 

@@ -64,12 +64,15 @@ The following example demonstrates basic theme configuration in the `Kampose.jso
 
 Many theme settings accept Markdown content and support Handlebars expressions, enabling dynamic and rich customization. This allows you to include formatted text, links, and template-generated content in your theme settings.
 
+Markdown settings accept either a single string or an array of strings. When an array is provided, the items are joined with newlines, offering a more readable and maintainable alternative to using escape sequences in JSON strings.
+
 When configuring settings that accept Markdown content, follow these guidelines:
 
 - **Documentation Links**: Prefix documentation-root-relative paths with `~/`, for example `[License](~/LICENSE)`. See
   [URL resolution](themes/url-resolution.md) for document-relative, site-root-relative,
   and documentation-root-relative behavior.
 - **Template Integration**: Leverage [template helpers](themes/theme-authoring/template-helpers.md) and [template variables](themes/theme-authoring.md#global-template-context) to create dynamic content.
+- **Multi-Section Content**: Use an array of strings to define content with multiple sections or lines without concatenation.
 
 For comprehensive information on expression syntax, refer to the [Handlebars documentation](https://handlebarsjs.com/guide/).
 

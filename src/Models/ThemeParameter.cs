@@ -8,6 +8,7 @@ namespace Kampose.Models
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Text.Json;
     using System.Text.Json.Serialization;
 
@@ -75,7 +76,9 @@ namespace Kampose.Models
 
             static object ValidateObjectValue(object obj, ThemeParameterType expectedType) => expectedType switch
             {
-                ThemeParameterType.String or ThemeParameterType.Markdown when obj is string => obj,
+                ThemeParameterType.String when obj is string => obj,
+                ThemeParameterType.Markdown when obj is string => obj,
+                ThemeParameterType.Markdown when obj is IEnumerable enumerable => JoinMarkdownArray(enumerable),
                 ThemeParameterType.Number when obj is int or long or float or double or decimal => obj,
                 ThemeParameterType.Boolean when obj is bool => obj,
                 ThemeParameterType.Uri when obj is string uriString => Uri.TryCreate(uriString, UriKind.RelativeOrAbsolute, out var uri)
@@ -87,7 +90,9 @@ namespace Kampose.Models
 
             static object? ValidateJsonValue(JsonElement element, ThemeParameterType expectedType) => expectedType switch
             {
-                ThemeParameterType.String or ThemeParameterType.Markdown when element.ValueKind is JsonValueKind.String => element.GetString(),
+                ThemeParameterType.String when element.ValueKind is JsonValueKind.String => element.GetString(),
+                ThemeParameterType.Markdown when element.ValueKind is JsonValueKind.String => element.GetString(),
+                ThemeParameterType.Markdown when element.ValueKind is JsonValueKind.Array => JoinMarkdownArray(element),
                 ThemeParameterType.Number when element.ValueKind is JsonValueKind.Number => element.GetDouble(),
                 ThemeParameterType.Boolean when element.ValueKind is JsonValueKind.False or JsonValueKind.True => element.GetBoolean(),
                 ThemeParameterType.Uri when element.ValueKind is JsonValueKind.String => Uri.TryCreate(element.GetString(), UriKind.RelativeOrAbsolute, out var uri)
@@ -98,6 +103,24 @@ namespace Kampose.Models
             };
 
             static string AsString(JsonValueKind kind) => kind is JsonValueKind.True or JsonValueKind.False ? "boolean" : kind.ToString().ToLowerInvariant();
+
+            static string JoinMarkdownArray(object value)
+            {
+                var items = value switch
+                {
+                    JsonElement element when element.ValueKind is JsonValueKind.Array =>
+                        element.EnumerateArray().Select(e => e.ValueKind is JsonValueKind.String
+                            ? e.GetString() ?? string.Empty
+                            : throw new JsonException($"All array items must be strings for Markdown type: {e.GetRawText()}")),
+                    IEnumerable enumerable =>
+                        enumerable.Cast<object>().Select(item => item is string str
+                            ? str
+                            : throw new FormatException($"All array items must be strings for Markdown type, but {item.GetType().Name} was provided")),
+                    _ => throw new InvalidOperationException("Unexpected value type for JoinMarkdownArray")
+                };
+
+                return string.Join(Environment.NewLine, items);
+            }
         }
     }
 }

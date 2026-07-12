@@ -13,12 +13,12 @@
   "parameters": {
     "pageHeader": {
       "type": "markdown",
-      "description": "The markdown content for the page header. Template functions and variables can be used here.",
+      "description": "The markdown content for the page header. Accepts a string or an array of strings (joined with newlines). Template functions and variables can be used here.",
       "defaultValue": null
     },
     "pageFooter": {
       "type": "markdown",
-      "description": "The markdown content for the page footer. Template functions and variables can be used here.",
+      "description": "The markdown content for the page footer. Accepts a string or an array of strings (joined with newlines). Template functions and variables can be used here.",
       "defaultValue": null
     },
     "seeAlsoSubtopics": {

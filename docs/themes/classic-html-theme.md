@@ -21,9 +21,9 @@ The theme supports the following customization settings:
 | [`faviconUri`](#faviconuri)                         | uri      |                             | The URI of the favicon displayed in browser tabs.                                                                        |
 | [`styleUri`](#styleuri)                             | uri      |                             | The URI of a custom stylesheet to extend or override default styles.                                                     |
 | [`scriptUri`](#scripturi)                           | uri      |                             | The URI of a custom script to extend the default functionality.                                                          |
-| [`pageHeader`](#pageheader)                         | markdown |                             | Markdown content displayed at the top of the main content area on every page.                                            |
-| [`pageFooter`](#pagefooter)                         | markdown |                             | Markdown content for the left side of the page footer on every page.                                                     |
-| [`pageFooterRight`](#pagefooterright)               | markdown |                             | Markdown content for the right side of the page footer on every page.                                                    |
+| [`pageHeader`](#pageheader)                         | markdown |                             | Markdown content displayed at the top of the main content area on every page (string or array of strings).               |
+| [`pageFooter`](#pagefooter)                         | markdown |                             | Markdown content for the left side of the page footer on every page (string or array of strings).                        |
+| [`pageFooterRight`](#pagefooterright)               | markdown |                             | Markdown content for the right side of the page footer on every page (string or array of strings).                       |
 | [`menuItems`](#menuitems)                           | array    | `[]`                        | Defines the menu bar structure as an array of items with titles, URLs, and optional sub-items.                           |
 | [`excludeBreadcrumb`](#excludebreadcrumb)           | boolean  | `false`                     | Determines whether to avoid rendering the breadcrumb navigation.                                                         |
 | [`excludeLeftSidebar`](#excludeleftsidebar)         | boolean  | `false`                     | Determines whether to avoid rendering the left sidebar containing main navigation.                                       |
@@ -208,6 +208,22 @@ This is commonly used for displaying status badges (build status, version, cover
 }
 ```
 
+You can also use an array of strings for multi-section content:
+
+```json
+{
+    "convention": "dotnet",
+    "theme": "classic",
+    "themeSettings": {
+        "pageHeader": [
+            "[![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/myorg/myproject/actions)",
+            "[![Version](https://img.shields.io/badge/version-2.1.0-blue)](https://github.com/myorg/myproject/releases)",
+            "> **Note:** This is a pre-release version."
+        ]
+    }
+}
+```
+
 ### `pageFooter`
 
 The `pageFooter` setting allows you to add custom Markdown content that will be displayed on the left side of the page footer on every generated page. You can use Handlebars expressions within this content.
@@ -226,6 +242,22 @@ You can use Markdown bullet points in the footer content. For better visual inte
     "theme": "classic",
     "themeSettings": {
         "pageFooter": "- Copyright © {{now 'yyyy'}} [Example Corp](https://example.com)\n- [MIT](~/LICENSE) License"
+    }
+}
+```
+
+You can also use an array of strings instead of escape sequences:
+
+```json
+{
+    "convention": "dotnet",
+    "theme": "classic",
+    "themeSettings": {
+        "pageFooter": [
+            "- Copyright © {{now 'yyyy'}} [Example Corp](https://example.com)",
+            "- [MIT](~/LICENSE) License",
+            "- [Privacy Policy](~/privacy)"
+        ]
     }
 }
 ```

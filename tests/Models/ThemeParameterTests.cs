@@ -8,6 +8,7 @@ namespace Kampose.Test.Models
     using Kampose.Models;
     using Kampose.Support;
     using NUnit.Framework;
+    using System;
     using System.Text.Json;
 
     [TestFixture]
@@ -15,6 +16,7 @@ namespace Kampose.Test.Models
     {
         [TestCase(@"{""type"": ""string"", ""description"": ""Test description"", ""defaultValue"": ""Test value""}")]
         [TestCase(@"{""type"": ""markdown"", ""defaultValue"": ""# Test Heading""}")]
+        [TestCase(@"{""type"": ""markdown"", ""defaultValue"": [""Line 1"", ""Line 2"", ""Line 3""]}")]
         [TestCase(@"{""type"": ""number"", ""defaultValue"": 123}")]
         [TestCase(@"{""type"": ""boolean"", ""defaultValue"": true}")]
         [TestCase(@"{""type"": ""uri"", ""defaultValue"": ""https://example.com/""}")]
@@ -27,6 +29,7 @@ namespace Kampose.Test.Models
 
         [TestCase(@"{""type"": ""string"", ""defaultValue"": 999}", "String was expected")]
         [TestCase(@"{""type"": ""markdown"", ""defaultValue"": 999}", "Markdown was expected")]
+        [TestCase(@"{""type"": ""markdown"", ""defaultValue"": [""valid"", 123, ""mixed""]}", "All array items must be strings")]
         [TestCase(@"{""type"": ""number"", ""defaultValue"": ""not a number""}", "Number was expected")]
         [TestCase(@"{""type"": ""boolean"", ""defaultValue"": ""not a boolean""}", "Boolean was expected")]
         [TestCase(@"{""type"": ""uri"", ""defaultValue"": ""http://[invalid]""}", "A valid URI was expected")]
@@ -35,6 +38,16 @@ namespace Kampose.Test.Models
         public void JsonConstructor_WithInvalidDefaultValue_ThrowsJsonException(string json, string expectedErrorMessage)
         {
             Assert.That(() => Json.Parse<ThemeParameter>(json), Throws.TypeOf<JsonException>().With.Message.Contains(expectedErrorMessage));
+        }
+
+        [Test]
+        public void JsonConstructor_WithMarkdownArray_JoinsWithNewlines()
+        {
+            var json = @"{""type"": ""markdown"", ""defaultValue"": [""Line 1"", ""Line 2"", ""Line 3""]}";
+            var param = Json.Parse<ThemeParameter>(json);
+
+            var expected = $"Line 1{Environment.NewLine}Line 2{Environment.NewLine}Line 3";
+            Assert.That(param.DefaultValue, Is.EqualTo(expected));
         }
     }
 }

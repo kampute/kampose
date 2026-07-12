@@ -63,8 +63,8 @@ URL generation and manipulation functions that handle path resolution and fragme
 
 | Helper                                                               | Purpose                                                       | Parameters | Returns   |
 |----------------------------------------------------------------------|---------------------------------------------------------------|------------|-----------|
-| [`rootUrl`](template-helpers/url-helpers.md#rooturl)                 | Returns the root URL of the site                              |            | `uri`     |
-| [`rootRelativeUrl`](template-helpers/url-helpers.md#rootrelativeurl) | Converts site-relative URL to document-relative               | `uri`      | `uri`     |
+| [`rootUrl`](template-helpers/url-helpers.md#rooturl)                 | Returns the documentation-root URL                            |            | `uri`     |
+| [`rootRelativeUrl`](template-helpers/url-helpers.md#rootrelativeurl) | Resolves a path from the documentation root                   | `uri`      | `uri`     |
 | [`fragment`](template-helpers/url-helpers.md#fragment)               | Extracts fragment (anchor) from a URL for linking to sections | `uri`      | `string?` |
 
 ## Member Helpers

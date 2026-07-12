@@ -130,7 +130,7 @@ namespace Kampose.Support
             var absoluteFilePath = Path.GetFullPath(Path.Combine(absoluteBaseDir, baseDirectory, relativeFilePath));
             var pathFromBase = Path.GetRelativePath(absoluteBaseDir, absoluteFilePath);
 
-            if (!PathHelper.IsSubpath(absoluteFilePath, pathFromBase))
+            if (!PathHelper.IsSubpath(pathFromBase, absoluteFilePath))
                 return false;
 
             if (File.Exists(absoluteFilePath))

@@ -394,6 +394,20 @@ The following example configures various theme settings for the classic theme (H
 }
 ```
 
+Markdown settings can also accept an array of strings for multi-section content:
+
+```json
+{
+  "themeSettings": {
+    "pageFooter": [
+      "Copyright © {{now 'yyyy'}} [My Company](https://company.com)",
+      "[Privacy Policy](/privacy) | [Terms](/terms)",
+      "Built with Kampose"
+    ]
+  }
+}
+```
+
 ### `audit`
 
 The audit settings determine which aspects of the XML documentation should be checked and whether to proceed with documentation generation if issues are found.

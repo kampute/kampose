@@ -5,11 +5,11 @@ summary: "Overview of Kampose HTML and Markdown themes, theme selection, configu
 
 # Themes
 
-Kampose themes define the convention, content structure, and visual presentation of generated documentation. Themes control how your API documentation appears and behaves in the final output.
+Kampose themes define the templates, assets, parameters, and presentation of generated documentation. The selected documentation convention determines whether Kampose loads an HTML or Markdown theme.
 
 ## HTML-Based Themes (DotNet/DocFx Convention)
 
-When the `convention` is set to `dotNet` or `docFx`, Kampose uses HTML themes. These themes are optimized for web-based documentation. The HTML themes support advanced features like responsive design, interactive elements, and dynamic content.
+When `convention` is `dotNet` or `docFx`, Kampose loads an HTML theme. The built-in Classic theme provides a responsive documentation website with navigation, search, and configurable page components.
 
 ### Available Themes
 
@@ -21,11 +21,11 @@ The following table summarizes the available HTML themes:
 
 ### Installing New Themes
 
-To install an HTML theme, simply copy the directory containing the theme files into the `themes/html/` directory of your Kampose installation. The name of the folder determines the theme's name (identifier).
+To install an HTML theme, copy its directory into the `themes/html/` directory of the Kampose installation. The directory name is the theme identifier.
 
 ## Markdown-Based Themes (DevOps Convention)
 
-When the `convention` is set to `devOps`, Kampose uses Markdown themes. These themes are optimized for generating Markdown documentation. These type of themes focus on simplicity and readability, making it easy to create and maintain documentation in plain text format.
+When `convention` is `devOps`, Kampose loads a Markdown theme. The generated files are suitable for systems such as Azure DevOps Wiki that consume Markdown documentation.
 
 ### Available Themes
 
@@ -37,17 +37,17 @@ The following table summarizes the available Markdown themes:
 
 ### Installing New Themes
 
-To install a Markdown theme, copy the directory containing the theme files into the `themes/md/` directory of your Kampose installation. The name of the folder determines the theme's name (identifier).
+To install a Markdown theme, copy its directory into the `themes/md/` directory of the Kampose installation. The directory name is the theme identifier.
 
 ## Theme Configuration
 
-Themes expose configurable settings that allow you to customize their behavior and appearance. You can configure these settings in the `Kampose.json` file under the `themeSettings` section.
+Themes expose settings that customize their behavior and appearance. Configure them in `kampose.json` under `themeSettings`.
 
 Each theme documents its available settings, including their purpose and usage. Consult the specific theme documentation to understand which settings are available and how to configure them.
 
 ### Configuration Example
 
-The following example demonstrates basic theme configuration in the `Kampose.json` file:
+The following excerpt demonstrates basic theme configuration:
 
 > Note: This is an excerpt (not the entire configuration).
 
@@ -62,16 +62,16 @@ The following example demonstrates basic theme configuration in the `Kampose.jso
 
 ### Settings with Rich Content Support
 
-Many theme settings accept Markdown content and support Handlebars expressions, enabling dynamic and rich customization. This allows you to include formatted text, links, and template-generated content in your theme settings.
+Settings declared with the `markdown` parameter type accept Markdown and Handlebars expressions. The built-in themes use this type for settings such as page headers and footers.
 
 Markdown settings accept either a single string or an array of strings. When an array is provided, the items are joined with newlines, offering a more readable and maintainable alternative to using escape sequences in JSON strings.
 
 When configuring settings that accept Markdown content, follow these guidelines:
 
 - **Documentation Links**: Prefix documentation-root-relative paths with `~/`, for example `[License](~/LICENSE)`. See
-  [URL resolution](themes/url-resolution.md) for document-relative, site-root-relative,
+  [URL resolution](url-resolution.md) for document-relative, site-root-relative,
   and documentation-root-relative behavior.
-- **Template Integration**: Leverage [template helpers](themes/theme-authoring/template-helpers.md) and [template variables](themes/theme-authoring.md#global-template-context) to create dynamic content.
+- **Template Integration**: Markdown theme settings can use [template helpers](themes/theme-authoring/template-helpers.md) and [template variables](themes/theme-authoring.md#global-template-context). Ordinary Markdown topic files cannot.
 - **Multi-Section Content**: Use an array of strings to define content with multiple sections or lines without concatenation.
 
 For comprehensive information on expression syntax, refer to the [Handlebars documentation](https://handlebarsjs.com/guide/).

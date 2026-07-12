@@ -15,7 +15,15 @@ kampose build MyConfig.json
 
 > All relative paths in configuration are resolved against `baseDirectory` (described below). If `baseDirectory` is omitted, Kampose uses the directory that contains the configuration file.
 
-The [JSON schema](~/json-schemas/configuration.schema.json "JSON schema for Kampose configuration") for the configuration file is available to help with validation and editor support.
+The [JSON schema](~/json-schemas/configuration.schema.json "JSON schema for Kampose configuration") is available for validation and editor support. Include it in complete configuration files with the `$schema` property:
+
+```json
+{
+  "$schema": "https://kampute.github.io/kampose/json-schemas/configuration.schema.json"
+}
+```
+
+The option examples below are fragments, so they omit `$schema` and show only the settings relevant to each section.
 
 ## Configuration Options
 
@@ -214,6 +222,8 @@ The example below links to internal company documentation with custom file exten
 Specifies [glob patterns](globe-patterns.md) for conceptual documentation files like guides, tutorials, and overviews. By default, it includes all Markdown files in the root of [`baseDirectory`](#basedirectory) (e.g., `['*.md']`).
 
 Kampose processes these files and converts them to the target format.
+
+For a task-oriented explanation of topic metadata, hierarchy, and links, see [Conceptual Topics](writing-documentation/conceptual-topics.md).
 
 ##### Example
 

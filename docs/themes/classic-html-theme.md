@@ -194,7 +194,7 @@ The `pageHeader` setting allows you to add custom Markdown content that will be 
 
 This is commonly used for displaying status badges (build status, version, coverage), project announcements, important notices, or contextual information that should appear prominently on all pages.
 
-> Prefix documentation-root-relative paths with `~/` (for example, `[License](~/LICENSE)`). Ordinary relative paths remain relative to the current page. See [URL resolution](url-resolution.md).
+> Prefix documentation-root-relative paths with `~/` (for example, `[License](~/LICENSE)`). Ordinary relative paths remain relative to the current page. See [URL resolution](../url-resolution.md).
 
 #### Example
 
@@ -232,7 +232,7 @@ This is commonly used for copyright notices, legal information, attribution, or 
 
 You can use Markdown bullet points in the footer content. For better visual integration with the theme, the footer will render bullet points as inline items separated by bullets (`•`).
 
-> Prefix documentation-root-relative paths with `~/` (for example, `[License](~/LICENSE)`). Ordinary relative paths remain relative to the current page. See [URL resolution](url-resolution.md).
+> Prefix documentation-root-relative paths with `~/` (for example, `[License](~/LICENSE)`). Ordinary relative paths remain relative to the current page. See [URL resolution](../url-resolution.md).
 
 #### Example
 
@@ -270,7 +270,7 @@ This is commonly used for version information, last updated dates, or secondary 
 
 You can use Markdown bullet points in the footer content. For better visual integration with the theme, the footer will render bullet points as inline items separated by bullets (`•`).
 
-> Prefix documentation-root-relative paths with `~/` (for example, `[License](~/LICENSE)`). Ordinary relative paths remain relative to the current page. See [URL resolution](url-resolution.md).
+> Prefix documentation-root-relative paths with `~/` (for example, `[License](~/LICENSE)`). Ordinary relative paths remain relative to the current page. See [URL resolution](../url-resolution.md).
 
 #### Example
 

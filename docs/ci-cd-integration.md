@@ -22,6 +22,7 @@ All examples use this `kampose.json` configuration file in the repository root:
 
 ```json
 {
+  "$schema": "https://kampute.github.io/kampose/json-schemas/configuration.schema.json",
   "convention": "dotNet",
   "outputDirectory": ".doc-site",
   "assemblies": ["src/**/bin/Release/**/*.dll"],
@@ -174,6 +175,7 @@ Publish documentation directly to Azure DevOps Wiki. Update your `kampose.json` 
 
 ```json
 {
+  "$schema": "https://kampute.github.io/kampose/json-schemas/configuration.schema.json",
   "convention": "devOps",
   "outputDirectory": ".doc-site",
   "assemblies": ["src/**/bin/Release/**/*.dll"],

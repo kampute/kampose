@@ -6,7 +6,7 @@ summary: "Handlebars helpers for documentation-root URLs and URL fragments."
 # URL Helpers
 
 These helpers expose resolved URL values to Handlebars expressions and attributes that are not automatically treated as URLs.
-For the meaning of `/`, `~/`, and ordinary relative paths, see [URL resolution](../../url-resolution.md).
+For the meaning of `/`, `~/`, and ordinary relative paths, see [URL resolution](../../../url-resolution.md).
 
 | Helper                                | Purpose                                                       | Parameters | Returns   |
 |---------------------------------------|---------------------------------------------------------------|------------|-----------|

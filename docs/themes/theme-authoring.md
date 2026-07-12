@@ -77,7 +77,7 @@ The configuration file supports the following properties:
   - `defaultValue` *(any)*: Default value used if not configured (must match `type`).
   - `description` *(string|null)*: Explanation of the parameter's purpose, usage, and behavior.
 
-The [JSON schema](~/json-schemas/themeConfiguration.schema.json "JSON schema for Kampose theme configuration") provides detailed validation rules for the configuration file. You can use this schema in compatible editors to ensure correctness while authoring themes.
+The [JSON schema](~/json-schemas/themeConfiguration.schema.json "JSON schema for Kampose theme configuration") provides validation and editor support. Reference it from a complete `theme.json` with the `$schema` property. Focused fragments elsewhere in this guide omit `$schema` and show only the relevant settings.
 
 ## Theme Inheritance
 
@@ -252,6 +252,8 @@ Each parameter requires a unique name (case-insensitive) and specific type defin
 
 Markdown parameters receive special processing since they may contain template variables and helper functions. Kampose creates partial templates for these parameters using the naming convention `{parameterName}_partial`.
 
+This processing applies to theme parameters only. Ordinary Markdown topic files are transformed as topic content and cannot invoke Handlebars helpers. See [URL Resolution](../url-resolution.md) for the URL behavior of both contexts.
+
 Example usage for a parameter named `overallFooter`:
 
 ```hbs
@@ -279,13 +281,14 @@ The following `theme.json` demonstrates a complete theme configuration:
 
 ```json
 {
+    "$schema": "https://kampute.github.io/kampose/json-schemas/themeConfiguration.schema.json",
     "metadata": {
         "name": "My Theme",
         "format": "html",
         "version": "0.1",
         "author": "Myself",
         "license": "MIT",
-        "homepage": "https://kampute.github.io/doc-toolkit/api/Kampute.DocToolkit.my-theme",
+        "homepage": "https://example.com/my-kampose-theme",
         "description": "A custom HTML-based theme for my documentation."
     },
     "templates": [

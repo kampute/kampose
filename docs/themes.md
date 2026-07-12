@@ -66,7 +66,9 @@ Many theme settings accept Markdown content and support Handlebars expressions, 
 
 When configuring settings that accept Markdown content, follow these guidelines:
 
-- **Relative Links**: Use root-relative paths with the `{{#rootRelativeUrl 'path/to/file'}}` helper to generate correct links regardless of the current document's location.
+- **Documentation Links**: Prefix documentation-root-relative paths with `~/`, for example `[License](~/LICENSE)`. See
+  [URL resolution](themes/url-resolution.md) for document-relative, site-root-relative,
+  and documentation-root-relative behavior.
 - **Template Integration**: Leverage [template helpers](themes/theme-authoring/template-helpers.md) and [template variables](themes/theme-authoring.md#global-template-context) to create dynamic content.
 
 For comprehensive information on expression syntax, refer to the [Handlebars documentation](https://handlebarsjs.com/guide/).

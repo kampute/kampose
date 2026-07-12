@@ -64,21 +64,27 @@ namespace MyNamespace
 
 ## Referencing Conceptual Topics
 
-Kampose allows you to seamlessly reference conceptual topics from within your API documentation, creating comprehensive documentation that connects code-level details with broader concepts and guides. This capability enables you to provide users with a complete understanding by linking API members to relevant tutorials, design patterns, or architectural explanations.
+Cross-references connect API documentation with conceptual topics such as guides, tutorials, and design notes. Kampose resolves
+recognized topic references to their generated URLs, allowing the source and output structures to differ.
 
 ### Linking from Markdown Files
 
-For referencing a topic in another topic, use a relative link from the current file's location. For example, if you want to link to `docs/advanced.md` from `docs/basics/overview.md`, you could use `[Advanced Concepts](../advanced.md)`.
+Reference another topic by a path relative to the current Markdown source file. For example, a link from
+`docs/basics/overview.md` to `docs/advanced.md` can be written as `[Advanced Concepts](../advanced.md)`. Kampose maps the source
+path to the generated URL of the target topic.
 
-The same approach applies when linking to asset files, like images: `![Diagram](../images/diagram.png)`.
+Use the same source-relative form for local assets, such as `![Diagram](../images/diagram.png)`. Keeping source links valid makes
+topics easier to review in Markdown editors and repository browsers before documentation is generated.
 
-When your editor is able to follow relative links, you can be confident that the links will work correctly in the generated documentation.
+Use `~/` when the target is identified by its location in the generated documentation rather than its location relative to the
+source topic. See [URL resolution](themes/url-resolution.md) for the available URL scopes and their generated forms.
 
 ### Linking from XML Documentation
 
-For linking to a topic in XML documentation comments, use the `<see>` or `<seealso>` tags with the appropriate `href` attribute. You can use the path to its source location. The path does not need to be absolute but it should uniquely identify the target topic.
+Use `<see>` for an inline link and `<seealso>` for an entry in the generated "See Also" section. Set `href` to a topic ID or a
+source path that uniquely identifies the target topic.
 
-If you do not specify a text for the link, the title of the referenced topic will be used as the link text.
+When the element has no link text, Kampose uses the target topic's title.
 
 ## Markdown Output Considerations
 

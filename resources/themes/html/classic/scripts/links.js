@@ -8,6 +8,7 @@ function setupLinks() {
     const origin = window.location.origin;
     const links = document.querySelectorAll('a');
     const popupAssetNames = (window.kampose.config.popupAssetNames || []).map(name => name.toLowerCase());
+    const externalLinksSamePage = window.kampose.config.externalLinksSamePage || false;
 
     links.forEach(link => {
         if (!link.href) {
@@ -18,6 +19,10 @@ function setupLinks() {
 
         if (origin !== url.origin) {
             link.classList.add('external-link');
+            if (!externalLinksSamePage) {
+                link.setAttribute('target', '_blank');
+                link.setAttribute('rel', 'noopener noreferrer');
+            }
         } else if (isPopupFileType(url.pathname, popupAssetNames)) {
             link.classList.add('popup-link');
         }

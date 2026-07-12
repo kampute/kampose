@@ -31,6 +31,7 @@ The theme supports the following customization settings:
 | [`groupTypesByNamespace`](#grouptypesbynamespace)   | boolean  | `false`                     | Determines whether to group types by their namespace in the left sidebar.                                                |
 | [`showTypeMembersSummary`](#showtypememberssummary) | boolean  | `false`                     | Determines whether to include a summary of type members in type documentation pages when each member has its own page.   |
 | [`seeAlsoSubtopics`](#seealsosubtopics)             | boolean  | `false`                     | Determines whether to automatically include related subtopics as "See Also" references.                                  |
+| [`externalLinksSamePage`](#externallinksssamepage)  | boolean  | `false`                     | Determines whether external links open in the same page. By default (false), external links open in a new tab.           |
 | [`popupAssetNames`](#popupassetnames)               | array    | `["LICENSE", "DISCLAIMER"]` | An array of asset file names that should open in a modal overlay when linked.                                            |
 
 ### `projectName`
@@ -445,6 +446,24 @@ The following section will be added at the bottom of "Best Practices" page:
   <li><a href="best-practices/coding-guidelines.html">Coding Guidelines</a></li>
   <li><a href="best-practices/testing-strategies.html">Testing Strategies</a></li>
 </ul>
+```
+
+### `externalLinksSamePage`
+
+The `externalLinksSamePage` setting determines whether external links (links to different domains) open in the same page or in a new browser tab.
+
+By default, this setting is `false`, meaning external links open in a new tab with `target="_blank"` and `rel="noopener noreferrer"` attributes. This keeps users on your documentation site while allowing them to explore external resources. Set this to `true` to open external links in the same page using traditional web behavior.
+
+#### Example
+
+```json
+{
+    "convention": "dotnet",
+    "theme": "classic",
+    "themeSettings": {
+        "externalLinksSamePage": true
+    }
+}
 ```
 
 ### `popupAssetNames`

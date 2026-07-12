@@ -75,11 +75,11 @@ namespace Kampose.Support
         private static bool IsMatch(FileTopic topic, string relativePath)
         {
             var sourcePath = topic.FilePath.Replace('\\', '/');
-            if (PathHelper.IsSubpath(sourcePath, relativePath))
+            if (PathHelper.IsSubpath(relativePath, sourcePath))
                 return true;
 
             var extension = Path.GetExtension(sourcePath);
-            if (extension.Length > 0 && PathHelper.IsSubpath(sourcePath[..^extension.Length], relativePath))
+            if (extension.Length > 0 && PathHelper.IsSubpath(relativePath, sourcePath[..^extension.Length]))
                 return true;
 
             return false;

@@ -37,7 +37,7 @@ namespace Kampose.Models
             // Begin a new URL scope to ensure that all URLs are relative to the documentation root.
             using var _ = context.AddressProvider.BeginScope(string.Empty, null);
 
-            BaseUrl = context.AddressProvider.ActiveScope.RootUrl;
+            BaseUrl = context.AddressProvider.ActiveScope.DocumentationRootUrl;
             pageCount = new Lazy<int>(() => nodes.Sum(node => node.CountPages()));
             if (context.Assemblies.Count != 0)
                 nodes.Add(CreateApiNode(context));

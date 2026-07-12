@@ -77,7 +77,7 @@ The configuration file supports the following properties:
   - `defaultValue` *(any)*: Default value used if not configured (must match `type`).
   - `description` *(string|null)*: Explanation of the parameter's purpose, usage, and behavior.
 
-The [JSON schema](~/json-schemas/themeConfiguration.schema.json) provides detailed validation rules for the configuration file. You can use this schema in compatible editors to ensure correctness while authoring themes.
+The [JSON schema](~/json-schemas/themeConfiguration.schema.json "JSON schema for Kampose theme configuration") provides detailed validation rules for the configuration file. You can use this schema in compatible editors to ensure correctness while authoring themes.
 
 ## Theme Inheritance
 

@@ -15,7 +15,7 @@ kampose build MyConfig.json
 
 > All relative paths in configuration are resolved against `baseDirectory` (described below). If `baseDirectory` is omitted, Kampose uses the directory that contains the configuration file.
 
-The [JSON schema](~/json-schemas/configuration.schema.json) for the configuration file is available to help with validation and editor support.
+The [JSON schema](~/json-schemas/configuration.schema.json "JSON schema for Kampose configuration") for the configuration file is available to help with validation and editor support.
 
 ## Configuration Options
 

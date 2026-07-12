@@ -51,9 +51,16 @@ namespace Kampose.Test.Templates.Helpers
         [TestCase("api/namespace", "https://example.com/docs/page.html", ExpectedResult = "https://example.com/docs/page.html")]
         [TestCase("api/namespace", "page.html#section", ExpectedResult = "../../page.html#section")]
         [TestCase("api/namespace", "page.html?query=value", ExpectedResult = "../../page.html?query=value")]
+        [TestCase("api/namespace", "~/page.html?query=value#section", ExpectedResult = "../../page.html?query=value#section")]
+        [TestCase("api/namespace", "api/../page.html", ExpectedResult = "../../page.html")]
+        [TestCase("api/namespace", "../page.html", ExpectedResult = "../page.html")]
         [TestCase("api/namespace/class", "api/namespace/interface.html", ExpectedResult = "../interface.html")]
         [TestCase("api", "#section", ExpectedResult = "#section")]
         [TestCase("api", "?query=param", ExpectedResult = "?query=param")]
+        [TestCase("api/namespace/class", "~/api/namespace/interface.html", ExpectedResult = "../interface.html")]
+        [TestCase("api/namespace", "~/", ExpectedResult = "../../")]
+        [TestCase("api/namespace", "~/#section", ExpectedResult = "../../#section")]
+        [TestCase("api/namespace", "~/?query=param", ExpectedResult = "../../?query=param")]
         [TestCase("", "", ExpectedResult = "")]
         public string RootRelativeUrl_ReturnsTransformedUrl(string currentDirectory, string url)
         {

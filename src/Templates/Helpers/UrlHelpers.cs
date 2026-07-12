@@ -7,6 +7,7 @@ namespace Kampose.Templates.Helpers
 {
     using HandlebarsDotNet;
     using Kampute.DocToolkit;
+    using Kampute.DocToolkit.Support;
     using System;
 
     /// <summary>
@@ -33,20 +34,27 @@ namespace Kampose.Templates.Helpers
         /// <summary>
         /// Returns the URL to the documentation root relative to current page.
         /// </summary>
-        /// <param name="docContext">The documentation context used for resolving root URL.</param>
-        /// <returns>An absolute or document-relative URI representing the root URL of the documentation.</returns>
+        /// <param name="docContext">The documentation context used for resolving documentation root URL.</param>
+        /// <returns>An absolute or document-relative URI pointing to the documentation root.</returns>
         /// <exception cref="HandlebarsException">Thrown when the number of arguments is not valid.</exception>
         private static Uri RootUrl(IDocumentationContext docContext)
         {
-            return docContext.AddressProvider.ActiveScope.RootUrl;
+            return docContext.AddressProvider.ActiveScope.DocumentationRootUrl;
         }
 
         /// <summary>
-        /// Converts the specified site-root-relative URL to a document-relative URL.
+        /// Converts a path relative to the documentation root to an absolute or current-page-relative URL.
         /// </summary>
         /// <param name="arguments">The arguments passed to the helper.</param>
         /// <param name="docContext">The documentation context used for resolving URLs and encoding.</param>
-        /// <returns>The transformed URL as a string, or the original argument if transformation fails.</returns>
+        /// <returns>
+        /// The transformed URL, or the original argument when it is empty or cannot be resolved within the documentation root.
+        /// </returns>
+        /// <remarks>
+        /// The argument does not require the <c>~/</c> documentation-root marker. Query strings and fragments attached to a path
+        /// are preserved; query-only and fragment-only references remain relative to the current document. The helper does not
+        /// change the active document URL context.
+        /// </remarks>
         /// <exception cref="HandlebarsException">Thrown when the number of arguments is not valid.</exception>
         private static object? RootRelativeUrl(Arguments arguments, IDocumentationContext docContext)
         {
@@ -57,10 +65,15 @@ namespace Kampose.Templates.Helpers
             if (string.IsNullOrWhiteSpace(href))
                 return null;
 
-            if (docContext.UrlTransformer.TryTransformUrl(href.Trim(), out var url))
-                return url;
+            if (UriHelper.IsQueryOrFragmentOnly(href) || UriHelper.IsAbsoluteOrRooted(href))
+                return arguments[0];
 
-            return arguments[0];
+            if (!href.StartsWith("~/", StringComparison.Ordinal))
+                href = "~/" + href;
+
+            return docContext.AddressProvider.ActiveScope.TryResolveUrl(href, out var resolvedUrl)
+                ? resolvedUrl
+                : arguments[0];
         }
 
         /// <summary>

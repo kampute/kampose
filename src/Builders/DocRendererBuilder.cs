@@ -10,7 +10,6 @@ namespace Kampose.Builders
     using Kampose.Support;
     using Kampose.Templates;
     using Kampute.DocToolkit;
-    using Kampute.DocToolkit.Support;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -69,7 +68,7 @@ namespace Kampose.Builders
 
             AddCommonData(renderer, context);
             AddThemeData(renderer, theme);
-            AddThemeSettings(renderer, context, theme, themeSettings);
+            AddThemeSettings(renderer, theme, themeSettings);
 
             return renderer;
         }
@@ -98,7 +97,7 @@ namespace Kampose.Builders
         {
             renderer.CommonData["language"] = context.Language;
             renderer.CommonData["generator"] = $"{nameof(Kampose)} v{Program.Version}";
-            renderer.CommonData["absoluteUrls"] = context.AddressProvider.ActiveScope.RootUrl.IsAbsoluteUri;
+            renderer.CommonData["absoluteUrls"] = context.AddressProvider.ActiveScope.DocumentationRootUrl.IsAbsoluteUri;
             renderer.CommonData["hasNamespacePages"] = context.Assemblies.Count > 0 && context.AddressProvider.Granularity.HasFlag(PageGranularity.Namespace);
             renderer.CommonData["hasTypePages"] = context.Assemblies.Count > 0 && context.AddressProvider.Granularity.HasFlag(PageGranularity.Type);
             renderer.CommonData["hasMemberPages"] = context.Assemblies.Count > 0 && context.AddressProvider.Granularity.HasFlag(PageGranularity.Member);
@@ -121,12 +120,6 @@ namespace Kampose.Builders
             if (theme.Metadata is not null)
                 renderer.CommonData["theme"] = theme.Metadata;
 
-            foreach (var (name, setting) in theme.Parameters)
-            {
-                if (setting.DefaultValue is not null)
-                    renderer.CommonData[name] = setting.DefaultValue;
-            }
-
             renderer.CommonData["scripts"] = theme.ScriptFiles.Keys;
             renderer.CommonData["styles"] = theme.StyleFiles.Keys;
         }
@@ -135,58 +128,37 @@ namespace Kampose.Builders
         /// Adds custom theme settings to the renderer's common data.
         /// </summary>
         /// <param name="renderer">The template renderer to assign common data to.</param>
-        /// <param name="context">The documentation context used for transforming Markdown values.</param>
         /// <param name="theme">The theme defining the custom settings.</param>
         /// <param name="settings">A dictionary of custom theme settings to add to the template renderer.</param>
-        private void AddThemeSettings(TemplateRenderer renderer, DocContext context, Theme theme, IReadOnlyDictionary<string, object?> settings)
+        private void AddThemeSettings(TemplateRenderer renderer, Theme theme, IReadOnlyDictionary<string, object?> settings)
         {
-            foreach (var (name, value) in settings)
+            foreach (var (name, setting) in theme.Parameters)
             {
+                var value = settings.TryGetValue(name, out var configuredValue) && configuredValue is not null
+                    ? configuredValue
+                    : setting.DefaultValue;
+
                 if (value is null)
                     continue;
 
-                if (!theme.Parameters.TryGetValue(name, out var setting))
-                {
-                    renderer.CommonData[name] = value;
-                    continue;
-                }
-
                 try
                 {
-                    var validatedValue = GetValidatedThemeValue(context, setting, value);
+                    var validatedValue = setting.ValidateValue(value);
                     renderer.CommonData[name] = validatedValue;
                     if (setting.Type is ThemeParameterType.Markdown)
-                        renderer.AddInlineTemplate($"{name}_partial", validatedValue!.ToString()!);
+                        renderer.AddInlineTemplate($"{name}_partial", $"{{{{#markdown}}}}{validatedValue}{{{{/markdown}}}}");
                 }
                 catch (Exception error)
                 {
                     reporter.LogWarning($"Invalid value for theme parameter '{name}'. {error.Message}");
                 }
             }
-        }
 
-        /// <summary>
-        /// Validates the value of a theme parameter based on its type.
-        /// </summary>
-        /// <param name="context">The documentation context used for validation.</param>
-        /// <param name="setting">The theme parameter to validate.</param>
-        /// <param name="value">The value to validate.</param>
-        /// <returns>The validated value, potentially transformed if it is a Markdown type.</returns>
-        /// <exception cref="FormatException">Thrown when the value cannot be validated.</exception>
-        private static object? GetValidatedThemeValue(DocContext context, ThemeParameter setting, object? value)
-        {
-            var validatedValue = setting.ValidateValue(value);
-            if
-            (
-                setting.Type is ThemeParameterType.Markdown &&
-                validatedValue is string markdown &&
-                context.TryTransformText(FileExtensions.Markdown, markdown, out var transformedValue)
-            )
+            foreach (var (name, value) in settings)
             {
-                return transformedValue;
+                if (value is not null && !theme.Parameters.ContainsKey(name))
+                    renderer.CommonData[name] = value;
             }
-
-            return validatedValue;
         }
     }
 }

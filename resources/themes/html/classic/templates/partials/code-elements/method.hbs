@@ -18,21 +18,21 @@
 {{/if}}
 
 {{#if member.metadata.extensionBlock}}
-<h{{level}} id="extended-type">Extended Type</h{{level}}>
+<h{{level}} id="{{idPrefix}}extended-type">Extended Type</h{{level}}>
 {{>extension block=member.metadata.extensionBlock doc=member.doc.extensionBlock}}
 {{/if}}
 
 {{#if member.metadata.typeParameters}}
-<h{{level}} id="type-parameters">Type Parameters</h{{level}}>
+<h{{level}} id="{{idPrefix}}type-parameters">Type Parameters</h{{level}}>
 {{>type_parameter_list typeParameters=member.metadata.typeParameters descriptions=member.doc.typeParameters}}
 {{/if}}
 
 {{#if member.metadata.parameters}}
-<h{{level}} id="parameters">Parameters</h{{level}}>
+<h{{level}} id="{{idPrefix}}parameters">Parameters</h{{level}}>
 {{>parameter_list parameters=member.metadata.parameters descriptions=member.doc.parameters}}
 {{/if}}
 
 {{#if member.metadata.hasReturnValue}}
-<h{{level}} id="returns">Returns</h{{level}}>
+<h{{level}} id="{{idPrefix}}returns">Returns</h{{level}}>
 {{>returns returnType=member.metadata.return.type description=member.doc.returnDescription}}
 {{/if}}

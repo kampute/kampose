@@ -20,6 +20,6 @@
 </dl>
 
 {{#if member.metadata.typeParameters}}
-<h{{level}} id="type-parameters">Type Parameters</h{{level}}>
+<h{{level}} id="{{idPrefix}}type-parameters">Type Parameters</h{{level}}>
 {{>type_parameter_list typeParameters=member.metadata.typeParameters descriptions=member.doc.typeParameters}}
 {{/if}}

@@ -6,6 +6,6 @@
 {{#each members}}
 <section class="type-member {{>member_class_names metadata}}" role="region" aria-labelledby="{{#fragment url}}">
   <h{{../level}} id="{{#fragment url}}">{{#memberSignature this}}</h{{../level}}>
-  {{>member level=(inc ../level) member=this}}
+  {{>member level=(inc ../level) member=this idPrefix=(concat (fragment url) '-')}}
 </section>
 {{/each}}

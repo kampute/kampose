@@ -1,0 +1,51 @@
+.section-link-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  margin-left: 0.35rem;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  background: transparent;
+  color: var(--color-text-muted);
+  vertical-align: middle;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+}
+
+:is(h2, h3, h4, h5, h6):hover>.section-link-button,
+.section-link-button:focus-visible {
+  opacity: 0.75;
+  pointer-events: auto;
+}
+
+.section-link-button:hover,
+.section-link-button:focus-visible {
+  border-color: var(--color-border);
+  background-color: var(--color-surface);
+  opacity: 1;
+}
+
+.section-link-button:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.section-link-button.copied {
+  color: var(--color-hint);
+}
+
+.section-link-button.copy-failed {
+  color: var(--color-important);
+}
+
+@media (hover: none), (pointer: coarse) {
+  .section-link-button {
+    opacity: 0.55;
+    pointer-events: auto;
+  }
+}

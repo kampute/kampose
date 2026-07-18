@@ -56,7 +56,7 @@ dotnet tool install --global kampose
 While this is convenient for getting started, it's recommended to pin to a specific version in production pipelines:
 
 ```shell
-dotnet tool install --global kampose --version 0.5.0
+dotnet tool install --global kampose --version 1.1.0
 ```
 
 Pinning to a specific version prevents builds from failing unexpectedly if a newer version introduces breaking changes. When you're ready to upgrade, you can test the new version in a separate branch before updating your main pipeline.

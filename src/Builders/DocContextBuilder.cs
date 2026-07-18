@@ -106,7 +106,7 @@ namespace Kampose.Builders
                 addressProvider,
                 xmlProvider,
                 formatter,
-                assemblies,
+                assemblies.OrderBy(a => a.Name, StringComparer.OrdinalIgnoreCase),
                 Topics,
                 assets.Select(kvp => new AssetReference(kvp.Value, kvp.Key)),
                 universe

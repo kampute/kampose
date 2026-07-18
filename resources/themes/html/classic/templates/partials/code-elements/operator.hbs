@@ -11,8 +11,8 @@
   {{/if}}
 </dl>
 
-<h{{level}} id="parameters">Parameters</h{{level}}>
+<h{{level}} id="{{idPrefix}}parameters">Parameters</h{{level}}>
 {{>parameter_list parameters=member.metadata.parameters descriptions=member.doc.parameters}}
 
-<h{{level}} id="returns">Returns</h{{level}}>
+<h{{level}} id="{{idPrefix}}returns">Returns</h{{level}}>
 {{>returns returnType=member.metadata.return.type description=member.doc.returnDescription}}

@@ -62,10 +62,10 @@
 </div>
 {{/if}}
 
-<h{{#inc level}}>Namespaces</h{{#inc level}}>
+<h{{#inc level}} id="{{lowercase assembly.metadata.identity.name}}-namespaces">Namespaces</h{{#inc level}}>
 {{>summary_list members=assembly.namespaces}}
 
 {{#if assembly.metadata.attributes.packageReleaseNotes}}
-<h{{#inc level}}>Release Notes</h{{#inc level}}>
+<h{{#inc level}} id="{{lowercase assembly.metadata.identity.name}}-release-notes">Release Notes</h{{#inc level}}>
 {{#markdown}}{{{assembly.metadata.attributes.packageReleaseNotes}}}{{/markdown}}
 {{/if}}

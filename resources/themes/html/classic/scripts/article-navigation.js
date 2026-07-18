@@ -25,18 +25,10 @@ function setupArticleNavigation() {
         (_, i) => `h${i + minLevel}`
     ).join(',');
 
-    const headings = Array.from(content.querySelectorAll(headingSelectors));
+    const headings = Array.from(content.querySelectorAll(headingSelectors))
+        .filter(heading => heading.id);
 
     if (headings.length === 0) return false;
-
-    const seenIds = new Set();
-    headings.forEach((heading, index) => {
-        if (!heading.id) heading.id = `heading-${index}`;
-        for (let i = 1; seenIds.has(heading.id); i++) {
-            heading.id = `${heading.id}-${i}`;
-        }
-        seenIds.add(heading.id);
-    });
 
     buildNavigation(articleNav, content, headings, maxLevel);
     setupScrollSpy(articleNav, content, headings);

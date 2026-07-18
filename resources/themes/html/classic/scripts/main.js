@@ -15,5 +15,7 @@
 
         setupLinks();
         setupPopup();
+        setupCodeCopy();
+        setupSectionLinks();
     });
 })();

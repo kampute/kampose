@@ -12,6 +12,6 @@
 </dl>
 
 {{#if member.metadata.parameters}}
-<h{{level}} id="parameters">Parameters</h{{level}}>
+<h{{level}} id="{{idPrefix}}parameters">Parameters</h{{level}}>
 {{>parameter_list parameters=member.metadata.parameters descriptions=member.doc.parameters}}
 {{/if}}

@@ -1,0 +1,62 @@
+.code-copy-container {
+  position: relative;
+  margin: 1em 0;
+}
+
+.code-copy-container>pre {
+  margin: 0;
+  padding-right: 3.5rem;
+}
+
+.code-copy-button {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+}
+
+.code-copy-container:hover>.code-copy-button,
+.code-copy-button:focus-visible {
+  opacity: 0.75;
+  pointer-events: auto;
+}
+
+.code-copy-button:hover,
+.code-copy-button:focus-visible {
+  border-color: var(--color-border);
+  background-color: var(--color-surface);
+  opacity: 1;
+}
+
+.code-copy-button:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.code-copy-button.copied {
+  color: var(--color-hint);
+}
+
+.code-copy-button.copy-failed {
+  color: var(--color-important);
+}
+
+@media (hover: none), (pointer: coarse) {
+  .code-copy-button {
+    opacity: 0.55;
+    pointer-events: auto;
+  }
+}

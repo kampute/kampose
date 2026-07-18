@@ -4,6 +4,59 @@
   }
 }
 
+@media (max-width: 767px) {
+  .content-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 1rem 0;
+  }
+
+  .content-footer-left,
+  .content-footer-right {
+    width: 100%;
+    text-align: left;
+  }
+
+  .content-footer :is(p, ul) {
+    margin: 0;
+  }
+
+  .content-footer ul {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 0.25rem;
+  }
+
+  .content-footer li {
+    display: inline-flex;
+    align-items: baseline;
+    white-space: nowrap;
+  }
+
+  .content-footer li:not(:last-child)::after {
+    content: none;
+  }
+
+  .content-footer li:not(:first-child)::before {
+    content: "•";
+    margin: 0 0.7rem;
+    color: var(--color-text-muted);
+    opacity: 0.5;
+  }
+}
+
+@media (max-width: 413px) {
+  .content-footer ul {
+    flex-direction: column;
+  }
+
+  .content-footer li:not(:first-child)::before {
+    content: none;
+    margin: 0;
+  }
+}
+
 /* Large desktops and 4K displays */
 @media (min-width: 1440px) {
   h1 {

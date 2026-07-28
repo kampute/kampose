@@ -17,19 +17,24 @@ Kampose targets .NET 10.0 and fully supports C# 14 while remaining compatible wi
 
 ## Common Use Cases
 
-#### API Library Documentation
+### API Library Documentation
+
 Generate comprehensive reference documentation for libraries and SDKs with detailed member information, inheritance hierarchies, and code examples. Kampose automatically organizes documentation by namespace and type.
 
-#### Framework Documentation
+### Framework Documentation
+
 Document complex frameworks with multiple assemblies and extensive type hierarchies. Kampose's support for multiple assemblies enables unified documentation generation across entire ecosystems.
 
-#### Project Documentation Sites
+### Project Documentation Sites
+
 Create complete documentation sites combining API reference with conceptual content, tutorials, and guides. Kampose processes Markdown topics alongside API documentation.
 
-#### Topic-Only Documentation
+### Topic-Only Documentation
+
 Generate documentation sites from Markdown files without assemblies, useful for user guides, tutorials, or project documentation without API references.
 
-#### Continuous Documentation
+### Continuous Documentation
+
 Integrate documentation generation into CI/CD pipelines to keep documentation synchronized with code changes, eliminating manual maintenance and reducing documentation drift.
 
 ## Installation

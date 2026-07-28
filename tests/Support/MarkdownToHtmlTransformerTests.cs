@@ -41,6 +41,48 @@ namespace Kampose.Test.Support
             return transformer.Transform(markdown);
         }
 
+        [TestCase("NOTE", "Useful information.")]
+        [TestCase("TIP", "Helpful advice.")]
+        [TestCase("IMPORTANT", "Essential information.")]
+        [TestCase("WARNING", "Potential risk.")]
+        [TestCase("CAUTION", "Possible negative consequences.")]
+        public void ToHtml_WithGitHubAlert_RendersSemanticAlert(string kind, string content)
+        {
+            var transformer = new MarkdownToHtmlTransformer();
+
+            var result = transformer.Transform($"> [!{kind}]\n> {content}");
+            var title = char.ToUpperInvariant(kind[0]) + kind[1..].ToLowerInvariant();
+
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(result, Does.Contain($"<blockquote class=\"note\" role=\"note\" data-type=\"{kind.ToLowerInvariant()}\" aria-label=\"{title}\">"));
+                Assert.That(result, Does.Contain($"<div class=\"note-title\" aria-hidden=\"true\">{title}</div>"));
+                Assert.That(result, Does.Contain("<div class=\"note-content\">"));
+                Assert.That(result, Does.Contain($"<p>{content}</p>"));
+                Assert.That(result, Does.Contain("</blockquote>"));
+                Assert.That(result, Does.Not.Contain($"[!{kind}]"));
+                Assert.That(result, Does.Not.Contain("markdown-alert"));
+            }
+        }
+
+        [Test]
+        public void ToHtml_WithGitHubAlert_RendersMarkdownContentInsideNote()
+        {
+            const string markdown = "> [!TIP]\n> Use **this approach**:\n> - First step\n> - Second step";
+            var transformer = new MarkdownToHtmlTransformer();
+
+            var result = transformer.Transform(markdown);
+
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(result, Does.Contain("<blockquote class=\"note\" role=\"note\" data-type=\"tip\" aria-label=\"Tip\">"));
+                Assert.That(result, Does.Contain("<strong>this approach</strong>"));
+                Assert.That(result, Does.Contain("<ul>"));
+                Assert.That(result, Does.Contain("<li>First step</li>"));
+                Assert.That(result, Does.Contain("<li>Second step</li>"));
+            }
+        }
+
         [Test]
         public void ToHtml_WithUrlTransformer_ReplacesUrlsCorrectly()
         {

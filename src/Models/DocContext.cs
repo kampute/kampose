@@ -56,6 +56,8 @@ namespace Kampose.Models
 
             if (ContentFormatter is HtmlFormat)
                 ContentFormatter.TextTransformers.Register<MarkdownToHtmlTransformer>(FileExtensions.MarkdownExtensions);
+            else if (ContentFormatter is MarkdownFormat)
+                ContentFormatter.TextTransformers.Register<MarkdownToMarkdownTransformer>(FileExtensions.MarkdownExtensions);
         }
 
         /// <summary>

@@ -1,10 +1,9 @@
 {
-  "$schema": "https://kampute.github.io/kampose/json-schemas/themeConfiguration.schema.json",
   "base": null,
   "metadata": {
     "format": "md",
     "name": "Classic",
-    "description": "A classic theme for rendering API documentation in Markdown format.",
+    "description": "Markdown theme for Azure DevOps Wiki output, with configurable page framing and optional child-topic links.",
     "version": "1.1.0",
     "author": "Kambiz Khojasteh",
     "license": "MIT",
@@ -13,17 +12,17 @@
   "parameters": {
     "pageHeader": {
       "type": "markdown",
-      "description": "The markdown content for the page header. Accepts a string or an array of strings (joined with newlines). Template functions and variables can be used here.",
+      "description": "Markdown inserted before the generated content on every page. Accepts one string or an array of strings joined with newlines, and may contain Handlebars expressions that use the page's template data.",
       "defaultValue": null
     },
     "pageFooter": {
       "type": "markdown",
-      "description": "The markdown content for the page footer. Accepts a string or an array of strings (joined with newlines). Template functions and variables can be used here.",
+      "description": "Markdown inserted after a horizontal rule at the end of every page. Accepts one string or an array of strings joined with newlines, and may contain Handlebars expressions that use the page's template data.",
       "defaultValue": null
     },
     "seeAlsoSubtopics": {
       "type": "boolean",
-      "description": "Whether to automatically include related subtopics as 'see also' references.",
+      "description": "When true, appends a See Also list of a topic's immediate child topics to each topic page.",
       "defaultValue": false
     }
   },

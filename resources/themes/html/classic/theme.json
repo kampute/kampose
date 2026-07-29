@@ -1,10 +1,9 @@
 {
-  "$schema": "https://kampute.github.io/kampose/json-schemas/themeConfiguration.schema.json",
   "base": null,
   "metadata": {
     "format": "html",
     "name": "Classic",
-    "description": "A classic theme for rendering API documentation in HTML format.",
+    "description": "Responsive HTML theme with API navigation, topic menus, light and dark color modes, search, and configurable branding.",
     "version": "1.5.0",
     "author": "Kambiz Khojasteh",
     "license": "MIT",
@@ -13,102 +12,102 @@
   "parameters": {
     "projectName": {
       "type": "string",
-      "description": "The name of the project.",
+      "description": "Project name shown in the header brand and browser page titles. On the home page it becomes the entire title; on other pages it prefixes the page title.",
       "defaultValue": null
     },
     "projectSlogan": {
       "type": "string",
-      "description": "The slogan or tagline of the project.",
+      "description": "Short tagline shown beneath the project name in the header brand.",
       "defaultValue": null
     },
     "projectLogoUri": {
       "type": "uri",
-      "description": "The URI of the project logo.",
+      "description": "Absolute or output-root-relative URI of the single logo shown in the header. It is used only when both color-specific logo parameters are not set.",
       "defaultValue": null
     },
     "projectLogoDarkUri": {
       "type": "uri",
-      "description": "The URI of the project logo for dark backgrounds. When this is set, 'projectLogoLightUri' is required and 'projectLogoUri' is ignored.",
+      "description": "Absolute or output-root-relative URI of the logo displayed in dark color mode. It takes effect only when projectLogoLightUri is also set; together they replace projectLogoUri.",
       "defaultValue": null
     },
     "projectLogoLightUri": {
       "type": "uri",
-      "description": "The URI of the project logo for light backgrounds. When this is set, 'projectLogoDarkUri' is required and 'projectLogoUri' is ignored.",
+      "description": "Absolute or output-root-relative URI of the logo displayed in light color mode. It takes effect only when projectLogoDarkUri is also set; together they replace projectLogoUri.",
       "defaultValue": null
     },
     "faviconUri": {
       "type": "uri",
-      "description": "The URI of the favicon.",
+      "description": "Absolute or output-root-relative URI added to every page as its browser favicon.",
       "defaultValue": null
     },
     "styleUri": {
       "type": "uri",
-      "description": "The URI of the custom stylesheet to extend or override the default styles.",
+      "description": "Absolute or output-root-relative URI of an additional stylesheet loaded after the theme's bundled styles, allowing it to extend or override them.",
       "defaultValue": null
     },
     "scriptUri": {
       "type": "uri",
-      "description": "The URI of the custom script to extend the default functionality.",
+      "description": "Absolute or output-root-relative URI of an additional script loaded after the theme bundles and Prism syntax highlighting script.",
       "defaultValue": null
     },
     "pageHeader": {
       "type": "markdown",
-      "description": "The markdown content for the page header. Accepts a string or an array of strings (joined with newlines). Template functions and variables can be used here.",
+      "description": "Markdown rendered above the main content on every page. Accepts one string or an array of strings joined with newlines, and may contain Handlebars expressions that use the page's template data.",
       "defaultValue": null
     },
     "pageFooter": {
       "type": "markdown",
-      "description": "The markdown content for the left side of the page footer. Accepts a string or an array of strings (joined with newlines). Template functions and variables can be used here.",
+      "description": "Markdown rendered in the left side of every page footer. Accepts one string or an array of strings joined with newlines, and may contain Handlebars expressions that use the page's template data.",
       "defaultValue": null
     },
     "pageFooterRight": {
       "type": "markdown",
-      "description": "The markdown content for the right side of the page footer. Accepts a string or an array of strings (joined with newlines). Template functions and variables can be used here.",
+      "description": "Markdown rendered in the right side of every page footer. Accepts one string or an array of strings joined with newlines, and may contain Handlebars expressions that use the page's template data.",
       "defaultValue": null
     },
     "menuItems": {
       "type": "array",
-      "description": "Defines the menu bar structure as an array. Each item is an object with 'title' and 'url' properties. To create dropdowns, add an 'items' array of sub-items. At any level, use '*' to auto-insert documentation topics, or '-' to add a divider.",
+      "description": "Top menu entries. An object uses title for its label, optional url for its link, and optional items for a nested submenu. A string names a topic slug to insert, \"*\" inserts all documentation topics, and \"-\" inserts a divider; these forms may be used at any nesting level. An empty array hides the menu bar.",
       "defaultValue": []
     },
     "excludeBreadcrumb": {
       "type": "boolean",
-      "description": "Determines whether to avoid rendering the breadcrumb navigation.",
+      "description": "When true, removes the breadcrumb trail below the page header.",
       "defaultValue": false
     },
     "excludeLeftSidebar": {
       "type": "boolean",
-      "description": "Determines whether to avoid rendering the left sidebar, which contains the main navigation.",
+      "description": "When true, removes the searchable site navigation from the left sidebar and its mobile navigation button.",
       "defaultValue": false
     },
     "excludeRightSidebar": {
       "type": "boolean",
-      "description": "Determines whether to avoid rendering the right sidebar, which contains the page-specific navigation.",
+      "description": "When true, removes the right sidebar containing navigation for sections on the current page.",
       "defaultValue": false
     },
     "groupTypesByNamespace": {
       "type": "boolean",
-      "description": "Determines whether to group types by their namespace in the left sidebar. If true, types are grouped by their namespace; if false, they are listed individually.",
+      "description": "When true, retains namespace groups in the left API navigation. When false, type entries are flattened and sorted by title when namespace pages are available.",
       "defaultValue": false
     },
     "showTypeMembersSummary": {
       "type": "boolean",
-      "description": "Determines whether to include a summary of type members in the type documentation pages. This is relevant only when each type member has its own documentation page.",
+      "description": "When true, adds a member summary to type pages when the selected convention generates separate pages for individual members. It has no effect when members are expanded directly on their type page.",
       "defaultValue": false
     },
     "seeAlsoSubtopics": {
       "type": "boolean",
-      "description": "Whether to automatically include related subtopics as 'see also' references.",
+      "description": "When true, appends a See Also list of a topic's immediate child topics to each topic page.",
       "defaultValue": false
     },
     "externalLinksSamePage": {
       "type": "boolean",
-      "description": "Determines whether external links open in the same page. When false (default), external links open in a new tab; when true, they open in the same page.",
+      "description": "When true, external links navigate in the current tab. When false, they open in a new tab with opener access disabled.",
       "defaultValue": false
     },
     "popupAssetNames": {
       "type": "array",
-      "description": "An array of asset file names that should open in a modal overlay when linked. Matching is case-insensitive and supports wildcard patterns.",
+      "description": "Case-insensitive filenames that open in an in-page preview modal when linked from generated content. Prefix a value with \"*\" to match a filename suffix such as an extension; other values match the complete filename. Only same-origin links are eligible.",
       "defaultValue": ["LICENSE", "DISCLAIMER"]
     }
   },

@@ -96,11 +96,12 @@ namespace Kampose.Templates
         /// <summary>
         /// Converts the specified <see cref="Arguments"/> to an enumerable of objects.
         /// </summary>
+        /// <param name="arguments">The arguments to convert.</param>
+        /// <returns>An enumerable of objects representing the arguments.</returns>
         /// <remarks>
         /// If the <see cref="Arguments"/> contains a single argument that is an <see cref="IEnumerable"/> (excluding strings),
         /// it will be flattened into the resulting enumerable. Otherwise, the arguments will be returned as-is.
-        /// <param name="arguments">The arguments to convert.</param>
-        /// <returns>An enumerable of objects representing the arguments.</returns>
+        /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<object?> AsObjectSequence(this in Arguments arguments)
         {

@@ -9,46 +9,44 @@ namespace Kampose.Models
     using System.Collections.Generic;
 
     /// <summary>
-    /// Represents the settings for resolving the documentation URLs of external code elements
-    /// referenced by the assemblies to be documented.
+    /// Maps external namespace patterns to a documentation site and URL convention.
     /// </summary>
     public sealed class DocReference
     {
         /// <summary>
-        /// Gets the collection of namespaces that identify the code elements for which
-        /// documentation URLs are to be resolved.
+        /// Gets the namespace patterns whose external code elements use this reference.
         /// </summary>
         /// <value>
-        /// The collection of namespaces that identify the code elements for which documentation
-        /// URLs are to be resolved. The namespaces are case-sensitive and may contain a single
-        /// wildcard (*) as the last segment.
+        /// A non-empty, case-sensitive set of namespace patterns. A pattern may end with a single
+        /// wildcard (<c>*</c>) segment to match descendant namespaces.
         /// </value>
         public HashSet<string> Namespaces { get; } = new(StringComparer.Ordinal);
 
         /// <summary>
-        /// Gets or sets the strategy used for resolving the documentation URLs of code elements.
+        /// Gets or sets the URL convention used for matching external code elements.
         /// </summary>
         /// <value>
-        /// The strategy used for resolving the documentation URLs of code elements. This value
-        /// determines the format and structure of the URLs.
+        /// The required strategy that constructs a documentation URL or online search query for a referenced type
+        /// or member.
         /// </value>
         public required DocReferenceStrategy Strategy { get; set; }
 
         /// <summary>
-        /// Gets or sets the full URL of the documentation site.
+        /// Gets or sets the absolute base URI of the external documentation site.
         /// </summary>
         /// <value>
-        /// The full URL of the documentation site where the documentation for the code elements
-        /// can be found.
+        /// The required absolute documentation-site URI, or the search endpoint when <see cref="Strategy"/> is
+        /// <see cref="DocReferenceStrategy.OnlineSearch"/>.
         /// </value>
         public required Uri Url { get; set; }
 
         /// <summary>
-        /// Gets or sets the file extension used in the documentation URLs.
+        /// Gets or sets an override for the page extension produced by the selected strategy.
         /// </summary>
         /// <value>
-        /// The file extension used in the documentation URLs if the URLs are file-based and have a
-        /// file extension other than the default; otherwise, <see langword="null"/>.
+        /// The page extension to use; an empty or whitespace-only string to omit page extensions; or
+        /// <see langword="null"/> to retain the strategy's default. This value has no effect when
+        /// <see cref="Strategy"/> is <see cref="DocReferenceStrategy.OnlineSearch"/>.
         /// </value>
         public string? Extension { get; set; }
     }

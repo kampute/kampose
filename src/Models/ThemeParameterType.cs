@@ -6,43 +6,45 @@
 namespace Kampose.Models
 {
     /// <summary>
-    /// Defines the data type and handling requirements for a theme parameter.
+    /// Specifies the expected representation and normalization of a theme parameter value.
     /// </summary>
     public enum ThemeParameterType
     {
         /// <summary>
-        /// A string value.
+        /// A JSON string preserved as text.
         /// </summary>
         String,
 
         /// <summary>
-        /// A numeric value.
+        /// A JSON number.
         /// </summary>
         Number,
 
         /// <summary>
-        /// A boolean value.
+        /// A JSON Boolean value.
         /// </summary>
         Boolean,
 
         /// <summary>
-        /// A Markdown formatted text, which may contain template expressions.
-        /// Accepts either a string or an array of strings (which will be joined with newlines).
+        /// Markdown text that may contain template expressions.
         /// </summary>
+        /// <remarks>
+        /// Accepts a string or a sequence of strings. Sequence items are joined using the platform newline.
+        /// </remarks>
         Markdown,
 
         /// <summary>
-        /// An URI or resource path.
+        /// An absolute or relative URI reference, including a resource path.
         /// </summary>
         Uri,
 
         /// <summary>
-        /// An array of values.
+        /// A JSON array.
         /// </summary>
         Array,
 
         /// <summary>
-        /// A structured object with its own properties.
+        /// A JSON object.
         /// </summary>
         Object,
     }

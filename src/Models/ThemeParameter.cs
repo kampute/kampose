@@ -13,7 +13,7 @@ namespace Kampose.Models
     using System.Text.Json.Serialization;
 
     /// <summary>
-    /// Represents a parameter definition for a theme with its associated metadata.
+    /// Defines a theme parameter's expected type, description, and fallback value.
     /// </summary>
     public readonly struct ThemeParameter
     {
@@ -21,9 +21,14 @@ namespace Kampose.Models
         /// Initializes a new instance of the <see cref="ThemeParameter"/> struct.
         /// </summary>
         /// <param name="type">The data type of the parameter.</param>
-        /// <param name="description">An optional description of the parameter's purpose.</param>
-        /// <param name="defaultValue">The value of the parameter.</param>
-        /// <exception cref="FormatException">Thrown when the <paramref name="defaultValue"/>'s type doesn't match the expected <paramref name="type"/>.</exception>
+        /// <param name="description">An optional explanation of the parameter's purpose and expected value.</param>
+        /// <param name="defaultValue">The fallback value used when the theme setting is absent or <see langword="null"/>.</param>
+        /// <exception cref="FormatException">
+        /// <paramref name="defaultValue"/> does not match <paramref name="type"/>.
+        /// </exception>
+        /// <exception cref="JsonException">
+        /// <paramref name="defaultValue"/> is a JSON value that does not match <paramref name="type"/>.
+        /// </exception>
         [JsonConstructor]
         public ThemeParameter(ThemeParameterType type, string? description = null, object? defaultValue = null)
         {
@@ -33,10 +38,10 @@ namespace Kampose.Models
         }
 
         /// <summary>
-        /// Gets the value of the parameter.
+        /// Gets the parameter's fallback value.
         /// </summary>
         /// <value>
-        /// The value of the parameter, which can be a string, number, boolean, URI, list, or a dictionary
+        /// The validated fallback value, or <see langword="null"/> when no fallback is defined.
         /// </value>
         public readonly object? DefaultValue { get; }
 
@@ -44,24 +49,34 @@ namespace Kampose.Models
         /// Gets the data type of the parameter.
         /// </summary>
         /// <value>
-        /// The parameter's data type, which determines how the value should be interpreted and processed.
+        /// The expected data type used to validate configured and fallback values.
         /// </value>
         public readonly ThemeParameterType Type { get; }
 
         /// <summary>
-        /// Gets an optional description of the parameter's purpose.
+        /// Gets the user-facing description of the parameter.
         /// </summary>
         /// <value>
-        /// A human-readable description explaining the parameter's purpose and expected values, or <see langword="null"/> if no description is provided.
+        /// An explanation of where the parameter is used, its effect, and any expected structure or interactions;
+        /// or <see langword="null"/> when no description is provided.
         /// </value>
         public readonly string? Description { get; }
 
         /// <summary>
-        /// Validates the specified value against the parameter's data type.
+        /// Validates and normalizes a value according to the parameter's declared type.
         /// </summary>
-        /// <param name="value">The value to validate.</param>
-        /// <returns>The validated value.</returns>
-        /// <exception cref="FormatException">Thrown when the value's type doesn't match the expected parameter type.</exception>
+        /// <param name="value">The value to validate, or <see langword="null"/>.</param>
+        /// <returns>
+        /// The validated value; a normalized <see cref="Uri"/> for URI parameters; newline-joined text for Markdown
+        /// arrays; or <see langword="null"/> when <paramref name="value"/> is <see langword="null"/>.
+        /// </returns>
+        /// <exception cref="FormatException">
+        /// A non-JSON value does not match <see cref="Type"/> or a Markdown sequence contains a non-string item.
+        /// </exception>
+        /// <exception cref="JsonException">
+        /// A JSON value does not match <see cref="Type"/>, is not a valid URI, or a Markdown array contains a
+        /// non-string item.
+        /// </exception>
         public object? ValidateValue(object? value)
         {
             switch (value)

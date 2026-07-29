@@ -6,27 +6,27 @@
 namespace Kampose.Models
 {
     /// <summary>
-    /// Specifies the strategy used to reference documentation for types and members in referenced libraries.
+    /// Specifies how documentation URLs are constructed for external types and members.
     /// </summary>
     public enum DocReferenceStrategy
     {
         /// <summary>
-        /// Documentation follows the structure and conventions of the .NET API Browser.
+        /// Constructs URLs using .NET API Browser addressing conventions.
         /// </summary>
         DotNet,
 
         /// <summary>
-        /// Documentation follows the structure and conventions of the DocFX document generator.
+        /// Constructs URLs using DocFX addressing conventions.
         /// </summary>
         DocFx,
 
         /// <summary>
-        /// Documentation is hosted on an Azure DevOps Wiki.
+        /// Constructs URLs using Azure DevOps Wiki addressing conventions.
         /// </summary>
         DevOps,
 
         /// <summary>
-        /// Documentation is not directly available but may be found through an Internet search.
+        /// Constructs an online search query instead of a direct documentation-page URL.
         /// </summary>
         OnlineSearch,
     }

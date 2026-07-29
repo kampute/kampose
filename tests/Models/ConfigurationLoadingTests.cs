@@ -54,6 +54,19 @@ namespace Kampose.Test.Models
         }
 
         [Test]
+        public void LoadFromFile_WithSchemaDeclaration_ReturnsConfiguration()
+        {
+            var filePath = GenerateJsonFile("with-schema.json", @"{
+                ""$schema"": ""https://kampute.github.io/kampose/json-schemas/configuration.schema.json"",
+                ""outputDirectory"": ""./output""
+            }");
+
+            var config = Configuration.LoadFromFile(filePath);
+
+            Assert.That(config.OutputDirectory, Does.EndWith("output"));
+        }
+
+        [Test]
         public void LoadFromFile_WithFullConfig_ReturnsConfigurationWithAllProperties()
         {
             var filePath = GenerateJsonFile("full.json", @"{
@@ -253,6 +266,19 @@ namespace Kampose.Test.Models
         }
 
         [Test]
+        public void LoadFromFile_WithUnknownProperty_ThrowsValidationException()
+        {
+            var filePath = GenerateJsonFile("unknown-property.json", @"{
+                ""outputDirectory"": ""./output"",
+                ""unknownProperty"": true
+            }");
+
+            var exception = Assert.Throws<ValidationException>(() => Configuration.LoadFromFile(filePath));
+
+            Assert.That(exception!.Errors, Has.Some.Contains("unknownProperty"));
+        }
+
+        [Test]
         public void LoadFromFile_WithInvalidBaseUrl_ThrowsValidationException()
         {
             var filePath = GenerateJsonFile("invalid-base-url.json", @"{
@@ -277,7 +303,7 @@ namespace Kampose.Test.Models
             }");
 
             var exception = Assert.Throws<ValidationException>(() => Configuration.LoadFromFile(filePath));
-            Assert.That(exception!.Message, Does.Contain("invalid"));
+            Assert.That(exception!.Errors, Has.Some.Contains("baseUrl"));
         }
 
         [Test]

@@ -92,7 +92,7 @@ namespace Kampose.Support
                 throw new ValidationException($"{typeof(T).Name} file could not be parsed: {path}", [error.Message]);
             }
 
-            if (validator?.Invoke(jsonDocument) is Dictionary<string, string> { Count: > 0 } errors)
+            if (validator?.Invoke(jsonDocument) is { Count: > 0 } errors)
                 throw new ValidationException($"{typeof(T).Name} file contains errors: {path}", errors.Values);
 
             try
@@ -133,7 +133,17 @@ namespace Kampose.Support
             using var schemaStream = GetJsonSchemaStream<T>();
             var schema = JsonSerializer.Deserialize<JsonSchema>(schemaStream, DeserializationOptions)!;
             var validation = schema.Evaluate(jsonDocument.RootElement, evaluationOptions);
-            return validation.Errors;
+
+            if (validation.IsValid)
+                return null;
+
+            if (validation.Errors is { Count: > 0 } errors)
+                return errors;
+
+            return new Dictionary<string, string>
+            {
+                [string.Empty] = "The JSON document does not match the required schema."
+            };
         }
 
         /// <summary>

@@ -31,6 +31,7 @@
     <PackageIcon>ICON.png</PackageIcon>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
     <NoDefaultExcludes>true</NoDefaultExcludes>
   </PropertyGroup>
 
@@ -52,7 +53,7 @@
 
   <ItemGroup>
     <PackageReference Include="Handlebars.Net" Version="2.1.6" />
-    <PackageReference Include="JsonSchema.Net" Version="9.2.2" />
+    <PackageReference Include="JsonSchema.Net" Version="9.4.0" />
     <PackageReference Include="Kampute.DocToolkit" Version="3.0.0" />
     <PackageReference Include="Markdig.Signed" Version="1.3.2" />
     <PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" Version="10.0.10" />

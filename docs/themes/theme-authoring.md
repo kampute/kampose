@@ -7,6 +7,12 @@ summary: "Guide to authoring Kampose themes with theme configuration, inheritanc
 
 Kampose themes define the layout, content structure, and visual presentation of generated documentation. This guide covers the complete process of creating custom themes from initial setup to advanced customization.
 
+> [!TIP]
+> The [Kampose skill][kampose-skill] can customize a built-in theme or derive
+> a minimal custom theme when theme settings are insufficient.
+
+[kampose-skill]: https://github.com/Khojasteh/degardis-skills/tree/main/skills/kampose
+
 ## Theme Organization
 
 Kampose organizes themes by output format within the installation's `themes/` directory:
@@ -77,7 +83,7 @@ The configuration file supports the following properties:
   - `defaultValue` *(any)*: Default value used if not configured (must match `type`).
   - `description` *(string|null)*: Explanation of the parameter's purpose, usage, and behavior.
 
-The [JSON schema](~/json-schemas/themeConfiguration.schema.json "JSON schema for Kampose theme configuration") provides validation and editor support. Reference it from a complete `theme.json` with the `$schema` property. Focused fragments elsewhere in this guide omit `$schema` and show only the relevant settings.
+The [JSON schema](~/json-schemas/themeConfiguration.schema.json "JSON schema for Kampose theme configuration") is published for validation and editor support. Validate `theme.json` files against it out of band, using the schema that matches your installed Kampose version, rather than referencing it from the theme configuration file itself.
 
 ## Theme Inheritance
 
@@ -172,7 +178,8 @@ At runtime the same global template values, including the variables listed above
 
 Use `{{#json this}}` to output the current template context as JSON for debugging and understanding available data structures.
 
-> Note that circular references in the object graph are automatically handled during JSON serialization. When a cycle is detected, the cyclic reference is replaced with `null` in the JSON output. This means some properties may appear as `null` even though they reference actual objects—they are simply part of a circular reference that cannot be fully serialized.
+> [!NOTE]
+> JSON serialization replaces cyclic references with `null`. A property shown as `null` in debug output may therefore reference an object at runtime.
 
 ### Template Enhancement Tools
 
@@ -263,7 +270,8 @@ Example usage for a parameter named `overallFooter`:
 {{/if}}
 ```
 
-> Always reference Markdown parameters using their generated partial to ensure proper template variable expansion.
+> [!IMPORTANT]
+> Reference Markdown parameters through their generated partial. Rendering the parameter value directly bypasses Markdown processing and template-variable expansion.
 
 ### Parameter Configuration
 
@@ -281,7 +289,6 @@ The following `theme.json` demonstrates a complete theme configuration:
 
 ```json
 {
-    "$schema": "https://kampute.github.io/kampose/json-schemas/themeConfiguration.schema.json",
     "metadata": {
         "name": "My Theme",
         "format": "html",

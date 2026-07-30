@@ -7,23 +7,22 @@ summary: "Complete reference for the Kampose JSON configuration file, including 
 
 This document describes the Kampose JSON configuration file, covering the fields used to locate source assemblies and topics, control output formatting and layout, configure references, and customize themes.
 
+> [!TIP]
+> Using an AI coding agent? The [Kampose skill][kampose-skill] can create or
+> review `kampose.json` against the Kampose version used by your project.
+
+[kampose-skill]: https://github.com/Khojasteh/degardis-skills/tree/main/skills/kampose
+
 By default, Kampose reads the configuration from the `kampose.json` file in the current working directory. You can specify an alternate file path on the command line:
 
 ```shell
 kampose build MyConfig.json
 ```
 
-> All relative paths in configuration are resolved against `baseDirectory` (described below). If `baseDirectory` is omitted, Kampose uses the directory that contains the configuration file.
+> [!NOTE]
+> Kampose resolves every relative configuration path against `baseDirectory`. If `baseDirectory` is omitted, it uses the directory containing the configuration file.
 
-The [JSON schema](~/json-schemas/configuration.schema.json "JSON schema for Kampose configuration") is available for validation and editor support. Include it in complete configuration files with the `$schema` property:
-
-```json
-{
-  "$schema": "https://kampute.github.io/kampose/json-schemas/configuration.schema.json"
-}
-```
-
-The option examples below are fragments, so they omit `$schema` and show only the settings relevant to each section.
+The [JSON schema](~/json-schemas/configuration.schema.json "JSON schema for Kampose configuration") is published for validation and editor support. Validate configuration files against it out of band, using the schema that matches your installed Kampose version, rather than referencing it from the configuration file itself.
 
 ## Configuration Options
 
@@ -35,7 +34,7 @@ Specifies the root directory for resolving all relative paths in the configurati
 
 When not specified, Kampose uses the directory containing the configuration file. All relative paths in the configuration are resolved from this directory.
 
-##### Example
+#### Example
 
 The following example sets a custom base directory for path resolution. Since the base directory is relative, it resolves against the directory containing the configuration file.
 
@@ -53,7 +52,7 @@ Specifies the directory where Kampose writes all generated documentation files. 
 
 This setting is required.
 
-##### Example
+#### Example
 
 The following example specifies an output directory (`site`) relative to the base directory (`/project`):
 
@@ -76,7 +75,7 @@ Specifies the page layout and URL format for the generated documentation.
 
 The default convention is `docFx`.
 
-##### Example
+#### Example
 
 The following example configures the .NET convention, where each type and member has its own documentation page:
 
@@ -94,7 +93,7 @@ When a `baseUrl` is specified, all internal links become absolute URLs. Otherwis
 
 Leaving `baseUrl` unset is recommended so that the documentation can be used in different environments, including local development, without updating all internal links.
 
-##### Example
+#### Example
 
 The following example configures absolute URLs for a versioned documentation site:
 
@@ -113,7 +112,7 @@ If an assembly appears in multiple locations, the first one found is used. You c
 
 At least one assembly pattern is required when no topic patterns are specified.
 
-##### Example
+#### Example
 
 The following example includes release assemblies while excluding test and benchmark assemblies:
 
@@ -131,7 +130,7 @@ The following example includes release assemblies while excluding test and bench
 
 Specifies [glob patterns](globe-patterns.md) for additional XML documentation files or those not in the same location as their assemblies.
 
-##### Example
+#### Example
 
 The following example includes XML documentation from custom locations:
 
@@ -186,7 +185,7 @@ This setting is required for each reference entry.
 
 Specifies the file extension override for non-standard documentation URLs.
 
-##### Examples
+#### Examples
 
 The following example configures Kampose to use a search engine for `Newtonsoft.Json` references:
 
@@ -225,7 +224,7 @@ Kampose processes these files and converts them to the target format.
 
 For a task-oriented explanation of topic metadata, hierarchy, and links, see [Conceptual Topics](writing-documentation/conceptual-topics.md).
 
-##### Example
+#### Example
 
 The following example includes documentation from multiple directories while excluding draft content:
 
@@ -276,7 +275,7 @@ Specifies the explicit ordering for topics in the documentation navigation.
 
 Topics are displayed in the order specified in this list. If a topic is not listed, it maintains its alphabetical position after the ordered topics.
 
-##### Example
+#### Example
 
 The following example defines a specific order for key documentation topics:
 
@@ -304,7 +303,7 @@ Specifies the method for organizing topics into parent-child relationships.
 
 The default value is `none`, meaning no hierarchy is applied.
 
-##### Example
+#### Example
 
 **Directory hierarchy:**
 ```
@@ -347,7 +346,7 @@ Specifies the directory within the output directory where the files are copied.
 
 This setting is optional. If omitted, files are copied to the root of the output directory.
 
-##### Example
+#### Example
 
 The example below demonstrates copying different asset types to separate directories:
 
@@ -374,7 +373,7 @@ The available themes depend on the [`convention`](#convention) used. Please refe
 
 If no theme is specified, Kampose uses the `"classic"` theme.
 
-##### Example
+#### Example
 
 The following example selects the classic theme:
 
@@ -390,7 +389,7 @@ Specifies theme-specific customization parameters that control appearance and be
 
 Available settings vary by theme and are defined by each theme's configuration. Please refer to the [themes documentation](themes.md) for information about available themes and their specific parameters.
 
-##### Example
+#### Example
 
 The following example configures various theme settings for the classic theme (HTML):
 
@@ -457,7 +456,7 @@ The default constructors generated by the compiler are not documented in XML and
 
 However, if you want to ensure that all public constructors are explicitly defined and documented, you can set this option to `true` to get a warning for any implicit constructors.
 
-##### `verifyExternalLinks`
+#### `verifyExternalLinks`
 
 Specifies whether to verify external links in XML documentation comments and Markdown topics (default: `false`).
 
@@ -466,7 +465,8 @@ internal links, it also checks that they point to existing documentation content
 
 However, external links (those starting with `http://` or `https://`) are not verified by default to avoid delays during documentation generation. By enabling this option, Kampose will actively check the accessibility of these external URLs and report any broken or unreachable links as audit issues.
 
-> Enabling this option may increase the documentation generation time, especially if there are many external links to verify.
+> [!NOTE]
+> Enabling external-link verification can increase generation time, especially when the documentation contains many external links.
 
 #### `stopOnIssues`
 
@@ -474,7 +474,7 @@ Specifies whether to halt documentation generation when audit failures occur (de
 
 By default, Kampose will report audit issues but continue with the documentation generation process. If you want to enforce documentation quality, you can set this option to `true` to address documentation gaps before proceeding. This is particularly useful in continuous integration scenarios where maintaining documentation quality is essential.
 
-##### Example
+#### Example
 
 The following example enables auditing for minimum required documentation plus property value tags, and stops generation if issues are found in the XML documentation:
 

@@ -194,7 +194,8 @@ The `pageHeader` setting allows you to add custom Markdown content that will be 
 
 This is commonly used for displaying status badges (build status, version, coverage), project announcements, important notices, or contextual information that should appear prominently on all pages.
 
-> Prefix documentation-root-relative paths with `~/` (for example, `[License](~/LICENSE)`). Ordinary relative paths remain relative to the current page. See [URL resolution](../url-resolution.md).
+> [!TIP]
+> Prefix documentation-root-relative paths with `~/`, for example `[License](~/LICENSE)`. Ordinary relative paths remain relative to the current page. See [URL Resolution](../url-resolution.md).
 
 #### Example
 
@@ -232,7 +233,8 @@ This is commonly used for copyright notices, legal information, attribution, or 
 
 You can use Markdown bullet points in the footer content. For better visual integration with the theme, the footer will render bullet points as inline items separated by bullets (`•`).
 
-> Prefix documentation-root-relative paths with `~/` (for example, `[License](~/LICENSE)`). Ordinary relative paths remain relative to the current page. See [URL resolution](../url-resolution.md).
+> [!TIP]
+> Prefix documentation-root-relative paths with `~/`, for example `[License](~/LICENSE)`. Ordinary relative paths remain relative to the current page. See [URL Resolution](../url-resolution.md).
 
 #### Example
 
@@ -270,7 +272,8 @@ This is commonly used for version information, last updated dates, or secondary 
 
 You can use Markdown bullet points in the footer content. For better visual integration with the theme, the footer will render bullet points as inline items separated by bullets (`•`).
 
-> Prefix documentation-root-relative paths with `~/` (for example, `[License](~/LICENSE)`). Ordinary relative paths remain relative to the current page. See [URL resolution](../url-resolution.md).
+> [!TIP]
+> Prefix documentation-root-relative paths with `~/`, for example `[License](~/LICENSE)`. Ordinary relative paths remain relative to the current page. See [URL Resolution](../url-resolution.md).
 
 #### Example
 
@@ -506,7 +509,8 @@ The array should contain files that have been included as documentation assets a
 
 By default, this setting displays `LICENSE` and `DISCLAIMER` files in a pop-up overlay when linked. To disable this feature, set the array to an empty list (`[]`).
 
-> If the MIME type of a file is not recognized as displayable (text, image, PDF, or SVG), the system will attempt to display small files (up to 16 KiB) as plain text. This may occur for files without an extension or with unrecognized extensions.
+> [!NOTE]
+> If a file's MIME type is not recognized as text, image, PDF, or SVG, the theme attempts to display files up to 16 KiB as plain text. This fallback commonly applies to extensionless files and unfamiliar file types.
 
 #### Example
 
@@ -522,11 +526,12 @@ By default, this setting displays `LICENSE` and `DISCLAIMER` files in a pop-up o
 
 ## File Protocol Limitations
 
-When viewing the generated documentation locally using the `file://` protocol, be aware that browsers impose restrictions on pages loaded from the local file system. Many browsers block or limit access to localStorage, fetch/XHR requests, and service workers for `file://` pages. As a result, theme preferences may not persist across page navigations, and the navigation sidebar might briefly flicker.
+> [!WARNING]
+> Browsers restrict features such as local storage, fetch requests, and service workers on `file://` pages. Theme preferences may not persist between pages, and the navigation sidebar may briefly flicker.
 
-For realistic testing and reliable deployment, serve the documentation via an HTTP(S) server, or use a browser that permits localStorage access for `file://` pages.
+For realistic testing, serve the generated documentation through an HTTP(S) server.
 
-#### Example
+### Example
 
 Install the official dotnet static file server tool and run a simple HTTP server:
 

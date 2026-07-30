@@ -1,5 +1,4 @@
 {
-  "$schema": "https://kampute.github.io/kampose/json-schemas/configuration.schema.json",
   "outputDirectory": ".site",
   "topicHierarchy": "directory",
   "topics": [

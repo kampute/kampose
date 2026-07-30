@@ -148,3 +148,4 @@ Topic content is automatically adjusted to work within your documentation struct
 <div class="topic-content">
 {{model}}  {{!-- Topic content automatically rendered --}}
 </div>
+```

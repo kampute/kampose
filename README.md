@@ -53,7 +53,6 @@ dotnet tool install --global kampose
 **Step 2**: Create `kampose.json` in your project root:
 ```json
 {
-    "$schema": "https://kampute.github.io/kampose/json-schemas/configuration.schema.json",
     "convention": "dotNet",
     "outputDirectory": "docs",
     "assemblies": ["bin/Release/**/*.dll"],
@@ -72,6 +71,23 @@ kampose build
 See the [Command-Line Interface](https://kampute.github.io/kampose/command-line) guide for additional commands and options.
 
 **Step 4**: Open `docs/index.html` in your browser to view the generated documentation.
+
+## AI Agent Skill
+
+A maintained Kampose skill is available for compatible AI coding agents. It
+helps agents install and configure Kampose, author conceptual documentation,
+customize themes, integrate documentation builds with CI, review existing
+setups, and diagnose generated output.
+
+[Review the skill and installation instructions][kampose-skill].
+
+After installation, try:
+
+```text
+How would you recommend setting up Kampose documentation for this repository?
+```
+
+[kampose-skill]: https://github.com/Khojasteh/degardis-skills/tree/main/skills/kampose
 
 ## Documentation
 

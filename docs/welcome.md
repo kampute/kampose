@@ -56,7 +56,6 @@ Follow these simple steps to generate your first API documentation with Kampose.
 
 ```json
 {
-    "$schema": "https://kampute.github.io/kampose/json-schemas/configuration.schema.json",
     "convention": "dotNet",
     "outputDirectory": "docs",
     "assemblies": ["bin/Release/**/*.dll"],
@@ -74,6 +73,23 @@ kampose build
 ```
 
 For detailed usage instructions and examples, see the [Command-Line Interface](command-line.md) guide.
+
+## AI Agent Skill
+
+A maintained Kampose skill is available for compatible AI coding agents. It
+helps agents install and configure Kampose, author conceptual documentation,
+customize themes, integrate documentation builds with CI, review existing
+setups, and diagnose generated output.
+
+[Review the skill and installation instructions][kampose-skill].
+
+After installation, try:
+
+```text
+How would you recommend setting up Kampose documentation for this repository?
+```
+
+[kampose-skill]: https://github.com/Khojasteh/degardis-skills/tree/main/skills/kampose
 
 ## Guide to This Documentation
 

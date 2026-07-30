@@ -22,7 +22,6 @@ All examples use this `kampose.json` configuration file in the repository root:
 
 ```json
 {
-  "$schema": "https://kampute.github.io/kampose/json-schemas/configuration.schema.json",
   "convention": "dotNet",
   "outputDirectory": ".doc-site",
   "assemblies": ["src/**/bin/Release/**/*.dll"],
@@ -53,13 +52,14 @@ The workflow examples in this guide install the latest version of Kampose:
 dotnet tool install --global kampose
 ```
 
-While this is convenient for getting started, it's recommended to pin to a specific version in production pipelines:
+While this is convenient for getting started, pin a specific version in production pipelines:
 
 ```shell
-dotnet tool install --global kampose --version 1.1.0
+dotnet tool install --global kampose --version 1.2.0
 ```
 
-Pinning to a specific version prevents builds from failing unexpectedly if a newer version introduces breaking changes. When you're ready to upgrade, you can test the new version in a separate branch before updating your main pipeline.
+> [!IMPORTANT]
+> Pinning makes pipeline behavior repeatable and prevents an untested Kampose release from changing the build. Test upgrades in a separate branch before updating the production pipeline.
 
 ## GitHub Actions
 
@@ -175,7 +175,6 @@ Publish documentation directly to Azure DevOps Wiki. Update your `kampose.json` 
 
 ```json
 {
-  "$schema": "https://kampute.github.io/kampose/json-schemas/configuration.schema.json",
   "convention": "devOps",
   "outputDirectory": ".doc-site",
   "assemblies": ["src/**/bin/Release/**/*.dll"],

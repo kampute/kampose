@@ -99,7 +99,7 @@ namespace Kampose.Commands
 
             // Create renderer and generate documentation
             var renderer = new DocRendererBuilder(reporter)
-                .Build(context, theme, config.ThemeSettings);
+                .Build(context, config, theme);
 
             // create documentation service and generate documentation
             var docService = new DocumentationService(reporter);

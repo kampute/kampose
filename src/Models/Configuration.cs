@@ -193,7 +193,8 @@ namespace Kampose.Models
         /// </value>
         /// <remarks>
         /// A non-<see langword="null"/> value overrides the parameter's default from <c>theme.json</c>.
-        /// Unknown names are still exposed to templates and theme scripts for custom use.
+        /// Unknown names are still exposed to templates and theme scripts for custom use. A setting whose name
+        /// conflicts with a built-in global template value is ignored and reported as a warning.
         /// </remarks>
         public Dictionary<string, object?> ThemeSettings { get; set; } = [];
 

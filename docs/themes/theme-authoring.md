@@ -157,8 +157,9 @@ All page templates have access to these global variables in addition to the page
 
 | Variable            | Type    | Description                                       |
 |---------------------|---------|---------------------------------------------------|
+| `convention`        | string  | Configured convention in canonical form           |
 | `language`          | object  | Programming language name and identifier          |
-| `generator`         | string  | Kampose version information                        |
+| `generator`         | string  | Kampose version information                       |
 | `absoluteUrls`      | boolean | Whether generated URLs are absolute               |
 | `hasNamespacePages` | boolean | Whether namespaces have dedicated pages           |
 | `hasTypePages`      | boolean | Whether types have dedicated pages                |
@@ -171,6 +172,8 @@ All page templates have access to these global variables in addition to the page
 | `styles`            | array   | Bundled CSS file URIs (alphabetical order)        |
 
 Theme parameters are available in the global template context in addition to the variables listed above, and can be referenced directly by name in templates.
+
+Parameter names must not conflict with built-in global variables. Conflicting theme settings are ignored and reported as warnings.
 
 At runtime the same global template values, including the variables listed above and configured theme parameters, are available to bundled scripts on the global JavaScript object `kampose.config`.
 
@@ -217,7 +220,7 @@ Configure JavaScript files using the `scripts.source` setting with [glob pattern
 
 Matched JavaScript files are bundled and minified into a single output file, with the path determined by `scripts.targetPath`. File ordering within the bundle follows the sequence in the `scripts.source` pattern.
 
-JavaScript code has access to global template variables through the `kampose.config` object and the complete documentation sitemap via the `kampose.sitemap` object.
+JavaScript code has access to global template variables through the `kampose.config` object and the complete documentation sitemap via the `kampose.sitemap` object. For example, `kampose.config.convention` contains the configured convention as `dotNet`, `docFx`, or `devOps`.
 
 ### Script Inheritance and Overrides
 

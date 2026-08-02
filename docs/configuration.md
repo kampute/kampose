@@ -401,6 +401,8 @@ Specifies theme-specific customization parameters that control appearance and be
 
 Available settings vary by theme and are defined by each theme's configuration. Please refer to the [themes documentation](themes.md) for information about available themes and their specific parameters.
 
+Theme setting names are case-insensitive. A setting that conflicts with a built-in [global template variable](themes/theme-authoring.md#global-template-context) is ignored and reported as a warning.
+
 #### Example
 
 The following example configures various theme settings for the classic theme (HTML):

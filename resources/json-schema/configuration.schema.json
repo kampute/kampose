@@ -161,7 +161,7 @@
     },
     "themeSettings": {
       "type": "object",
-      "description": "Values supplied to the selected theme. A non-null value overrides the parameter's default from theme.json; unknown names are still exposed to templates and scripts for custom use. Parameter names are matched case-insensitively.",
+      "description": "Values supplied to the selected theme. A non-null value overrides the parameter's default from theme.json; unknown names are still exposed to templates and scripts for custom use. Names that conflict with built-in global template values are ignored with a warning. Parameter names are matched case-insensitively.",
       "propertyNames": {
         "type": "string"
       },

@@ -17,7 +17,7 @@ Absolute URLs are not rebased.
 
 ## Source References in Conceptual Topics
 
-In an ordinary Markdown topic, link to another topic or local asset by its path relative to the current source file. Kampose maps registered topics and assets to their generated locations.
+In an ordinary Markdown topic, link to another topic or local asset by its path relative to the current source file. Kampose maps registered topics and assets to their generated locations. For an asset, that location includes the rule's `targetPath` and the hierarchy retained from its include pattern; the topic does not encode either generated-output detail.
 
 For example, from `docs/guides/overview.md`:
 

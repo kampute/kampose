@@ -122,11 +122,11 @@
             "items": {
               "type": "string"
             },
-            "description": "Case-insensitive glob patterns, relative to baseDirectory, that select files to copy unchanged. Prefix a pattern with ! to exclude matches."
+            "description": "Case-insensitive glob patterns, relative to baseDirectory, that select files to copy unchanged. For each include, the directory prefix before its first wildcard is the hierarchy root; each match retains its path relative to that root. An exact-file include uses the file's containing directory as its root. Prefix a pattern with ! to exclude matches without changing an include's root. If multiple includes select one file with different retained paths, the rule is invalid."
           },
           "targetPath": {
             "type": "string",
-            "description": "Destination directory under outputDirectory. Each matched file is copied into this directory using its filename; source subdirectories are not preserved. An empty or omitted value copies files directly into outputDirectory."
+            "description": "Destination directory under outputDirectory. Each match's hierarchy-relative path is appended beneath this directory. The value must be relative and cannot contain parent-directory segments. An empty or omitted value preserves the hierarchy directly beneath outputDirectory."
           }
         },
         "required": [
@@ -135,7 +135,7 @@
         "description": "Selects static files and the output subdirectory into which they are copied.",
         "additionalProperties": false
       },
-      "description": "Static asset copy rules for files such as images, stylesheets, and scripts. Assets are copied unchanged and can overwrite another asset assigned to the same destination path."
+      "description": "Static asset copy rules for files such as images, stylesheets, and scripts. Assets are copied unchanged with their include-relative hierarchy preserved. Complete generated paths must be unique; collisions are rejected."
     },
     "outputDirectory": {
       "type": "string",

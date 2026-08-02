@@ -391,6 +391,27 @@ namespace Kampose.Test.Models
             );
         }
 
+        [TestCase("../escape")]
+        [TestCase("assets/../../escape")]
+        public void LoadFromFile_WithUnsafeAssetTargetPath_ThrowsValidationException(string targetPath)
+        {
+            var filePath = GenerateJsonFile("unsafe-asset.json", $$"""
+                {
+                  "outputDirectory": "output",
+                  "assets": [
+                    {
+                      "source": ["assets/**/*"],
+                      "targetPath": "{{targetPath}}"
+                    }
+                  ]
+                }
+                """);
+
+            var exception = Assert.Throws<ValidationException>(() => Configuration.LoadFromFile(filePath));
+
+            Assert.That(exception!.Errors, Is.Not.Empty);
+        }
+
         #endregion
     }
 }

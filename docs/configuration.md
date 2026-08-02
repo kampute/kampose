@@ -330,7 +330,7 @@ api.classes.core.md    → Child of api.classes.md
 
 ### `assets`
 
-Configures the handling of static files in the documentation. Files are copied as-is and their directory structure is preserved.
+Configures the handling of static files in the documentation. Files are copied as-is and their include-relative directory structure is preserved beneath `targetPath`.
 
 Each entry in the `assets` array specifies a set of files for a specific destination directory within the output directory.
 
@@ -340,11 +340,19 @@ Specifies [glob patterns](globe-patterns.md) for selecting files to copy directl
 
 This setting is required.
 
+Each positive include has its own hierarchy root: the directory prefix before the pattern's first wildcard. A matched file keeps the path beneath that root. For an exact-file include, the root is the file's containing directory. Exclusion patterns remove matches but do not define or change a root.
+
+For example, `docs/assets/**/*` has the root `docs/assets`, so `docs/assets/diagrams/setup-flow.svg` retains `diagrams/setup-flow.svg`. A pattern with a wildcard in a directory name, such as `docs/*/assets/**/*`, has the root `docs` and retains the matched path below `docs`.
+
+Multiple positive includes in one rule are evaluated with their own roots. If they select the same file and imply different retained paths, Kampose rejects the rule as ambiguous. Split or narrow the includes to give that file one unambiguous path.
+
 #### `targetPath`
 
 Specifies the directory within the output directory where the files are copied.
 
 This setting is optional. If omitted, files are copied to the root of the output directory.
+
+`targetPath` must be relative and cannot contain `..` path segments. The complete generated path—`targetPath` plus the retained source path—must be unique across configured and theme assets. Files with the same basename are valid when their retained subdirectories differ; exact generated-path collisions are rejected.
 
 #### Example
 
@@ -364,6 +372,10 @@ The example below demonstrates copying different asset types to separate directo
   ]
 }
 ```
+
+In this example, `company-logos/products/widget.svg` is generated as `assets/branding/products/widget.svg`, while `legal-docs/archive/terms.pdf` is generated as `downloads/archive/terms.pdf`.
+
+Topics should continue to link registered assets by source-relative path. For example, a topic at `docs/guides/setup.md` links `docs/assets/diagrams/setup-flow.svg` as `../assets/diagrams/setup-flow.svg`; Kampose maps that reference to the generated asset URL for the selected convention.
 
 ### `theme`
 

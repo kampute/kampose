@@ -68,6 +68,56 @@ namespace Kampose.Support
         }
 
         /// <summary>
+        /// Searches for matching files and returns each path relative to the directory prefix before the first wildcard
+        /// in the include pattern that selected it.
+        /// </summary>
+        /// <param name="directory">The directory to search for files.</param>
+        /// <param name="defaultExtension">The file extension to use when a pattern does not specify an extension.</param>
+        /// <returns>The full and hierarchy-relative paths of matching files.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="directory"/> is <see langword="null"/>.</exception>
+        /// <exception cref="DirectoryNotFoundException">Thrown when the specified directory does not exist.</exception>
+        /// <exception cref="ValidationException">Thrown when multiple include patterns assign different relative paths to the same file.</exception>
+        public IEnumerable<FileGlobMatch> FindMatchingFilesWithRelativePaths(string directory, string? defaultExtension = null)
+        {
+            ArgumentNullException.ThrowIfNull(directory);
+
+            if (!Directory.Exists(directory))
+                throw new DirectoryNotFoundException($"Directory '{directory}' does not exist.");
+
+            var matches = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            var searchDirectory = new DirectoryInfoWrapper(new DirectoryInfo(directory));
+            var excludes = this
+                .Where(static pattern => !string.IsNullOrEmpty(pattern) && pattern.StartsWith('!'))
+                .Select(pattern => AddExtensionIfMissing(pattern[1..], defaultExtension))
+                .ToArray();
+
+            foreach (var include in this.Where(static pattern => !string.IsNullOrEmpty(pattern) && !pattern.StartsWith('!')))
+            {
+                var matcher = new Matcher();
+                matcher.AddInclude(AddExtensionIfMissing(include, defaultExtension));
+                foreach (var exclude in excludes)
+                    matcher.AddExclude(exclude);
+
+                foreach (var match in matcher.Execute(searchDirectory).Files)
+                {
+                    var fullPath = Path.GetFullPath(Path.Combine(directory, match.Path));
+                    var relativePath = match.Stem.Replace('/', Path.DirectorySeparatorChar);
+                    if (matches.TryGetValue(fullPath, out var existingRelativePath)
+                        && !string.Equals(existingRelativePath, relativePath, StringComparison.OrdinalIgnoreCase))
+                    {
+                        throw new ValidationException(
+                            $"Asset source patterns are ambiguous for '{fullPath}'.",
+                            [$"The file is assigned both '{existingRelativePath}' and '{relativePath}' as its preserved relative path."]);
+                    }
+
+                    matches.TryAdd(fullPath, relativePath);
+                }
+            }
+
+            return matches.Select(static match => new FileGlobMatch(match.Key, match.Value));
+        }
+
+        /// <summary>
         /// Creates a <see cref="Matcher"/> instance based on the patterns in the filter.
         /// </summary>
         /// <param name="defaultExtension">The file extension to use when a pattern does not specify an extension.</param>
@@ -116,4 +166,11 @@ namespace Kampose.Support
             static string EnsureLeadingDot(string extension) => extension.StartsWith('.') ? extension : '.' + extension;
         }
     }
+
+    /// <summary>
+    /// Represents a file selected by a glob and its path relative to the include pattern's hierarchy root.
+    /// </summary>
+    /// <param name="FullPath">The full source file path.</param>
+    /// <param name="RelativePath">The path relative to the directory prefix before the include pattern's first wildcard.</param>
+    public readonly record struct FileGlobMatch(string FullPath, string RelativePath);
 }

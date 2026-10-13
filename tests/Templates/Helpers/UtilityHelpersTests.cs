@@ -6,9 +6,9 @@
 namespace Kampose.Test.Templates.Helpers
 {
     using HandlebarsDotNet;
-    using Kampose.Support;
     using Kampose.Templates;
     using Kampose.Templates.Helpers;
+    using Kampose.Transformers;
     using Kampute.DocToolkit.Formatters;
     using Kampute.DocToolkit.Support;
     using NUnit.Framework;

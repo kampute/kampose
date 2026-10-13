@@ -9,6 +9,7 @@ namespace Kampose.Builders
     using Kampose.Reporters;
     using Kampose.Support;
     using Kampose.Templates;
+    using Kampose.Transformers;
     using Kampute.DocToolkit;
     using Kampute.DocToolkit.Routing;
     using Kampute.DocToolkit.Support;
@@ -26,6 +27,7 @@ namespace Kampose.Builders
         private readonly IActivityReporter reporter;
         private readonly Dictionary<string, string> assets = new(StringComparer.OrdinalIgnoreCase);
         private IDocumentAddressingStrategy? strategy;
+        private MarkdownToMarkdownTransformer? markdownTransformer;
         private string? outputDirectory;
 
         /// <summary>
@@ -86,6 +88,7 @@ namespace Kampose.Builders
             ArgumentNullException.ThrowIfNull(theme);
 
             strategy = CreateAddressingStrategy(config.Convention);
+            markdownTransformer = CreateMarkdownTransformer(config.Convention);
             outputDirectory = Path.GetFullPath(config.OutputDirectory);
             foreach (var targetPath in assets.Keys)
                 EnsureAssetTargetWithinOutput(outputDirectory, targetPath);
@@ -124,7 +127,8 @@ namespace Kampose.Builders
                 assemblies.OrderBy(a => a.Name, StringComparer.OrdinalIgnoreCase),
                 Topics,
                 assets.Select(kvp => new AssetReference(kvp.Value, kvp.Key, GetGeneratedPath(kvp.Key))),
-                universe
+                universe,
+                markdownTransformer
             );
 
             string GetGeneratedPath(string targetPath)
@@ -146,15 +150,17 @@ namespace Kampose.Builders
         {
             return convention switch
             {
-                DocConvention.DevOps => new DevOpsWikiStrategy(CreateAzureWikiOptions()),
+                DocConvention.DevOps => new DevOpsWikiStrategy(CreateWikiOptions<DevOpsWikiOptions>()),
+                DocConvention.GitLab => new GitLabWikiStrategy(CreateWikiOptions<GitLabWikiOptions>()),
                 DocConvention.DotNet => new DotNetApiStrategy(CreateHtmlAddressingOptions<DotNetApiOptions>()),
                 DocConvention.DocFx => new DocFxStrategy(CreateHtmlAddressingOptions<DocFxOptions>()),
                 _ => throw new NotSupportedException($"The specified convention '{convention}' is not supported.")
             };
 
-            static DevOpsWikiOptions CreateAzureWikiOptions()
+            static TOptions CreateWikiOptions<TOptions>()
+                where TOptions : MarkdownAddressingOptions, new()
             {
-                return new DevOpsWikiOptions
+                return new TOptions
                 {
                     MainTopicId = SpecialTopicIdentifiers.Home
                 };
@@ -174,6 +180,23 @@ namespace Kampose.Builders
         }
 
         /// <summary>
+        /// Creates the transformer that adapts Markdown topics to the Markdown output of the specified convention.
+        /// </summary>
+        /// <param name="convention">The documentation convention to create a transformer for.</param>
+        /// <returns>
+        /// The transformer for the publishing target of <paramref name="convention"/>, or <see langword="null"/> if the convention
+        /// does not produce Markdown.
+        /// </returns>
+        /// <exception cref="NotSupportedException">Thrown when the specified convention is not supported.</exception>
+        private static MarkdownToMarkdownTransformer? CreateMarkdownTransformer(DocConvention convention) => convention switch
+        {
+            DocConvention.DevOps => new DevOpsMarkdownTransformer(),
+            DocConvention.GitLab => new GitLabMarkdownTransformer(),
+            DocConvention.DotNet or DocConvention.DocFx => null,
+            _ => throw new NotSupportedException($"The specified convention '{convention}' is not supported.")
+        };
+
+        /// <summary>
         /// Create a documentation URL resolver based on the provided documentation reference settings.
         /// </summary>
         /// <param name="reference">The documentation reference settings.</param>
@@ -188,6 +211,7 @@ namespace Kampose.Builders
                 DocReferenceStrategy.DotNet => CreateDotNetReference(),
                 DocReferenceStrategy.DocFx => CreateDocFxReference(),
                 DocReferenceStrategy.DevOps => CreateAzureWikiReference(),
+                DocReferenceStrategy.GitLab => CreateGitLabWikiReference(),
                 DocReferenceStrategy.OnlineSearch => CreateOnlineSearchReference(),
                 _ => throw new NotSupportedException($"The documentation reference strategy '{reference.Strategy}' is not supported.")
             };
@@ -224,6 +248,14 @@ namespace Kampose.Builders
                 var options = CreateOptions<DevOpsWikiOptions>(reference.Extension);
                 options.Language = Language ?? Kampute.DocToolkit.Languages.Language.Default;
                 var strategy = new DevOpsWikiStrategy(options);
+                return new StrategyBasedApiDocUrlResolver(reference.Url, strategy);
+            }
+
+            RemoteApiDocUrlResolver CreateGitLabWikiReference()
+            {
+                var options = CreateOptions<GitLabWikiOptions>(reference.Extension);
+                options.Language = Language ?? Kampute.DocToolkit.Languages.Language.Default;
+                var strategy = new GitLabWikiStrategy(options);
                 return new StrategyBasedApiDocUrlResolver(reference.Url, strategy);
             }
 

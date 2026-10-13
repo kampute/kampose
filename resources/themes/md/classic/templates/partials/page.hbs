@@ -2,6 +2,11 @@
   This partial renders a page layout.
   @param {object} this - The template context.
 --}}
+{{#if (eq convention 'gitLab')}}
+---
+title: {{{json pageTitle}}}
+---
+{{/if}}
 {{#if pageHeader}}
 {{{>pageHeader_partial}}}
 {{/if}}

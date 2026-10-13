@@ -3,7 +3,7 @@
 // Released under the terms of the MIT license.
 // See the LICENSE file in the project root for the full license text.
 
-namespace Kampose.Support
+namespace Kampose.Transformers
 {
     using Kampute.DocToolkit.Formatters;
     using Kampute.DocToolkit.Routing;

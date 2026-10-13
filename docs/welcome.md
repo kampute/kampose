@@ -17,7 +17,7 @@ Auditing can report missing or incomplete XML documentation and verify reference
 
 ### Key Capabilities
 
-- **Multiple Output Formats** - Generate HTML for websites or Markdown for wikis (GitHub, Azure DevOps)
+- **Multiple Output Formats** - Generate HTML for websites or Markdown for wikis (GitHub, Azure DevOps, GitLab)
 - **Flexible Configuration** - JSON-based configuration with glob patterns for precise control over content discovery and organization
 - **Extensible Themes** - Built-in themes with comprehensive customization options and support for custom theme development
 - **Content Integration** - Combine API documentation with topics, tutorials, and guides, or generate topic-only documentation sites
@@ -93,7 +93,7 @@ This guide organizes Kampose's documentation into key areas to help you navigate
 ### Customizing Output
 - **[Themes Overview](themes.md)** - Available themes and configuration
 - **[Classic HTML Theme](themes/classic-html-theme.md)** - HTML theme customization
-- **[Classic Markdown Theme](themes/classic-md-theme.md)** - Markdown theme and DevOps wiki integration
+- **[Classic Markdown Theme](themes/classic-md-theme.md)** - Markdown theme and wiki integration
 - **[Theme Authoring Guide](themes/theme-authoring.md)** - Creating custom themes
 
 ## Support and Community

@@ -7,6 +7,8 @@ summary: "Configuration reference for the Classic Markdown theme, including page
 
 The Classic Markdown theme generates clean, portable documentation suitable for wikis, repositories, and text-based documentation systems.
 
+With the `gitLab` convention, the theme starts each page with a front matter block whose `title` holds the page title, such as `List<T> Class`. GitLab Wiki displays this title instead of the page's file name, which cannot contain every character of a title.
+
 ## Theme Settings
 
 The theme supports the following customization settings:

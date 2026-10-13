@@ -180,7 +180,7 @@ namespace Kampose.Models
             var appDirectory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location)!;
             return Path.Combine(appDirectory, "themes", convention switch
             {
-                DocConvention.DevOps => "md",
+                DocConvention.DevOps or DocConvention.GitLab => "md",
                 DocConvention.DotNet or DocConvention.DocFx => "html",
                 _ => throw new NotSupportedException($"The specified convention '{convention}' is not supported.")
             });

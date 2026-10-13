@@ -3,7 +3,7 @@
 // Released under the terms of the MIT license.
 // See the LICENSE file in the project root for the full license text.
 
-namespace Kampose.Support
+namespace Kampose.Transformers
 {
     using Kampute.DocToolkit.Formatters;
     using Kampute.DocToolkit.Routing;
@@ -15,13 +15,14 @@ namespace Kampose.Support
     using StringBuilderPool = Kampute.DocToolkit.Support.StringBuilderPool;
 
     /// <summary>
-    /// Transforms Markdown content for Markdown output.
+    /// Provides the base class for transforming Markdown content to the Markdown of a publishing target.
     /// </summary>
     /// <remarks>
-    /// Applies output-specific compatibility transformations while preserving portable Markdown. GitHub alert
-    /// directives are converted to titled blockquotes, and Markdown URLs are transformed when needed.
+    /// The base class finds the Markdown constructs whose syntax differs between publishing targets and transforms the
+    /// Markdown URLs when needed. Each derived class rewrites those constructs in the syntax of its target, such as by
+    /// implementing <see cref="RewriteAlertDirective(string, string)"/>.
     /// </remarks>
-    public sealed class MarkdownToMarkdownTransformer : ITextTransformer
+    public abstract class MarkdownToMarkdownTransformer : ITextTransformer
     {
         private static readonly MarkdownPipeline alertPipeline = new MarkdownPipelineBuilder().UseAlertBlocks().Build();
         private readonly MarkdownLinkTransformer linkTransformer = new();
@@ -39,17 +40,25 @@ namespace Kampose.Support
             ArgumentNullException.ThrowIfNull(writer);
 
             var markdown = reader.ReadToEnd();
-            var portableMarkdown = ConvertAlertsToBlockquotes(markdown);
+            var portableMarkdown = RewriteAlerts(markdown);
             using var portableReader = new StringReader(portableMarkdown);
             linkTransformer.Transform(portableReader, writer, urlTransformer);
         }
 
         /// <summary>
-        /// Converts recognized GitHub alert directives to the titled blockquote form used for XML documentation notes.
+        /// Rewrites the directive line of a GitHub alert for the target output.
+        /// </summary>
+        /// <param name="directiveLine">The line of the alert directive as written in the source, without its line terminator, such as <c>&gt; [!NOTE]</c>.</param>
+        /// <param name="kind">The kind of the alert as written in the source, such as <c>NOTE</c>.</param>
+        /// <returns>The line that replaces <paramref name="directiveLine"/> in the output.</returns>
+        protected abstract string RewriteAlertDirective(string directiveLine, string kind);
+
+        /// <summary>
+        /// Rewrites the directive lines of the recognized GitHub alerts for the target output.
         /// </summary>
         /// <param name="markdown">The Markdown source.</param>
-        /// <returns>The Markdown source with GitHub alerts represented as portable titled blockquotes.</returns>
-        private static string ConvertAlertsToBlockquotes(string markdown)
+        /// <returns>The Markdown source with the alert directive lines rewritten by <see cref="RewriteAlertDirective(string, string)"/>.</returns>
+        private string RewriteAlerts(string markdown)
         {
             if (markdown.Length == 0)
                 return markdown;
@@ -67,23 +76,15 @@ namespace Kampose.Support
                     continue;
 
                 var directiveStart = alert.Span.Start;
-                var newlineIndex = markdown.IndexOf('\n', directiveStart);
-                var directiveEnd = newlineIndex < 0 ? markdown.Length : newlineIndex + 1;
-                var title = char.ToUpperInvariant(kind[0]) + kind[1..].ToLowerInvariant();
+                var directiveEnd = markdown.IndexOf('\n', directiveStart);
+                if (directiveEnd < 0)
+                    directiveEnd = markdown.Length;
+                if (directiveEnd > directiveStart && markdown[directiveEnd - 1] == '\r')
+                    directiveEnd--;
 
                 hasAlerts = true;
                 result.Append(markdown, copiedUntil, directiveStart - copiedUntil);
-                result.Append("> **");
-                result.Append(title);
-                result.Append("** \\");
-                if (newlineIndex >= 0)
-                {
-                    if (newlineIndex > directiveStart && markdown[newlineIndex - 1] == '\r')
-                        result.Append('\r');
-
-                    result.Append('\n');
-                }
-
+                result.Append(RewriteAlertDirective(markdown[directiveStart..directiveEnd], kind));
                 copiedUntil = directiveEnd;
             }
 

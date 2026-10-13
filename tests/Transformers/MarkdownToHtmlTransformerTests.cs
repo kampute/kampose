@@ -3,9 +3,9 @@
 // Released under the terms of the MIT license.
 // See the LICENSE file in the project root for the full license text.
 
-namespace Kampose.Test.Support
+namespace Kampose.Test.Transformers
 {
-    using Kampose.Support;
+    using Kampose.Transformers;
     using Kampute.DocToolkit.Routing;
     using NUnit.Framework;
     using System;

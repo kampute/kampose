@@ -170,6 +170,7 @@ namespace Kampose.Models
         /// <remarks>
         /// <see cref="DocConvention.DotNet"/> and <see cref="DocConvention.DocFx"/> generate HTML.
         /// <see cref="DocConvention.DevOps"/> generates Markdown for Azure DevOps Wiki.
+        /// <see cref="DocConvention.GitLab"/> generates Markdown for GitLab Wiki.
         /// </remarks>
         public DocConvention Convention { get; set; } = DocConvention.DocFx;
 

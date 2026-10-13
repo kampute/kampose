@@ -26,6 +26,11 @@ namespace Kampose.Models
         DevOps,
 
         /// <summary>
+        /// Constructs URLs using GitLab Wiki addressing conventions.
+        /// </summary>
+        GitLab,
+
+        /// <summary>
         /// Constructs an online search query instead of a direct documentation-page URL.
         /// </summary>
         OnlineSearch,

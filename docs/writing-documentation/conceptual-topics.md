@@ -62,10 +62,18 @@ The directive names are case-insensitive, but uppercase names match the GitHub c
 Output depends on the selected convention:
 
 - HTML themes render alerts with the same labels, icons, and colors used for XML documentation `<note>` elements.
+
 - Markdown themes used with the `devOps` convention replace the alert directive with a bold title and preserve the content as a portable blockquote. For example, the warning above becomes:
 
 ```markdown
 > **Warning** \
+> A potential problem that requires immediate attention.
+```
+
+- Markdown themes used with the `gitLab` convention keep the alert, which GitLab renders from version 17.10, and write its directive name in lowercase as GitLab documents it. For example, the warning above becomes:
+
+```markdown
+> [!warning]
 > A potential problem that requires immediate attention.
 ```
 

@@ -6,6 +6,7 @@
 namespace Kampose.Models
 {
     using Kampose.Support;
+    using Kampose.Transformers;
     using Kampute.DocToolkit;
     using Kampute.DocToolkit.Formatters;
     using Kampute.DocToolkit.Languages;
@@ -35,6 +36,10 @@ namespace Kampose.Models
         /// <param name="topics">The topics to include.</param>
         /// <param name="assets">The supplementary files to include in the documentation.</param>
         /// <param name="metadata">Optional metadata associated with the documentation.</param>
+        /// <param name="markdownTransformer">
+        /// The transformer that adapts Markdown topics to the Markdown of the publishing target when <paramref name="contentFormatter"/>
+        /// produces Markdown, or <see langword="null"/> if Markdown topics are not transformed for a Markdown target.
+        /// </param>
         /// <exception cref="ArgumentNullException">Thrown when any of the parameters are <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException">Thrown when <paramref name="topics"/> contains duplicate topic names.</exception>
         public DocContext
@@ -46,7 +51,8 @@ namespace Kampose.Models
             IEnumerable<IAssembly> assemblies,
             IEnumerable<ITopic> topics,
             IEnumerable<AssetReference> assets,
-            object? metadata = null
+            object? metadata = null,
+            MarkdownToMarkdownTransformer? markdownTransformer = null
         ) : base(language, addressProvider, contentProvider, contentFormatter, assemblies, topics, metadata)
         {
             ArgumentNullException.ThrowIfNull(assets);
@@ -56,8 +62,8 @@ namespace Kampose.Models
 
             if (ContentFormatter is HtmlFormat)
                 ContentFormatter.TextTransformers.Register<MarkdownToHtmlTransformer>(FileExtensions.MarkdownExtensions);
-            else if (ContentFormatter is MarkdownFormat)
-                ContentFormatter.TextTransformers.Register<MarkdownToMarkdownTransformer>(FileExtensions.MarkdownExtensions);
+            else if (ContentFormatter is MarkdownFormat && markdownTransformer is not null)
+                ContentFormatter.TextTransformers.Register(markdownTransformer, FileExtensions.MarkdownExtensions);
         }
 
         /// <summary>

@@ -10,10 +10,15 @@ namespace Kampose.Test.Builders
     using Kampose.Models;
     using Kampose.Reporters;
     using Kampose.Support;
+    using Kampute.DocToolkit;
+    using Kampute.DocToolkit.Metadata;
+    using Kampute.DocToolkit.Routing;
     using NUnit.Framework;
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Text.Json;
 
     [TestFixture]
     public class DocContextBuilderTests
@@ -84,6 +89,7 @@ namespace Kampose.Test.Builders
 
         [TestCase("docFx", ".html")]
         [TestCase("devOps", ".md")]
+        [TestCase("gitLab", ".md")]
         public void Build_WithSourceRelativeAssetLinks_MapsAndVerifiesGeneratedUrls(string convention, string topicExtension)
         {
             Directory.CreateDirectory(Path.Combine(testDirectory, "docs", "assets", "other"));
@@ -268,6 +274,117 @@ namespace Kampose.Test.Builders
             Assert.That(
                 () => new DocContextBuilder(reporter).Configure(config, Theme.Load("classic", config.Convention)),
                 Throws.TypeOf<ValidationException>());
+        }
+
+        [Test]
+        public void Build_GitLabConvention_WritesHomeTopicToHomePageWithTitleInFrontMatter()
+        {
+            File.WriteAllText(
+                Path.Combine(testDirectory, "docs", "README.md"),
+                "---\ntitle: 'Project \"Overview\": Start'\n---\n\nOverview content.");
+
+            var configPath = Path.Combine(testDirectory, "kampose.json");
+            File.WriteAllText(configPath, """
+                {
+                  "topics": ["docs/**/*.md"],
+                  "outputDirectory": "output",
+                  "convention": "gitLab",
+                  "audit": { "stopOnIssues": true }
+                }
+                """);
+
+            using var reporter = new TextWriterActivityReporter(TextWriter.Null);
+            var exitCode = new BuildCommand().Execute([configPath], reporter);
+
+            var homePagePath = Path.Combine(testDirectory, "output", "home.md");
+            var homePageLines = File.Exists(homePagePath) ? File.ReadAllLines(homePagePath) : [];
+
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(exitCode, Is.Zero);
+                Assert.That(Directory.EnumerateFiles(Path.Combine(testDirectory, "output"), "*.md").Select(Path.GetFileName), Is.EquivalentTo(new[] { "home.md" }));
+                Assert.That(Path.Combine(testDirectory, "output", "home", "Setup.md"), Does.Exist);
+                Assert.That(homePageLines.ElementAtOrDefault(0), Is.EqualTo("---"));
+                Assert.That(homePageLines.ElementAtOrDefault(1), Does.StartWith("title: \""));
+                Assert.That(homePageLines.ElementAtOrDefault(2), Is.EqualTo("---"));
+                Assert.That(homePageLines, Does.Contain("Overview content."));
+            }
+
+            // A JSON string is a valid YAML double-quoted scalar, so decoding it as JSON yields the YAML value.
+            var title = JsonSerializer.Deserialize<string>(homePageLines[1]["title: ".Length..]);
+            Assert.That(title, Is.EqualTo("Project \"Overview\": Start"));
+        }
+
+        [TestCase("gitLab", "> [!note]")]
+        [TestCase("devOps", "> **Note** \\")]
+        public void Build_MarkdownConventionWithGitHubAlert_WritesAlertForWiki(string convention, string expectedDirective)
+        {
+            File.WriteAllText(Path.Combine(testDirectory, "docs", "guides", "setup.md"), "# Setup\n\n> [!NOTE]\n> Alert content.");
+
+            var configPath = Path.Combine(testDirectory, "kampose.json");
+            File.WriteAllText(configPath, $$"""
+                {
+                  "topics": ["docs/**/*.md"],
+                  "outputDirectory": "output",
+                  "convention": "{{convention}}",
+                  "audit": { "stopOnIssues": true }
+                }
+                """);
+
+            using var reporter = new TextWriterActivityReporter(TextWriter.Null);
+            var exitCode = new BuildCommand().Execute([configPath], reporter);
+
+            var setupPageLines = Directory.EnumerateFiles(Path.Combine(testDirectory, "output"), "Setup.md", SearchOption.AllDirectories)
+                .Select(File.ReadAllLines)
+                .SingleOrDefault() ?? [];
+
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(exitCode, Is.Zero);
+                Assert.That(setupPageLines, Does.Contain(expectedDirective));
+                Assert.That(setupPageLines, Does.Contain("> Alert content."));
+                Assert.That(setupPageLines, Does.Not.Contain("> [!NOTE]"));
+            }
+        }
+
+        [TestCase(DocConvention.DotNet, typeof(DotNetApiStrategy))]
+        [TestCase(DocConvention.DocFx, typeof(DocFxStrategy))]
+        [TestCase(DocConvention.DevOps, typeof(DevOpsWikiStrategy))]
+        [TestCase(DocConvention.GitLab, typeof(GitLabWikiStrategy))]
+        public void Configure_WithConvention_UsesMatchingAddressingStrategy(DocConvention convention, Type expectedStrategyType)
+        {
+            var config = CreateConfiguration();
+            config.Convention = convention;
+
+            using var reporter = new TextWriterActivityReporter(TextWriter.Null);
+            var builder = new DocContextBuilder(reporter).Configure(config, Theme.Load("classic", config.Convention));
+
+            Assert.That(builder.Strategy, Is.TypeOf(expectedStrategyType));
+        }
+
+        [TestCase(DocReferenceStrategy.DevOps, "https://docs.example.com/System.Collections.Generic/List%3CT%3E.md")]
+        [TestCase(DocReferenceStrategy.GitLab, "https://docs.example.com/System.Collections.Generic/List{T}.md")]
+        public void Configure_WithWikiReferenceStrategy_ResolvesExternalTypeUrlWithWikiPageNames(DocReferenceStrategy strategy, string expectedUrl)
+        {
+            var config = CreateConfiguration();
+            config.References.Add(new DocReference
+            {
+                Strategy = strategy,
+                Url = new Uri("https://docs.example.com/"),
+                Namespaces = { "System.Collections.Generic" }
+            });
+
+            using var reporter = new TextWriterActivityReporter(TextWriter.Null);
+            var builder = new DocContextBuilder(reporter).Configure(config, Theme.Load("classic", config.Convention));
+
+            var resolver = builder.ExternalReferences.OfType<RemoteApiDocUrlResolver>().Single();
+            var resolved = resolver.TryGetMemberUrl(typeof(List<>).GetMetadata(), out var url);
+
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(resolved, Is.True);
+                Assert.That(url, Is.EqualTo(new Uri(expectedUrl)));
+            }
         }
 
         private Configuration CreateConfiguration()

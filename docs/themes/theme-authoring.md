@@ -15,7 +15,7 @@ Kampose organizes themes by output format within the installation's `themes/` di
 themes/
 ├── html/          # HTML-based themes (dotNet/docFx convention)
 │   └── myTheme/
-└── md/            # Markdown-based themes (devOps convention)
+└── md/            # Markdown-based themes (devOps/gitLab convention)
     └── myTheme/
 ```
 
@@ -214,7 +214,7 @@ Configure JavaScript files using the `scripts.source` setting with [glob pattern
 
 Matched JavaScript files are bundled and minified into a single output file, with the path determined by `scripts.targetPath`. File ordering within the bundle follows the sequence in the `scripts.source` pattern.
 
-JavaScript code has access to global template variables through the `kampose.config` object and the complete documentation sitemap via the `kampose.sitemap` object. For example, `kampose.config.convention` contains the configured convention as `dotNet`, `docFx`, or `devOps`.
+JavaScript code has access to global template variables through the `kampose.config` object and the complete documentation sitemap via the `kampose.sitemap` object. For example, `kampose.config.convention` contains the configured convention as `dotNet`, `docFx`, `devOps`, or `gitLab`.
 
 ### Script Inheritance and Overrides
 

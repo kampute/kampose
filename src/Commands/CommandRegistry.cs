@@ -19,6 +19,7 @@ namespace Kampose.Commands
         static CommandRegistry()
         {
             RegisterCommand<BuildCommand>();
+            RegisterCommand<ValidateCommand>();
             RegisterCommand<VersionCommand>();
             RegisterCommand<HelpCommand>();
         }

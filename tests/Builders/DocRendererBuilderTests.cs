@@ -7,6 +7,7 @@ namespace Kampose.Test.Builders
 {
     using Kampose.Builders;
     using Kampose.Models;
+    using Kampose.Outputs;
     using Kampose.Reporters;
     using Kampose.Support;
     using Kampose.Templates;
@@ -126,8 +127,9 @@ namespace Kampose.Test.Builders
                 Assert.That(context.UrlReferences, Has.Count.EqualTo(2));
             }
 
-            File.WriteAllText(Path.Combine(testDirectory, "LICENSE"), "license");
-            using var verifier = new UrlVerifier(context, testDirectory, null);
+            var generatedFiles = new GeneratedFileSet(testDirectory);
+            generatedFiles.Add("LICENSE");
+            using var verifier = new UrlVerifier(context, generatedFiles, null);
             var rootReference = context.UrlReferences.Single(reference => reference.BaseDirectory.Length == 0);
             var nestedReference = context.UrlReferences.Single(reference => reference.BaseDirectory == "guide");
 
@@ -151,8 +153,9 @@ namespace Kampose.Test.Builders
             Render(renderer, context, string.Empty);
             Render(renderer, context, "guide");
 
-            File.WriteAllText(Path.Combine(testDirectory, "LICENSE"), "license");
-            using var verifier = new UrlVerifier(context, testDirectory, null);
+            var generatedFiles = new GeneratedFileSet(testDirectory);
+            generatedFiles.Add("LICENSE");
+            using var verifier = new UrlVerifier(context, generatedFiles, null);
 
             Assert.That(context.UrlReferences, Is.Not.Empty);
             Assert.That

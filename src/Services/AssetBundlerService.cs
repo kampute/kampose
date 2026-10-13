@@ -5,6 +5,7 @@
 
 namespace Kampose.Services
 {
+    using Kampose.Outputs;
     using Kampose.Reporters;
     using Kampute.DocToolkit.Support;
     using NUglify;
@@ -19,22 +20,25 @@ namespace Kampose.Services
     public class AssetBundlerService
     {
         private readonly IActivityReporter reporter;
+        private readonly DocumentationOutput output;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AssetBundlerService"/> class.
         /// </summary>
         /// <param name="reporter">The activity reporter to use for logging messages.</param>
-        /// <exception cref="ArgumentNullException">Thrown when <paramref name="reporter"/> is <see langword="null"/>.</exception>
-        public AssetBundlerService(IActivityReporter reporter)
+        /// <param name="output">The output that receives the bundles.</param>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="reporter"/> or <paramref name="output"/> is <see langword="null"/>.</exception>
+        public AssetBundlerService(IActivityReporter reporter, DocumentationOutput output)
         {
             this.reporter = reporter ?? throw new ArgumentNullException(nameof(reporter));
+            this.output = output ?? throw new ArgumentNullException(nameof(output));
         }
 
         /// <summary>
         /// Processes script files by concatenating and minifying them.
         /// </summary>
         /// <param name="sourceFiles">The collection of source script files to process.</param>
-        /// <param name="outputPath">The path where the minified script will be saved.</param>
+        /// <param name="outputPath">The full path of the bundle in the output directory.</param>
         /// <param name="additionalContent">Additional script content to include in the bundle.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="sourceFiles"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException">Thrown when <paramref name="outputPath"/> is <see langword="null"/> or empty.</exception>
@@ -53,7 +57,7 @@ namespace Kampose.Services
 
             try
             {
-                WriteToFile(outputPath, minified.Code ?? code);
+                output.WriteFile(outputPath, minified.Code ?? code);
             }
             catch (Exception error)
             {
@@ -65,7 +69,7 @@ namespace Kampose.Services
         /// Processes stylesheet files by concatenating and minifying them.
         /// </summary>
         /// <param name="sourceFiles">The collection of source stylesheet files to process.</param>
-        /// <param name="outputPath">The path where the minified stylesheet will be saved.</param>
+        /// <param name="outputPath">The full path of the bundle in the output directory.</param>
         /// <param name="additionalContent">Additional stylesheet content to include in the bundle.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="sourceFiles"/> is <see langword="null"/>.</exception>
         /// <exception cref="ArgumentException">Thrown when <paramref name="outputPath"/> is <see langword="null"/> or empty.</exception>
@@ -84,7 +88,7 @@ namespace Kampose.Services
 
             try
             {
-                WriteToFile(outputPath, minified.Code ?? code);
+                output.WriteFile(outputPath, minified.Code ?? code);
             }
             catch (Exception error)
             {
@@ -110,20 +114,6 @@ namespace Kampose.Services
                 content.AppendLine(File.ReadAllText(filePath));
 
             return content.ToString();
-        }
-
-        /// <summary>
-        /// Writes the processed content to the specified output path.
-        /// </summary>
-        /// <param name="outputPath">The path where the content will be written.</param>
-        /// <param name="content">The content to write.</param>
-        private static void WriteToFile(string outputPath, string content)
-        {
-            var directory = Path.GetDirectoryName(outputPath);
-            if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
-                Directory.CreateDirectory(directory);
-
-            File.WriteAllText(outputPath, content);
         }
     }
 }

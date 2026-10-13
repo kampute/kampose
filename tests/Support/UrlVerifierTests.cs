@@ -5,6 +5,7 @@
 
 namespace Kampose.Test.Support
 {
+    using Kampose.Outputs;
     using Kampose.Support;
     using Kampute.DocToolkit;
     using Kampute.DocToolkit.Formatters;
@@ -23,13 +24,15 @@ namespace Kampose.Test.Support
     {
         private IDocumentationContext context = null!;
         private readonly IDocumentModel model = Mock.Of<IDocumentModel>();
-        private readonly string baseDir = @"C:\temp\docs";
+        private readonly string baseDir = Path.Combine(Path.GetTempPath(), "docs");
         private readonly Uri baseUri = new("https://example.com/docs/");
+        private GeneratedFileSet generatedFiles = null!;
 
         [SetUp]
         public void SetUp()
         {
             context = MockHelper.CreateDocumentationContext<HtmlFormat>();
+            generatedFiles = new GeneratedFileSet(baseDir);
         }
 
         [TearDown]
@@ -41,7 +44,7 @@ namespace Kampose.Test.Support
         [Test]
         public void VerifyUrl_QueryOrFragmentOnly_ReturnsOK()
         {
-            var verifier = new UrlVerifier(context, baseDir, baseUri);
+            var verifier = new UrlVerifier(context, generatedFiles, baseUri);
             var urlReference = new UrlReference(model, "dir", "#anchor");
 
             var result = verifier.VerifyUrl(urlReference);
@@ -52,7 +55,7 @@ namespace Kampose.Test.Support
         [Test]
         public void VerifyUrl_QueryOnly_ReturnsOK()
         {
-            var verifier = new UrlVerifier(context, baseDir, baseUri);
+            var verifier = new UrlVerifier(context, generatedFiles, baseUri);
             var urlReference = new UrlReference(model, "dir", "?query=value");
 
             var result = verifier.VerifyUrl(urlReference);
@@ -61,32 +64,24 @@ namespace Kampose.Test.Support
         }
 
         [Test]
-        public void VerifyUrl_TargetUrlRelative_BaseUrlNull_FilePresent_ReturnsOK()
+        public void VerifyUrl_TargetUrlRelative_BaseUrlNull_FileGenerated_ReturnsOK()
         {
-            var verifier = new UrlVerifier(context, baseDir, null);
+            var verifier = new UrlVerifier(context, generatedFiles, null);
 
             var targetUrl = new Uri("../page.html", UriKind.Relative);
             var urlReference = new UrlReference(model, "dir", "page", targetUrl);
 
-            var absolutePath = Path.Combine(baseDir, "page.html");
-            Directory.CreateDirectory(Path.GetDirectoryName(absolutePath)!);
-            File.WriteAllText(absolutePath, "content");
-            try
-            {
-                var result = verifier.VerifyUrl(urlReference);
+            generatedFiles.Add(Path.Combine(baseDir, "page.html"));
 
-                Assert.That(result, Is.EqualTo(UrlVerifier.VerificationResult.OK));
-            }
-            finally
-            {
-                File.Delete(absolutePath);
-            }
+            var result = verifier.VerifyUrl(urlReference);
+
+            Assert.That(result, Is.EqualTo(UrlVerifier.VerificationResult.OK));
         }
 
         [Test]
-        public void VerifyUrl_TargetUrlRelative_BaseUrlNull_FileNotPresent_ReturnsUnreachable()
+        public void VerifyUrl_TargetUrlRelative_BaseUrlNull_FileNotGenerated_ReturnsUnreachable()
         {
-            var verifier = new UrlVerifier(context, baseDir, null);
+            var verifier = new UrlVerifier(context, generatedFiles, null);
 
             var targetUrl = new Uri("../missing.html", UriKind.Relative);
             var urlReference = new UrlReference(model, "dir", "missing", targetUrl);
@@ -99,7 +94,7 @@ namespace Kampose.Test.Support
         [Test]
         public void VerifyUrl_TargetUrlRelative_BaseUrlNotNull_ReturnsUnreachable()
         {
-            var verifier = new UrlVerifier(context, baseDir, baseUri);
+            var verifier = new UrlVerifier(context, generatedFiles, baseUri);
 
             var targetUrl = new Uri("../page.html", UriKind.Relative);
             var urlReference = new UrlReference(model, "dir", "page", targetUrl);
@@ -110,32 +105,24 @@ namespace Kampose.Test.Support
         }
 
         [Test]
-        public void VerifyUrl_TargetUrlAbsolute_BaseUriNotNull_FilePresent_ReturnsOK()
+        public void VerifyUrl_TargetUrlAbsolute_BaseUriNotNull_FileGenerated_ReturnsOK()
         {
-            var verifier = new UrlVerifier(context, baseDir, baseUri);
+            var verifier = new UrlVerifier(context, generatedFiles, baseUri);
 
             var targetUrl = new Uri("https://example.com/docs/page.html", UriKind.Absolute);
             var urlReference = new UrlReference(model, "dir", "page", targetUrl);
 
-            var absolutePath = Path.Combine(baseDir, "page.html");
-            Directory.CreateDirectory(Path.GetDirectoryName(absolutePath)!);
-            File.WriteAllText(absolutePath, "content");
-            try
-            {
-                var result = verifier.VerifyUrl(urlReference);
+            generatedFiles.Add(Path.Combine(baseDir, "page.html"));
 
-                Assert.That(result, Is.EqualTo(UrlVerifier.VerificationResult.OK));
-            }
-            finally
-            {
-                File.Delete(absolutePath);
-            }
+            var result = verifier.VerifyUrl(urlReference);
+
+            Assert.That(result, Is.EqualTo(UrlVerifier.VerificationResult.OK));
         }
 
         [Test]
-        public void VerifyUrl_TargetUrlAbsolute_BaseUriNotNull_FileNotPresent_ReturnsUnreachable()
+        public void VerifyUrl_TargetUrlAbsolute_BaseUriNotNull_FileNotGenerated_ReturnsUnreachable()
         {
-            var verifier = new UrlVerifier(context, baseDir, baseUri);
+            var verifier = new UrlVerifier(context, generatedFiles, baseUri);
 
             var targetUrl = new Uri("https://example.com/docs/missing.html", UriKind.Absolute);
             var urlReference = new UrlReference(model, "dir", "missing", targetUrl);
@@ -148,7 +135,7 @@ namespace Kampose.Test.Support
         [Test]
         public void VerifyUrl_TargetUrlAbsolute_BaseUrlNull_ReturnsUnreachable()
         {
-            var verifier = new UrlVerifier(context, baseDir, null);
+            var verifier = new UrlVerifier(context, generatedFiles, null);
 
             var targetUrl = new Uri("https://example.com/page.html", UriKind.Absolute);
             var urlReference = new UrlReference(model, "dir", "page", targetUrl);
@@ -161,7 +148,7 @@ namespace Kampose.Test.Support
         [Test]
         public void VerifyUrl_MalformedUrl_ReturnsMalformed()
         {
-            var verifier = new UrlVerifier(context, baseDir, baseUri);
+            var verifier = new UrlVerifier(context, generatedFiles, baseUri);
             var urlReference = new UrlReference(model, "dir", "http://[::1");
 
             var result = verifier.VerifyUrl(urlReference);
@@ -172,7 +159,7 @@ namespace Kampose.Test.Support
         [Test]
         public void VerifyUrl_AbsoluteUri_NoExternalVerify_ReturnsOK()
         {
-            var verifier = new UrlVerifier(context, baseDir, baseUri);
+            var verifier = new UrlVerifier(context, generatedFiles, baseUri);
             var urlReference = new UrlReference(model, "dir", "https://example.com/page");
 
             var result = verifier.VerifyUrl(urlReference, verifyExternalLinks: false);
@@ -183,7 +170,7 @@ namespace Kampose.Test.Support
         [Test]
         public void VerifyUrl_AbsoluteUri_ExternalVerify_Reachable_ReturnsOK()
         {
-            var verifier = new UrlVerifier(context, baseDir, baseUri);
+            var verifier = new UrlVerifier(context, generatedFiles, baseUri);
             SetupHttpClient(verifier, HttpStatusCode.OK);
 
             var urlReference = new UrlReference(model, "dir", "https://example.com/page");
@@ -196,7 +183,7 @@ namespace Kampose.Test.Support
         [Test]
         public void VerifyUrl_AbsoluteUri_ExternalVerify_NotFound_ReturnsUnreachable()
         {
-            var verifier = new UrlVerifier(context, baseDir, baseUri);
+            var verifier = new UrlVerifier(context, generatedFiles, baseUri);
             SetupHttpClient(verifier, HttpStatusCode.NotFound);
 
             var urlReference = new UrlReference(model, "dir", "https://example.com/missing");
@@ -209,7 +196,7 @@ namespace Kampose.Test.Support
         [Test]
         public void VerifyUrl_AbsoluteUri_ExternalVerify_Exception_ReturnsUnreachable()
         {
-            var verifier = new UrlVerifier(context, baseDir, baseUri);
+            var verifier = new UrlVerifier(context, generatedFiles, baseUri);
             SetupHttpClient(verifier, HttpStatusCode.Unused); // This causes exception
 
             var urlReference = new UrlReference(model, "dir", "https://example.com/error");
@@ -224,7 +211,7 @@ namespace Kampose.Test.Support
         [TestCase(HttpStatusCode.Unused, UrlVerifier.VerificationResult.Unreachable)]
         public void VerifyUrl_AbsoluteUri_ExternalVerify_RepeatedUrlChecksOnce(HttpStatusCode statusCode, UrlVerifier.VerificationResult expectedResult)
         {
-            var verifier = new UrlVerifier(context, baseDir, baseUri);
+            var verifier = new UrlVerifier(context, generatedFiles, baseUri);
             var messageHandlerMock = SetupHttpClient(verifier, statusCode);
             var firstReference = new UrlReference(model, "first", "https://example.com/page");
             var secondReference = new UrlReference(model, "second", "https://example.com/page");
@@ -249,7 +236,7 @@ namespace Kampose.Test.Support
         [Test]
         public void VerifyUrl_NonHttpUri_ReturnsOK()
         {
-            var verifier = new UrlVerifier(context, baseDir, baseUri);
+            var verifier = new UrlVerifier(context, generatedFiles, baseUri);
             var urlReference = new UrlReference(model, "dir", "mailto:test@example.com");
 
             var result = verifier.VerifyUrl(urlReference, verifyExternalLinks: true);
@@ -258,9 +245,9 @@ namespace Kampose.Test.Support
         }
 
         [Test]
-        public void VerifyUrl_RelativeUri_FileNotPresent_ReturnsUnreachable()
+        public void VerifyUrl_RelativeUri_FileNotGenerated_ReturnsUnreachable()
         {
-            var verifier = new UrlVerifier(context, baseDir, baseUri);
+            var verifier = new UrlVerifier(context, generatedFiles, baseUri);
             var urlReference = new UrlReference(model, "dir", "relative/path");
 
             var result = verifier.VerifyUrl(urlReference);
@@ -269,31 +256,55 @@ namespace Kampose.Test.Support
         }
 
         [Test]
-        public void VerifyUrl_RelativeUri_FilePresent_ReturnsOK()
+        public void VerifyUrl_RelativeUri_FileGenerated_ReturnsOK()
         {
-            var verifier = new UrlVerifier(context, baseDir, baseUri);
+            var verifier = new UrlVerifier(context, generatedFiles, baseUri);
             var urlReference = new UrlReference(model, "dir", "../page");
-            var absolutePath = Path.Combine(baseDir, "page.html");
-            Directory.CreateDirectory(Path.GetDirectoryName(absolutePath)!);
-            File.WriteAllText(absolutePath, "content");
+            generatedFiles.Add(Path.Combine(baseDir, "page.html"));
 
-            try
-            {
-                var result = verifier.VerifyUrl(urlReference);
+            var result = verifier.VerifyUrl(urlReference);
 
-                Assert.That(result, Is.EqualTo(UrlVerifier.VerificationResult.OK));
-            }
-            finally
-            {
-                File.Delete(absolutePath);
-            }
+            Assert.That(result, Is.EqualTo(UrlVerifier.VerificationResult.OK));
         }
 
         [Test]
         public void VerifyUrl_RelativeUri_OutsideBaseDirectory_ReturnsUnreachable()
         {
-            var verifier = new UrlVerifier(context, baseDir, baseUri);
+            var verifier = new UrlVerifier(context, generatedFiles, baseUri);
             var urlReference = new UrlReference(model, "dir", "../../outside");
+
+            var result = verifier.VerifyUrl(urlReference);
+
+            Assert.That(result, Is.EqualTo(UrlVerifier.VerificationResult.Unreachable));
+        }
+
+        [Test]
+        public void VerifyUrl_RelativeUri_FileOnDiskButNotGenerated_ReturnsUnreachable()
+        {
+            var outputDir = Path.Combine(Path.GetTempPath(), $"url-verifier-tests-{Guid.NewGuid()}");
+            Directory.CreateDirectory(outputDir);
+            try
+            {
+                File.WriteAllText(Path.Combine(outputDir, "stale.html"), "content");
+                var verifier = new UrlVerifier(context, new GeneratedFileSet(outputDir), null);
+                var urlReference = new UrlReference(model, string.Empty, "stale.html");
+
+                var result = verifier.VerifyUrl(urlReference);
+
+                Assert.That(result, Is.EqualTo(UrlVerifier.VerificationResult.Unreachable));
+            }
+            finally
+            {
+                Directory.Delete(outputDir, true);
+            }
+        }
+
+        [Test]
+        public void VerifyUrl_RelativeUri_CaseDiffersFromGeneratedFile_ReturnsUnreachable()
+        {
+            var verifier = new UrlVerifier(context, generatedFiles, baseUri);
+            generatedFiles.Add(Path.Combine(baseDir, "page.html"));
+            var urlReference = new UrlReference(model, string.Empty, "Page.html");
 
             var result = verifier.VerifyUrl(urlReference);
 

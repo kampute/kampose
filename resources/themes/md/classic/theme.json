@@ -4,7 +4,7 @@
     "format": "md",
     "name": "Classic",
     "description": "Markdown theme for Azure DevOps Wiki and GitLab Wiki output, with configurable page framing and optional child-topic links.",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "author": "Kambiz Khojasteh",
     "license": "MIT",
     "homepage": "https://kampute.github.io/dot-doc/themes/classic-md.html"

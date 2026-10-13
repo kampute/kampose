@@ -53,7 +53,7 @@ Run these once in your repository root, then commit the file they produce:
 
 ```shell
 dotnet new tool-manifest
-dotnet tool install kampose --version 1.1.0
+dotnet tool install kampose --version 1.2.0
 ```
 
 That writes `.config/dotnet-tools.json`, which records the exact version. Every pipeline example below restores that version instead of installing one:

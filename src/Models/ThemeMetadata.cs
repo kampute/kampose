@@ -8,7 +8,7 @@ namespace Kampose.Models
     using System;
 
     /// <summary>
-    /// Represents metadata for a Kampose theme, as defined in the theme configuration schema.
+    /// Provides descriptive information about a Kampose theme.
     /// </summary>
     public sealed class ThemeMetadata
     {
@@ -18,58 +18,64 @@ namespace Kampose.Models
         public ThemeMetadata() { }
 
         /// <summary>
-        /// The format of content that the theme is designed to render.
+        /// Gets or sets the output format that the theme is intended to render.
         /// </summary>
         /// <value>
-        /// The format string indicating the type of content the theme is designed to render, such as "html", "md", etc.
+        /// A format identifier such as <c>html</c> or <c>md</c>, or <see langword="null"/> when unspecified.
         /// </value>
+        /// <remarks>
+        /// This value is informational. The documentation convention selects the actual output format.
+        /// </remarks>
         public string? Format { get; set; }
 
         /// <summary>
-        /// The display name of the theme.
+        /// Gets or sets the human-readable name of the theme.
         /// </summary>
         /// <value>
-        /// The display name of the theme, which is typically used in user interfaces or documentation.
+        /// The name displayed in documentation or user interfaces, or <see langword="null"/> when unspecified.
         /// </value>
         public string? Name { get; set; }
 
         /// <summary>
-        /// The version of the theme.
+        /// Gets or sets the theme's release version.
         /// </summary>
         /// <value>
-        /// The theme version, which can be used for versioning purposes.
+        /// The version displayed as metadata, or <see langword="null"/> when unspecified.
         /// </value>
+        /// <remarks>
+        /// Kampose does not interpret or compare this value.
+        /// </remarks>
         public string? Version { get; set; }
 
         /// <summary>
-        /// A brief description of the theme.
+        /// Gets or sets a brief summary of the theme.
         /// </summary>
         /// <value>
-        /// The theme description, explaining its purpose and features, or <see langword="null"/> if not provided.
+        /// A summary of the theme's intended use or distinguishing features, or <see langword="null"/> when unspecified.
         /// </value>
         public string? Description { get; set; }
 
         /// <summary>
-        /// The name of the theme's author.
+        /// Gets or sets the person or organization that maintains the theme.
         /// </summary>
         /// <value>
-        /// The name of the person or organization that created the theme, or <see langword="null"/> if not specified.
+        /// The maintainer's name, or <see langword="null"/> when unspecified.
         /// </value>
         public string? Author { get; set; }
 
         /// <summary>
-        /// The license under which the theme is distributed, if applicable.
+        /// Gets or sets the license under which the theme is distributed.
         /// </summary>
         /// <value>
-        /// The license string indicating the terms under which the theme can be used, or <see langword="null"/> if not specified.
+        /// A license name or identifier such as <c>MIT</c>, or <see langword="null"/> when unspecified.
         /// </value>
         public string? License { get; set; }
 
         /// <summary>
-        /// The URL of the theme's homepage or documentation.
+        /// Gets or sets the theme's homepage, repository, or documentation URI.
         /// </summary>
         /// <value>
-        /// The URI pointing to the theme's homepage or documentation, or <see langword="null"/> if not provided.
+        /// An absolute URI containing more information about the theme, or <see langword="null"/> when unspecified.
         /// </value>
         public Uri? Homepage { get; set; }
     }

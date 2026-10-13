@@ -6,22 +6,23 @@
 namespace Kampose.Models
 {
     /// <summary>
-    /// Specifies the site conventions such as URL patterns and page grouping used by the documentation generator.
+    /// Specifies the output format, URL layout, and page grouping used by the documentation generator.
     /// </summary>
     public enum DocConvention
     {
         /// <summary>
-        /// HTML format with separate pages for types and members, following .NET API Browser URL conventions.
+        /// Generates HTML with separate pages for types and members, following .NET API Browser URL conventions.
         /// </summary>
         DotNet,
 
         /// <summary>
-        /// HTML format with types and members sharing the same page, following DocFX URL conventions.
+        /// Generates HTML with members rendered on their declaring type's page, following DocFX URL conventions.
         /// </summary>
         DocFx,
 
         /// <summary>
-        /// Markdown format with types and members sharing the same page, following Azure DevOps Wiki URL conventions.
+        /// Generates Markdown with members rendered on their declaring type's page, following Azure DevOps Wiki
+        /// URL conventions.
         /// </summary>
         DevOps,
     }

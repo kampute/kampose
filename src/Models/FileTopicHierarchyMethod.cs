@@ -6,39 +6,40 @@
 namespace Kampose.Models
 {
     /// <summary>
-    /// Specifies the method used to construct a file topic hierarchy.
+    /// Specifies how parent-child relationships are derived from topic paths and filenames.
     /// </summary>
     public enum FileTopicHierarchyMethod
     {
         /// <summary>
-        /// No hierarchy is constructed.
+        /// Keeps every topic at the top level.
         /// </summary>
         /// <remarks>
-        /// This option is used when no parent-child relationships are desired among the file topics.
+        /// Topic ordering still follows the configured explicit order and alphabetical fallback.
         /// </remarks>
         None,
 
         /// <summary>
-        /// Constructs the hierarchy by matching file names to directory names.
+        /// Makes a topic whose filename matches a directory name the parent of topics in that directory.
         /// </summary>
         /// <remarks>
-        /// Files with names matching directory names (case-insensitive) become parent topics for all files within those directories.
+        /// Filename and directory-name matching is case-insensitive.
         /// </remarks>
         Directory,
 
         /// <summary>
-        /// Constructs the hierarchy using "<c>overview</c>" as the index file name within directories.
+        /// Makes an <c>overview</c> topic the parent of other topics in the same directory.
         /// </summary>
         /// <remarks>
-        /// Files with the name "overview" (case-insensitive) are designated as parent topics for other files in the same directory.
+        /// The <c>overview</c> filename is matched case-insensitively.
         /// </remarks>
         Index,
 
         /// <summary>
-        /// Constructs the hierarchy using '<c>.</c>' as the delimiter for prefixes in file names.
+        /// Uses dot-separated filename prefixes to derive parent-child relationships.
         /// </summary>
         /// <remarks>
-        /// Files with fewer dot-separated segments in their names become parent topics for files with more segments that share the same prefix.
+        /// A topic with fewer dot-separated filename segments becomes the parent of topics with more segments
+        /// that share its prefix.
         /// </remarks>
         Prefix
     }

@@ -142,9 +142,8 @@ namespace Kampose.Models
         /// Rules that select static files such as images, stylesheets, and scripts and assign their output directories.
         /// </value>
         /// <remarks>
-        /// Assets are copied unchanged. Each rule flattens its matched files into its configured target directory by
-        /// retaining only each source filename. If multiple files resolve to the same destination, the last collected
-        /// asset replaces the earlier one.
+        /// Assets are copied unchanged while preserving the path relative to the directory prefix before the first
+        /// wildcard in the include pattern. Exclusion patterns remove matches without changing that hierarchy root.
         /// </remarks>
         public List<FileTransferFilter> Assets { get; } = [];
 
@@ -243,6 +242,16 @@ namespace Kampose.Models
 
             if (string.IsNullOrWhiteSpace(Theme))
                 yield return (nameof(Theme), "The theme is required.");
+
+            for (var i = 0; i < Assets.Count; i++)
+            {
+                var targetPath = Assets[i].TargetPath;
+                if (Path.IsPathRooted(targetPath)
+                    || targetPath.Split(['/', '\\'], StringSplitOptions.RemoveEmptyEntries).Contains("..", StringComparer.Ordinal))
+                {
+                    yield return ($"{nameof(Assets)}[{i}].{nameof(FileTransferFilter.TargetPath)}", "The asset target path must be relative and cannot contain parent-directory segments.");
+                }
+            }
         }
 
         /// <summary>

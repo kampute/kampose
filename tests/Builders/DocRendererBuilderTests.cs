@@ -41,6 +41,68 @@ namespace Kampose.Test.Builders
         }
 
         [Test]
+        [TestCase(DocConvention.DotNet, "dotNet")]
+        [TestCase(DocConvention.DocFx, "docFx")]
+        [TestCase(DocConvention.DevOps, "devOps")]
+        public void Build_ConfiguredConvention_ExposesCanonicalNameToJavaScript(DocConvention convention, string expected)
+        {
+            using var context = CreateContext<HtmlFormat>();
+            using var warningWriter = new StringWriter();
+            using var reporter = new TextWriterActivityReporter(TextWriter.Null, warningWriter);
+            var renderer = BuildRenderer(context, convention, new Dictionary<string, object?>
+            {
+                ["convention"] = "theme-setting-must-not-override"
+            }, reporter);
+
+            var serializedConfig = Json.Stringify(renderer.CommonData);
+
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(serializedConfig, Does.Contain($"\"convention\": \"{expected}\""));
+                Assert.That(reporter.WarningCount, Is.EqualTo(1));
+                Assert.That(warningWriter.ToString(), Does.Contain("Theme setting 'convention' conflicts with a built-in global value and was ignored."));
+            }
+        }
+
+        [Test]
+        public void Build_DeclaredThemeParameterConflictsWithGlobalValue_IgnoresParameterAndWarns()
+        {
+            var themeName = CreateThemeWithConflictingParameter();
+            using var context = CreateContext<HtmlFormat>();
+            using var warningWriter = new StringWriter();
+            using var reporter = new TextWriterActivityReporter(TextWriter.Null, warningWriter);
+            var theme = Theme.Load(themeName, DocConvention.DotNet);
+
+            var renderer = new DocRendererBuilder(reporter)
+                .Build(context, CreateConfiguration(DocConvention.DotNet), theme);
+
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(renderer.CommonData["generator"], Is.EqualTo($"Kampose v{Program.Version}"));
+                Assert.That(reporter.WarningCount, Is.EqualTo(1));
+                Assert.That(warningWriter.ToString(), Does.Contain("Theme setting 'generator' conflicts with a built-in global value and was ignored."));
+            }
+        }
+
+        [Test]
+        public void Build_ThemeSettingConflictsWithAbsentOptionalGlobal_IgnoresSettingAndWarns()
+        {
+            using var context = CreateContext<HtmlFormat>();
+            using var reporter = new TextWriterActivityReporter(TextWriter.Null);
+
+            var renderer = BuildRenderer(context, DocConvention.DotNet, new Dictionary<string, object?>
+            {
+                ["HomePageTitle"] = "Theme home"
+            }, reporter);
+
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(renderer.CommonData, Does.Not.ContainKey("homePageTitle"));
+                Assert.That(reporter.WarningCount, Is.EqualTo(1));
+            }
+        }
+
+        [Test]
         public void Build_MarkdownSetting_PreservesPageRelativeUrlsInEachPageScope()
         {
             using var context = CreateContext<HtmlFormat>();
@@ -122,6 +184,40 @@ namespace Kampose.Test.Builders
             }
         }
 
+        [TestCase(DocConvention.DevOps, "devOps")]
+        public void Build_ConfiguredConvention_ExposesCanonicalNameToTemplates(DocConvention convention, string expected)
+        {
+            using var context = CreateContext<MarkdownFormat>();
+            var renderer = BuildRenderer(context, convention, new Dictionary<string, object?>
+            {
+                ["pageFooter"] = $$$"""{{convention}}:{{#if (eq convention '{{{expected}}}')}}matched{{/if}}"""
+            });
+
+            AddPartialHostTemplate(renderer);
+            var output = Render(renderer, context, "guide");
+
+            Assert.That(output, Is.EqualTo($"{expected}:matched"));
+        }
+
+        [Test]
+        public void Build_LoadedThemeSettingNamedInDifferentCase_OverridesDeclaredParameter()
+        {
+            var configPath = Path.Combine(testDirectory, "kampose.json");
+            File.WriteAllText(configPath, """
+                {
+                  "outputDirectory": "output",
+                  "themeSettings": { "ProjectName": "Configured project" }
+                }
+                """);
+            var config = Configuration.LoadFromFile(configPath);
+            using var context = CreateContext<HtmlFormat>();
+            var theme = Theme.Load("classic", config.Convention);
+
+            var renderer = new DocRendererBuilder(new TextWriterActivityReporter(TextWriter.Null)).Build(context, config, theme);
+
+            Assert.That(renderer.CommonData, Does.ContainKey("projectName").WithValue("Configured project"));
+        }
+
         [Test]
         public void Build_DefaultMarkdownSetting_RegistersPartialAndConfiguredValueOverridesIt()
         {
@@ -130,14 +226,14 @@ namespace Kampose.Test.Builders
             var theme = Theme.Load(themeName, DocConvention.DotNet);
             var builder = new DocRendererBuilder(new TextWriterActivityReporter(TextWriter.Null));
 
-            var defaultRenderer = builder.Build(context, theme, new Dictionary<string, object?>());
+            var defaultRenderer = builder.Build(context, CreateConfiguration(DocConvention.DotNet), theme);
             AddPartialHostTemplate(defaultRenderer, "notice_partial");
             var defaultOutput = Render(defaultRenderer, context, string.Empty);
 
-            var configuredRenderer = builder.Build(context, theme, new Dictionary<string, object?>
+            var configuredRenderer = builder.Build(context, CreateConfiguration(DocConvention.DotNet, new Dictionary<string, object?>
             {
                 ["notice"] = "*Configured*"
-            });
+            }), theme);
             AddPartialHostTemplate(configuredRenderer, "notice_partial");
             var configuredOutput = Render(configuredRenderer, context, string.Empty);
 
@@ -150,10 +246,27 @@ namespace Kampose.Test.Builders
             }
         }
 
-        private static TemplateRenderer BuildRenderer(DocContext context, DocConvention convention, IReadOnlyDictionary<string, object?> settings)
+        private static TemplateRenderer BuildRenderer(
+            DocContext context,
+            DocConvention convention,
+            IReadOnlyDictionary<string, object?> settings,
+            IActivityReporter? reporter = null)
         {
             var theme = Theme.Load("classic", convention);
-            return new DocRendererBuilder(new TextWriterActivityReporter(TextWriter.Null)).Build(context, theme, settings);
+            return new DocRendererBuilder(reporter ?? new TextWriterActivityReporter(TextWriter.Null))
+                .Build(context, CreateConfiguration(convention, settings), theme);
+        }
+
+        private static Configuration CreateConfiguration(
+            DocConvention convention,
+            IReadOnlyDictionary<string, object?>? settings = null)
+        {
+            return new Configuration
+            {
+                OutputDirectory = "output",
+                Convention = convention,
+                ThemeSettings = settings is null ? [] : new Dictionary<string, object?>(settings)
+            };
         }
 
         private static DocContext CreateContext<TFormat>()
@@ -192,6 +305,28 @@ namespace Kampose.Test.Builders
                     "notice": {
                       "type": "markdown",
                       "defaultValue": "**Default**"
+                    }
+                  }
+                }
+                """
+            );
+            return customThemeDirectory;
+        }
+
+        private string CreateThemeWithConflictingParameter()
+        {
+            var customThemeDirectory = Path.Combine(testDirectory, "themes", "html", $"test-{Guid.NewGuid()}");
+            Directory.CreateDirectory(customThemeDirectory);
+            File.WriteAllText
+            (
+                Path.Combine(customThemeDirectory, "theme.json"),
+                """
+                {
+                  "templates": ["**/*.hbs"],
+                  "parameters": {
+                    "generator": {
+                      "type": "string",
+                      "defaultValue": "Theme generator"
                     }
                   }
                 }

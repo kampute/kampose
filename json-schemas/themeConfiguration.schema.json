@@ -2,14 +2,19 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Theme Configuration",
   "type": "object",
-  "description": "Represents the configuration for a theme.",
+  "description": "Defines a Kampose theme's inheritance, metadata, templates, bundled resources, static assets, and configurable parameters.",
   "properties": {
+    "$schema": {
+      "type": "string",
+      "format": "uri-reference",
+      "description": "Not recommended in theme configuration files. Retained only for compatibility. The canonical hosted schema represents the latest Kampose release and may not match an installed or pinned version, and installation-relative schema paths are not portable. Kampose does not use this value during loading. Editors and agents should instead validate out of band using the schema matching every effective Kampose version."
+    },
     "base": {
       "type": [
         "string",
         "null"
       ],
-      "description": "The identifier of the theme that this theme is based on, or null if the theme is standalone. The identifier of a theme is its directory name.",
+      "description": "Directory name of the parent theme to inherit, or null for a standalone theme. Templates, bundles, assets, and parameter definitions in this theme take precedence over inherited entries with the same name or target path. A standalone theme must define at least one template pattern.",
       "default": null
     },
     "metadata": {
@@ -17,49 +22,49 @@
         "object",
         "null"
       ],
-      "description": "The metadata for the theme, which includes information such as the name, version, description, author, license, and homepage. This metadata is used to provide context about the theme.",
+      "description": "Optional descriptive information about the theme. Metadata is exposed to templates but does not control theme loading or output selection.",
       "properties": {
         "format": {
           "type": [
             "string",
             "null"
           ],
-          "description": "The format of the theme, which can be 'html', 'md', or other formats supported by the documentation generator."
+          "description": "Output format the theme is intended to render, such as \"html\" or \"md\". This value is informational; the documentation convention selects the actual output format."
         },
         "name": {
           "type": [
             "string",
             "null"
           ],
-          "description": "The display name of the theme."
+          "description": "Human-readable theme name for documentation or user interfaces."
         },
         "version": {
           "type": [
             "string",
             "null"
           ],
-          "description": "The version of the theme, which can be used for versioning purposes."
+          "description": "Theme release version displayed as metadata. Kampose does not interpret or compare this value."
         },
         "description": {
           "type": [
             "string",
             "null"
           ],
-          "description": "A brief description of the theme, explaining its purpose and features."
+          "description": "Brief summary of the theme's intended use or distinguishing features."
         },
         "author": {
           "type": [
             "string",
             "null"
           ],
-          "description": "The name of the author or organization that created the theme."
+          "description": "Person or organization that maintains the theme."
         },
         "license": {
           "type": [
             "string",
             "null"
           ],
-          "description": "The license under which the theme is distributed, if applicable."
+          "description": "License name or identifier under which the theme is distributed, such as \"MIT\"."
         },
         "homepage": {
           "type": [
@@ -67,7 +72,7 @@
             "null"
           ],
           "format": "uri",
-          "description": "The URL of the theme's homepage or documentation, providing more information about the theme."
+          "description": "Absolute URL for the theme's homepage, source repository, or documentation."
         }
       },
       "additionalProperties": false
@@ -77,7 +82,7 @@
       "items": {
         "type": "string"
       },
-      "description": "The glob patterns for the template files of the theme that will be used to generate the documentation. These patterns are relative to the theme's base directory."
+      "description": "Case-insensitive glob patterns, relative to this theme's directory, that select Handlebars templates. Patterns without an extension are treated as .hbs patterns. Each template is registered by filename without its extension; this theme wins when an inherited theme defines the same template name."
     },
     "scripts": {
       "type": "object",
@@ -87,17 +92,17 @@
           "items": {
             "type": "string"
           },
-          "description": "Glob patterns for filtering JavaScript files that will be minified and included in the output as a single script file. The patterns are relative to the theme's base directory."
+          "description": "Case-insensitive glob patterns, relative to this theme's directory, that select JavaScript files for concatenation and minification. Patterns without an extension are treated as .js patterns."
         },
         "targetPath": {
           "type": "string",
-          "description": "The target file path relative to the output directory where the minified JavaScript will be written. If not specified, the default is `script.js`."
+          "description": "Output-relative path of the generated JavaScript bundle. The parent directory is created when needed. Defaults to \"script.js\"."
         }
       },
       "required": [
         "source"
       ],
-      "description": "The settings for the theme's JavaScript files that will be minified and included in the output. The source files are processed to create a single script file, which is then copied to the output directory.",
+      "description": "Defines a JavaScript bundle. Matching files are concatenated and minified into targetPath; the first generated script bundle also receives the global window.kampose data used by theme scripts.",
       "additionalProperties": false
     },
     "styles": {
@@ -108,17 +113,17 @@
           "items": {
             "type": "string"
           },
-          "description": "Glob patterns for filtering stylesheet files that will be minified and included in the output as a single stylesheet file. The patterns are relative to the theme's base directory."
+          "description": "Case-insensitive glob patterns, relative to this theme's directory, that select CSS files for concatenation and minification. Patterns without an extension are treated as .css patterns."
         },
         "targetPath": {
           "type": "string",
-          "description": "The target file path relative to the output directory where the minified stylesheet will be written. If not specified, the default is 'styles.css'."
+          "description": "Output-relative path of the generated stylesheet bundle. The parent directory is created when needed. Defaults to \"styles.css\"."
         }
       },
       "required": [
         "source"
       ],
-      "description": "The settings for the theme's stylesheet files that will be minified and included in the output. The source files are processed to create a single stylesheet file, which is then copied to the output directory.",
+      "description": "Defines a stylesheet bundle. Matching files are concatenated and minified into targetPath.",
       "additionalProperties": false
     },
     "assets": {
@@ -126,11 +131,11 @@
       "items": {
         "type": "string"
       },
-      "description": "The glob patterns for the asset files of the theme that will be copied to the output directory as-is, conserving their original folder structure. The patterns are relative to the theme's base directory."
+      "description": "Case-insensitive glob patterns, relative to this theme's directory, that select static files to copy unchanged. Paths relative to the theme directory are preserved in the output, and this theme wins when an inherited theme provides the same path."
     },
     "parameters": {
       "type": "object",
-      "description": "The theme parameters with their associated metadata. These parameters are accessible as variables in templates and as properties of the global 'kampose.config' object in JavaScript.",
+      "description": "Case-insensitive parameter definitions used to validate themeSettings and provide defaults. Resolved non-null values are exposed by name to Handlebars templates and, when a script bundle exists, through window.kampose.config.",
       "additionalProperties": {
         "type": "object",
         "properties": {
@@ -145,14 +150,14 @@
               "array",
               "object"
             ],
-            "description": "The parameter's data type, which determines how the value should be interpreted and processed."
+            "description": "Expected value type. markdown accepts Markdown text and renders it as a reusable partial; uri accepts absolute or relative URI references; array and object accept structured JSON values."
           },
           "description": {
             "type": [
               "string",
               "null"
             ],
-            "description": "A human-readable description explaining the parameter's purpose and expected values, or null if no description is provided."
+            "description": "User-facing explanation of where the parameter is used, what effect it has, and any expected structure or interactions with other parameters."
           },
           "defaultValue": {
             "type": [
@@ -163,7 +168,7 @@
               "array",
               "object"
             ],
-            "description": "The value of the parameter, which can be a string, number, boolean, or complex object."
+            "description": "Fallback used when themeSettings does not provide a non-null value. Its JSON type must match type; null means the parameter is omitted from template and script data unless configured."
           },
           "additionalProperties": false
         },

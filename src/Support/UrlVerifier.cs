@@ -5,6 +5,7 @@
 
 namespace Kampose.Support
 {
+    using Kampose.Outputs;
     using Kampute.DocToolkit;
     using Kampute.DocToolkit.Routing;
     using Kampute.DocToolkit.Support;
@@ -26,21 +27,24 @@ namespace Kampose.Support
         /// Initializes a new instance of the <see cref="UrlVerifier"/> class.
         /// </summary>
         /// <param name="context">The documentation context.</param>
-        /// <param name="baseDir">The documentation output directory.</param>
+        /// <param name="generatedFiles">The files generated for the documentation, against which internal URLs are resolved.</param>
         /// <param name="baseUri">The base URI of the documentation site, or <see langword="null"/> if URLs are relative.</param>
-        /// <exception cref="ArgumentNullException">Thrown when <paramref name="context"/> or <paramref name="baseDir"/> is <see langword="null"/>.</exception>
-        public UrlVerifier(IDocumentationContext context, string baseDir, Uri? baseUri)
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="context"/> or <paramref name="generatedFiles"/> is <see langword="null"/>.</exception>
+        public UrlVerifier(IDocumentationContext context, GeneratedFileSet generatedFiles, Uri? baseUri)
         {
             Context = context ?? throw new ArgumentNullException(nameof(context));
-            BaseDir = baseDir ?? throw new ArgumentNullException(nameof(baseDir));
+            GeneratedFiles = generatedFiles ?? throw new ArgumentNullException(nameof(generatedFiles));
             BaseUri = baseUri;
         }
 
         /// <summary>
-        /// Gets the documentation output directory.
+        /// Gets the files generated for the documentation.
         /// </summary>
-        /// <value>The documentation output directory.</value>
-        public string BaseDir { get; }
+        /// <value>
+        /// The files generated for the documentation. An internal URL is valid only when it refers to one of these files; files
+        /// that exist in the output directory but were not generated do not count.
+        /// </value>
+        public GeneratedFileSet GeneratedFiles { get; }
 
         /// <summary>
         /// Gets the base URI of the documentation site.
@@ -101,10 +105,10 @@ namespace Kampose.Support
         }
 
         /// <summary>
-        /// Checks if the file referenced by the URL is present in the documentation directory.
+        /// Checks if the file referenced by the URL was generated for the documentation.
         /// </summary>
         /// <param name="urlReference">The URL reference.</param>
-        /// <returns><see langword="true"/> if the file is present; otherwise, <see langword="false"/>.</returns>
+        /// <returns><see langword="true"/> if the file was generated; otherwise, <see langword="false"/>.</returns>
         private bool IsFilePresent(UrlReference urlReference)
         {
             if (urlReference.TargetUrl is null || urlReference.TargetUrl.IsAbsoluteUri != (BaseUri is not null))
@@ -118,26 +122,26 @@ namespace Kampose.Support
         }
 
         /// <summary>
-        /// Checks if a file is present at the specified document-relative URL.
+        /// Checks if a file was generated at the specified document-relative URL.
         /// </summary>
         /// <param name="baseDirectory">The directory of the referencing document.</param>
         /// <param name="relativeUrl">The URL relative to the referencing document.</param>
-        /// <returns><see langword="true"/> if the file is present; otherwise, <see langword="false"/>.</returns>
+        /// <returns><see langword="true"/> if the file was generated; otherwise, <see langword="false"/>.</returns>
         private bool IsFilePresent(string baseDirectory, string relativeUrl)
         {
             var relativeFilePath = UriHelper.GetPathPart(relativeUrl);
-            var absoluteBaseDir = Path.GetFullPath(BaseDir);
+            var absoluteBaseDir = GeneratedFiles.OutputDirectory;
             var absoluteFilePath = Path.GetFullPath(Path.Combine(absoluteBaseDir, baseDirectory, relativeFilePath));
             var pathFromBase = Path.GetRelativePath(absoluteBaseDir, absoluteFilePath);
 
             if (!PathHelper.IsSubpath(pathFromBase, absoluteFilePath))
                 return false;
 
-            if (File.Exists(absoluteFilePath))
+            if (GeneratedFiles.Contains(absoluteFilePath))
                 return true;
 
             return Path.GetExtension(absoluteFilePath) != Context.ContentFormatter.FileExtension
-                && File.Exists(absoluteFilePath + Context.ContentFormatter.FileExtension);
+                && GeneratedFiles.Contains(absoluteFilePath + Context.ContentFormatter.FileExtension);
         }
 
         /// <summary>

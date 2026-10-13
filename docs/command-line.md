@@ -96,6 +96,40 @@ kampose --help
 kampose -h
 ```
 
+### `validate`
+
+Runs every validation of the `build` command without generating any file.
+
+The `validate` command loads the configuration, theme, assemblies, XML documentation, and topics, audits the XML documentation, renders every page, bundles the theme scripts and styles, checks that every asset can be read, and verifies the referenced URLs, exactly as `build` does. It reports the same errors and warnings and returns the same exit codes, but creates, changes, or deletes nothing in the output directory. Use it to check documentation in pull requests or before a build.
+
+#### Usage
+
+```shell
+kampose validate [OPTIONS] [config-file]
+```
+
+#### Arguments
+
+- `config-file` - Path to your configuration file. Defaults to `kampose.json` in the current directory if not specified. You can omit the `.json` extension and it will be added automatically.
+
+#### Options
+
+- `-d, --debug` - Enable detailed logging to help diagnose issues during validation.
+- `-h, --help` - Show help information for the validate command.
+
+> [!NOTE]
+> Because nothing is written, `validate` cannot detect failures that occur only when writing files, such as missing permissions on the output directory or a full disk. When [`verifyExternalLinks`](configuration.md#verifyexternallinks) is enabled, it sends the same requests to external URLs as `build`.
+
+#### Examples
+
+```shell
+# Validate using the default configuration file (kampose.json)
+kampose validate
+
+# Validate using a custom configuration file
+kampose validate custom-config.json
+```
+
 ### `version`
 
 Shows the current version of Kampose.
@@ -132,7 +166,7 @@ These options work with any command:
 Kampose returns these exit codes to indicate what happened:
 
 - `0` - Success
-- `1` - Errors occurred during documentation generation
+- `1` - Errors occurred during documentation generation or validation
 - `2` - Invalid command or options
 - `3` - Configuration or theme validation errors
 - `4` - Unexpected errors

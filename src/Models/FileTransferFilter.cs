@@ -25,8 +25,9 @@ namespace Kampose.Models
         /// Gets or sets the destination path for matching files.
         /// </summary>
         /// <value>
-        /// A destination whose interpretation depends on the operation. Configuration assets use an output directory,
-        /// while theme script and style bundles use an output-relative file path.
+        /// A destination whose interpretation depends on the operation. Configuration assets use a relative output
+        /// directory beneath which the include-relative source hierarchy is preserved, while theme script and style
+        /// bundles use an output-relative file path.
         /// </value>
         public string TargetPath { get; set; } = string.Empty;
     }

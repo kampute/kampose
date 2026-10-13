@@ -24,8 +24,9 @@ namespace Kampose.Builders
     public sealed class DocContextBuilder : DocumentationContextBuilder<DocContext>
     {
         private readonly IActivityReporter reporter;
-        private readonly Dictionary<string, string> assets = [];
+        private readonly Dictionary<string, string> assets = new(StringComparer.OrdinalIgnoreCase);
         private IDocumentAddressingStrategy? strategy;
+        private string? outputDirectory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DocContextBuilder"/> class.
@@ -57,7 +58,18 @@ namespace Kampose.Builders
             ArgumentException.ThrowIfNullOrEmpty(sourcePath);
             ArgumentException.ThrowIfNullOrEmpty(targetPath);
 
-            assets[targetPath] = sourcePath;
+            if (outputDirectory is not null)
+                EnsureAssetTargetWithinOutput(outputDirectory, targetPath);
+
+            if (assets.TryGetValue(targetPath, out var existingSourcePath)
+                && !string.Equals(existingSourcePath, sourcePath, StringComparison.OrdinalIgnoreCase))
+            {
+                throw new ValidationException(
+                    $"Multiple assets resolve to the same generated path '{targetPath}'.",
+                    [$"Sources: '{existingSourcePath}' and '{sourcePath}'."]);
+            }
+
+            assets.TryAdd(targetPath, sourcePath);
             return this;
         }
 
@@ -74,6 +86,9 @@ namespace Kampose.Builders
             ArgumentNullException.ThrowIfNull(theme);
 
             strategy = CreateAddressingStrategy(config.Convention);
+            outputDirectory = Path.GetFullPath(config.OutputDirectory);
+            foreach (var targetPath in assets.Keys)
+                EnsureAssetTargetWithinOutput(outputDirectory, targetPath);
 
             BaseUrl = config.BaseUrl;
             XmlDocErrorHandler = new XmlDocErrorReporter(reporter);
@@ -108,9 +123,17 @@ namespace Kampose.Builders
                 formatter,
                 assemblies.OrderBy(a => a.Name, StringComparer.OrdinalIgnoreCase),
                 Topics,
-                assets.Select(kvp => new AssetReference(kvp.Value, kvp.Key)),
+                assets.Select(kvp => new AssetReference(kvp.Value, kvp.Key, GetGeneratedPath(kvp.Key))),
                 universe
             );
+
+            string GetGeneratedPath(string targetPath)
+            {
+                if (outputDirectory is null)
+                    throw new InvalidOperationException("The output directory has not been configured.");
+
+                return Path.GetRelativePath(outputDirectory, targetPath).Replace('\\', '/');
+            }
         }
 
         /// <summary>
@@ -375,19 +398,72 @@ namespace Kampose.Builders
             foreach (var (targetRelativePath, sourceFullPath) in theme.AssetFiles)
             {
                 using var __ = reporter.BeginStep(sourceFullPath);
-                var targetFullPath = Path.GetFullPath(Path.Combine(config.OutputDirectory, targetRelativePath));
+                var targetFullPath = ResolveAssetTarget(config.OutputDirectory, targetRelativePath);
                 AddAsset(sourceFullPath, targetFullPath);
             }
 
             // Collect assets from the configuration
             foreach (var filter in config.Assets)
             {
-                foreach (var sourceFullPath in filter.Source.FindMatchingFiles(config.BaseDirectory))
+                foreach (var match in filter.Source.FindMatchingFilesWithRelativePaths(config.BaseDirectory))
                 {
-                    using var __ = reporter.BeginStep(sourceFullPath);
-                    var targetFullPath = Path.GetFullPath(Path.Combine(config.OutputDirectory, filter.TargetPath, Path.GetFileName(sourceFullPath)));
-                    AddAsset(sourceFullPath, targetFullPath);
+                    using var __ = reporter.BeginStep(match.FullPath);
+                    var targetFullPath = ResolveAssetTarget(config.OutputDirectory, filter.TargetPath, match.RelativePath);
+                    AddAsset(match.FullPath, targetFullPath);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Resolves an asset destination and ensures that it remains beneath the output directory.
+        /// </summary>
+        /// <param name="outputDirectory">The full path to the documentation output directory.</param>
+        /// <param name="relativeParts">The destination path parts to resolve in order.</param>
+        /// <returns>The resolved full path to the asset destination.</returns>
+        /// <exception cref="ValidationException">Thrown when a destination part contains parent traversal or the resolved destination escapes <paramref name="outputDirectory"/>.</exception>
+        private static string ResolveAssetTarget(string outputDirectory, params string[] relativeParts)
+        {
+            var outputFullPath = Path.GetFullPath(outputDirectory);
+            var targetFullPath = outputFullPath;
+            for (var i = 0; i < relativeParts.Length; i++)
+            {
+                var part = relativeParts[i];
+                if (Path.IsPathRooted(part))
+                {
+                    if (i != 0)
+                        throw new ValidationException($"Asset destination '{part}' cannot replace a partially resolved destination.");
+
+                    targetFullPath = Path.GetFullPath(part);
+                    EnsureAssetTargetWithinOutput(outputFullPath, targetFullPath);
+                    continue;
+                }
+
+                if (part.Split(['/', '\\'], StringSplitOptions.RemoveEmptyEntries).Contains("..", StringComparer.Ordinal))
+                    throw new ValidationException($"Asset destination '{part}' cannot contain parent-directory segments.");
+
+                targetFullPath = Path.GetFullPath(Path.Combine(targetFullPath, part));
+            }
+
+            EnsureAssetTargetWithinOutput(outputFullPath, targetFullPath);
+
+            return targetFullPath;
+        }
+
+        /// <summary>
+        /// Ensures that a fully resolved asset destination remains beneath the output directory.
+        /// </summary>
+        /// <param name="outputDirectory">The full path to the documentation output directory.</param>
+        /// <param name="targetPath">The full path to the asset destination.</param>
+        /// <exception cref="ValidationException">Thrown when <paramref name="targetPath"/> is outside <paramref name="outputDirectory"/>.</exception>
+        private static void EnsureAssetTargetWithinOutput(string outputDirectory, string targetPath)
+        {
+            var outputFullPath = Path.GetFullPath(outputDirectory);
+            var targetFullPath = Path.GetFullPath(targetPath);
+            var pathFromOutput = Path.GetRelativePath(outputFullPath, targetFullPath);
+            if (!pathFromOutput.Equals(".", StringComparison.Ordinal)
+                && (Path.IsPathRooted(pathFromOutput) || PathHelper.StartsWithDotSegment(pathFromOutput)))
+            {
+                throw new ValidationException($"Asset destination '{targetFullPath}' escapes output directory '{outputFullPath}'.");
             }
         }
     }

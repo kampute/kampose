@@ -10,6 +10,7 @@ namespace Kampose.Test.Support
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
 
     [TestFixture]
     public class FileGlobFilterTests
@@ -89,6 +90,25 @@ namespace Kampose.Test.Support
             var files = filter.FindMatchingFiles(tempDir);
 
             Assert.That(files, Is.EquivalentTo(expectedFiles).Using(new PathEqualityComparer()));
+        }
+
+        [Test]
+        public void FindMatchingFilesWithRelativePaths_WithMultipleIncludes_PreservesEachWildcardStem()
+        {
+            var filter = new FileGlobFilter
+            {
+                "**/*.log",
+                "sub/**/*.txt",
+                "!sub/file3.txt"
+            };
+
+            var matches = filter.FindMatchingFilesWithRelativePaths(tempDir).ToArray();
+
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(matches, Has.Some.Matches<FileGlobMatch>(match => match.FullPath.EndsWith("file2.log", StringComparison.Ordinal) && match.RelativePath == "file2.log"));
+                Assert.That(matches, Has.None.Matches<FileGlobMatch>(match => match.FullPath.EndsWith("file3.txt", StringComparison.Ordinal)));
+            }
         }
 
         [TestCase("test/", ".txt", ExpectedResult = "test/*.txt")]

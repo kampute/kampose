@@ -89,6 +89,6 @@ namespace Kampose.Models
         /// Creates the URL transformer for collecting URL references.
         /// </summary>
         /// <returns>An instance of <see cref="IUrlTransformer"/> that collects URL references.</returns>
-        protected override IUrlTransformer CreateUrlTransformer() => new UrlReferenceCollector(this, base.CreateUrlTransformer());
+        protected override IUrlTransformer CreateUrlTransformer() => new UrlReferenceCollector(this, new AssetUrlTransformer(this, base.CreateUrlTransformer()));
     }
 }

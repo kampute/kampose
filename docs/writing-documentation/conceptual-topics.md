@@ -93,7 +93,7 @@ In ordinary Markdown, prefer source-relative links so the files remain navigable
 ![Diagram](../images/diagram.svg)
 ```
 
-Kampose recognizes registered topic files and collected local assets and maps them to their generated URLs. Use `~/` only when referring to a location in the generated documentation, such as `[License](~/LICENSE)`.
+Kampose recognizes registered topic files and collected local assets and maps them to their generated URLs, including an asset's configured `targetPath` and preserved source hierarchy. Authors do not need to calculate that generated path. Use `~/` only when referring to a location in the generated documentation, such as `[License](~/LICENSE)`.
 
 See [URL Resolution](../url-resolution.md) for document-relative, site-root-relative, and documentation-root-relative behavior.
 

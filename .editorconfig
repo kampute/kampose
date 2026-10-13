@@ -196,3 +196,8 @@ tab_width = 2
 end_of_line = lf
 insert_final_newline = false
 file_header_template = unset
+
+[*.md]
+end_of_line = lf
+insert_final_newline = true
+file_header_template = unset

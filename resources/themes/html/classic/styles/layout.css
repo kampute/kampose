@@ -75,7 +75,7 @@ body {
   display: none;
 }
 
-.content {
+.page-content {
   grid-area: content;
   position: relative;
   display: flex;
@@ -84,7 +84,7 @@ body {
   overflow: hidden;
 }
 
-.content main {
+.page-content main {
   flex: 1;
   min-width: 0;
   padding: 0 2rem;
@@ -93,7 +93,7 @@ body {
   position: relative;
 }
 
-.content main p:first-child:has(img):has(+ h1) {
+.page-content main p:first-child:has(img):has(+ h1) {
   float: right;
   margin: 2rem 0 1rem 1rem;
 }
@@ -473,11 +473,11 @@ a.skip-link:focus {
     display: inline-flex;
   }
 
-  .content main {
+  .page-content main {
     padding: 0 1rem;
   }
 
-  body.mobile-panel-open .content main {
+  body.mobile-panel-open .page-content main {
     overflow: hidden;
   }
 

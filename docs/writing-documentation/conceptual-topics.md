@@ -36,17 +36,40 @@ summary: Configure and run Kampose for a .NET project.
 
 The built-in themes use the title and summary in generated pages and navigation. Custom front-matter values remain available to custom topic templates through `model.source.frontMatter`.
 
-## Mark Important Information with Blockquotes
+## Highlight Important Information with Alerts
 
-In Kampose topics, use a blockquote as an **important-information callout**: short, supplementary information that readers should notice before continuing. Examples include prerequisites, constraints, compatibility details, and consequences that do not belong in the main instruction flow.
-
-Use standard Markdown blockquote syntax:
+Use GitHub-style alerts for short callouts that readers should notice before continuing. Put the alert directive on the first line of a blockquote and prefix each content line with `>`:
 
 ```markdown
-> All relative paths in configuration are resolved against `baseDirectory`.
+> [!NOTE]
+> Additional context that helps readers understand the current section.
+
+> [!TIP]
+> Optional advice that helps readers complete a task.
+
+> [!IMPORTANT]
+> Information readers need to complete a task successfully.
+
+> [!WARNING]
+> A potential problem that requires immediate attention.
+
+> [!CAUTION]
+> A risk that could lead to data loss or another negative consequence.
 ```
 
-Keep callouts concise and use them selectively. Markdown blockquotes do not encode a more specific category. When readers need to distinguish a warning, caution, note, or tip, begin the content with that label, for example `> **Warning:** ...`.
+The directive names are case-insensitive, but uppercase names match the GitHub convention and are easier to recognize. Alert content can contain the same inline and block Markdown supported by an ordinary blockquote.
+
+Output depends on the selected convention:
+
+- HTML themes render alerts with the same labels, icons, and colors used for XML documentation `<note>` elements.
+- Markdown themes used with the `devOps` convention replace the alert directive with a bold title and preserve the content as a portable blockquote. For example, the warning above becomes:
+
+```markdown
+> **Warning** \
+> A potential problem that requires immediate attention.
+```
+
+Use alerts selectively and keep them focused on one message. Use an ordinary blockquote for quotations or content that does not require special emphasis.
 
 ## Organize the Hierarchy
 

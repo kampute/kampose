@@ -262,7 +262,7 @@ tr:nth-child(even) {
 }
 
 tr:hover {
-  background-color: var(--color-information-background);
+  background-color: var(--color-hover-background);
 }
 
 th {

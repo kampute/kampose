@@ -52,6 +52,19 @@ namespace Kampose.Test.Models
         }
 
         [Test]
+        public void LoadFromFile_WithSchemaDeclaration_ReturnsThemeConfiguration()
+        {
+            var filePath = GenerateJsonFile("theme-with-schema.json", @"{
+                ""$schema"": ""https://kampute.github.io/kampose/json-schemas/themeConfiguration.schema.json"",
+                ""templates"": [""**/*.hbs""]
+            }");
+
+            var config = ThemeConfiguration.LoadFromFile(filePath);
+
+            Assert.That(config, Is.Not.Null);
+        }
+
+        [Test]
         public void LoadFromFile_WithMetadata_LoadsMetadata()
         {
             var filePath = GenerateJsonFile("theme-with-metadata.json", @"{
@@ -307,6 +320,19 @@ namespace Kampose.Test.Models
                 () => ThemeConfiguration.LoadFromFile(filePath),
                 Throws.TypeOf<ValidationException>()
             );
+        }
+
+        [Test]
+        public void LoadFromFile_WithInvalidSchemaDeclaration_ThrowsValidationException()
+        {
+            var filePath = GenerateJsonFile("theme-with-invalid-schema.json", @"{
+                ""$schema"": 42,
+                ""templates"": [""**/*.hbs""]
+            }");
+
+            var exception = Assert.Throws<ValidationException>(() => ThemeConfiguration.LoadFromFile(filePath));
+
+            Assert.That(exception!.Errors, Has.Some.Contains("$schema"));
         }
 
         [Test]

@@ -7,6 +7,7 @@ namespace Kampose.Test.Templates.Helpers
 {
     using HandlebarsDotNet;
     using Kampose.Support;
+    using Kampose.Templates;
     using Kampose.Templates.Helpers;
     using Kampute.DocToolkit.Formatters;
     using Kampute.DocToolkit.Support;
@@ -25,6 +26,7 @@ namespace Kampose.Test.Templates.Helpers
             handlebars = Handlebars.Create();
             var docContext = MockHelper.CreateDocumentationContext<HtmlFormat>();
             docContext.ContentFormatter.TextTransformers.Register<MarkdownToHtmlTransformer>(FileExtensions.Markdown);
+            handlebars.Configuration.TextEncoder = new TemplateTextEncoder(docContext.ContentFormatter);
             UtilityHelpers.Register(handlebars, docContext);
         }
 
@@ -148,8 +150,8 @@ namespace Kampose.Test.Templates.Helpers
         [TestCase(42, ExpectedResult = "42")]
         [TestCase(0, ExpectedResult = "0")]
         [TestCase(-123.45, ExpectedResult = "-123.45")]
-        [TestCase('a', ExpectedResult = "'a'")]
-        [TestCase('\n', ExpectedResult = "'\\n'")]
+        [TestCase('a', ExpectedResult = "&#39;a&#39;")]
+        [TestCase('\n', ExpectedResult = "&#39;\\n&#39;")]
         [TestCase("Hello\tWorld!", ExpectedResult = "&quot;Hello\\tWorld!&quot;")]
         [TestCase("", ExpectedResult = "&quot;&quot;")]
         public string Literal_RendersValueAsCode(object? value)

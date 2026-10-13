@@ -5,7 +5,8 @@
 
 {{#each members}}
 <section class="type-member {{>member_class_names metadata}}" role="region" aria-labelledby="{{#fragment url}}">
-  <h{{../level}} id="{{#fragment url}}">{{#memberSignature this}}</h{{../level}}>
-  {{>member level=(inc ../level) member=this idPrefix=(concat (fragment url) '-')}}
+<h{{../level}} id="{{#fragment url}}">{{#memberSignature this}}</h{{../level}}>
+{{!-- Keep at column 0: indentation here is prefixed to every line of the partial's output and breaks code blocks. --}}
+{{>member level=(inc ../level) member=this idPrefix=(concat (fragment url) '-')}}
 </section>
 {{/each}}

@@ -81,12 +81,13 @@ namespace Kampose.Templates.Helpers
             if (arguments.Length is < 1 or > 2)
                 throw new HandlebarsException($"{nameof(UpperCase)} template helper function requires one or two arguments.");
 
-            return arguments[0] switch
+            var value = arguments[0];
+            return value switch
             {
                 null => string.Empty,
                 string str => str,
                 IFormattable formattable => formattable.ToString(arguments.Length == 2 ? arguments[1]?.ToString() : null, CultureInfo.InvariantCulture),
-                _ => arguments[0].ToString() ?? string.Empty
+                _ => value.ToString() ?? string.Empty
             };
         }
 

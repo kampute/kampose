@@ -6,6 +6,7 @@
 namespace Kampose.Test.Templates.Helpers
 {
     using HandlebarsDotNet;
+    using Kampose.Templates;
     using Kampose.Templates.Helpers;
     using Kampose.Test;
     using Kampute.DocToolkit;
@@ -23,6 +24,7 @@ namespace Kampose.Test.Templates.Helpers
         {
             handlebars = Handlebars.Create();
             docContext = MockHelper.CreateDocumentationContext<HtmlFormat>();
+            handlebars.Configuration.TextEncoder = new TemplateTextEncoder(docContext.ContentFormatter);
             UrlHelpers.Register(handlebars, docContext);
         }
 

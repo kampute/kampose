@@ -9,7 +9,8 @@
 <h1>Assemblies</h1>
 {{#each assemblies}}
 <div class="assembly-section">
-  {{>assembly level=2 assembly=this}}
+{{!-- Keep at column 0: indentation here is prefixed to every line of the partial's output and breaks code blocks. --}}
+{{>assembly level=2 assembly=this}}
 </div>
 {{/each}}
 {{/if}}

@@ -148,7 +148,7 @@ namespace Kampose.Templates.Helpers
         /// <param name="callerName">The name of the calling method (automatically provided).</param>
         /// <returns>An instance of <see cref="IMember"/>.</returns>
         /// <exception cref="HandlebarsException">Thrown when the object cannot be converted.</exception>
-        private static IMember ToMember(object obj, [CallerMemberName] string? callerName = null) => obj switch
+        private static IMember ToMember(object? obj, [CallerMemberName] string? callerName = null) => obj switch
         {
             IMember member => member,
             MemberModel memberModel => memberModel.Metadata,

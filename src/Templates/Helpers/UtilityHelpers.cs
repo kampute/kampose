@@ -128,7 +128,7 @@ namespace Kampose.Templates.Helpers
                 _ => null
             };
 
-            static int? ToInteger(object value)
+            static int? ToInteger(object? value)
             {
                 try
                 {

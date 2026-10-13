@@ -25,5 +25,11 @@ namespace Kampose.Models
         /// URL conventions.
         /// </summary>
         DevOps,
+
+        /// <summary>
+        /// Generates Markdown with members rendered on their declaring type's page, following GitLab Wiki URL
+        /// conventions.
+        /// </summary>
+        GitLab,
     }
 }

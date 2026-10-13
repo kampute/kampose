@@ -23,9 +23,9 @@ The following table summarizes the available HTML themes:
 
 To install an HTML theme, copy its directory into the `themes/html/` directory of the Kampose installation. The directory name is the theme identifier.
 
-## Markdown-Based Themes (DevOps Convention)
+## Markdown-Based Themes (DevOps/GitLab Conventions)
 
-When `convention` is `devOps`, Kampose loads a Markdown theme. The generated files are suitable for systems such as Azure DevOps Wiki that consume Markdown documentation.
+When `convention` is `devOps` or `gitLab`, Kampose loads a Markdown theme. The generated files are suitable for systems such as Azure DevOps Wiki and GitLab Wiki that consume Markdown documentation.
 
 ### Available Themes
 

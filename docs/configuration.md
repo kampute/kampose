@@ -66,8 +66,11 @@ Specifies the page layout and URL format for the generated documentation.
 | `dotNet`   | HTML     | Separate pages for types and members | .NET API Browser style  | `api/system.collections.generic.list-1.count.html`                                   |
 | `docFx`    | HTML     | Types and members on same page       | DocFX style             | `api/System.Collections.Generic.List_1.html#System_Collections_Generic_List_1_Count` |
 | `devOps`   | Markdown | Types and members on same page       | Azure DevOps Wiki style | `System.Collections.Generic/List%3CT%3E.md#count`                                    |
+| `gitLab`   | Markdown | Types and members on same page       | GitLab Wiki style       | `System.Collections.Generic/List{T}.md#count`                                        |
 
 The default convention is `docFx`.
+
+With the `gitLab` convention, the home topic is written to `home.md`, which GitLab Wiki serves as the front page, and the other pages are nested under it in the `home` folder. Because GitLab displays a page's file name as its title, the built-in [Markdown theme](themes/classic-md-theme.md) starts each page with a front matter `title` that holds the original title. GitLab displays front matter titles by default from version 17.2. See [CI/CD Integration](ci-cd-integration.md) for a pipeline that publishes the output to a GitLab wiki.
 
 #### Example
 
@@ -165,6 +168,7 @@ Specifies the strategy used for linking to the external documentation. It can be
 | `dotNet`       | Microsoft .NET API Browser format        | `api/system.collections.generic.list-1.count`                                        |
 | `docFx`        | DocFX-generated documentation            | `api/System.Collections.Generic.List_1.html#System_Collections_Generic_List_1_Count` |
 | `devOps`       | Azure DevOps Wiki format                 | `System.Collections.Generic/List%3CT%3E.md#count`                                    |
+| `gitLab`       | GitLab Wiki format                       | `System.Collections.Generic/List{T}.md#count`                                        |
 | `onlineSearch` | Search engine fallback (no direct links) | N/A                                                                                  |
 
 This setting is required for each reference entry.

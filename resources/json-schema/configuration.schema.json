@@ -56,9 +56,10 @@
               "dotNet",
               "docFx",
               "devOps",
+              "gitLab",
               "onlineSearch"
             ],
-            "description": "URL convention used to construct links for matching external code elements: .NET API Browser, DocFX, Azure DevOps Wiki, or an online search query."
+            "description": "URL convention used to construct links for matching external code elements: .NET API Browser, DocFX, Azure DevOps Wiki, GitLab Wiki, or an online search query."
           },
           "url": {
             "type": [
@@ -149,9 +150,11 @@
         "docFx",
         "docfx",
         "devOps",
-        "devops"
+        "devops",
+        "gitLab",
+        "gitlab"
       ],
-      "description": "Determines output format, page grouping, URL layout, and the directory from which built-in themes are loaded. dotNet generates HTML with separate type and member pages; docFx generates HTML with members on their type pages; devOps generates Markdown for Azure DevOps Wiki.",
+      "description": "Determines output format, page grouping, URL layout, and the directory from which built-in themes are loaded. dotNet generates HTML with separate type and member pages; docFx generates HTML with members on their type pages; devOps generates Markdown for Azure DevOps Wiki; gitLab generates Markdown for GitLab Wiki.",
       "default": "docFx"
     },
     "theme": {

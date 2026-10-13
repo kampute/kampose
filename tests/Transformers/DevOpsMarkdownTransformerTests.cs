@@ -3,10 +3,10 @@
 // Released under the terms of the MIT license.
 // See the LICENSE file in the project root for the full license text.
 
-namespace Kampose.Test.Support
+namespace Kampose.Test.Transformers
 {
     using Kampose.Models;
-    using Kampose.Support;
+    using Kampose.Transformers;
     using Kampute.DocToolkit;
     using Kampute.DocToolkit.Formatters;
     using Kampute.DocToolkit.Languages;
@@ -18,7 +18,7 @@ namespace Kampose.Test.Support
     using System.IO;
 
     [TestFixture]
-    public class MarkdownToMarkdownTransformerTests
+    public class DevOpsMarkdownTransformerTests
     {
         [TestCase("NOTE")]
         [TestCase("TIP")]
@@ -96,7 +96,7 @@ namespace Kampose.Test.Support
         }
 
         [Test]
-        public void DocContext_WithMarkdownFormat_UsesAlertFallback()
+        public void DocContext_WithMarkdownFormatAndDevOpsTransformer_UsesTitledBlockquotes()
         {
             var context = new DocContext(
                 new CSharp(),
@@ -105,7 +105,8 @@ namespace Kampose.Test.Support
                 new MarkdownFormat(),
                 [],
                 [],
-                []);
+                [],
+                markdownTransformer: new DevOpsMarkdownTransformer());
 
             var transformed = context.TryTransformText(
                 FileExtensions.Markdown,
@@ -121,7 +122,7 @@ namespace Kampose.Test.Support
 
         private static string Transform(string markdown, IUrlTransformer? urlTransformer = null)
         {
-            var transformer = new MarkdownToMarkdownTransformer();
+            var transformer = new DevOpsMarkdownTransformer();
             using var reader = new StringReader(markdown);
             using var writer = new StringWriter();
             transformer.Transform(reader, writer, urlTransformer);

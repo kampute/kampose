@@ -45,6 +45,7 @@ namespace Kampose.Test.Builders
         [TestCase(DocConvention.DotNet, "dotNet")]
         [TestCase(DocConvention.DocFx, "docFx")]
         [TestCase(DocConvention.DevOps, "devOps")]
+        [TestCase(DocConvention.GitLab, "gitLab")]
         public void Build_ConfiguredConvention_ExposesCanonicalNameToJavaScript(DocConvention convention, string expected)
         {
             using var context = CreateContext<HtmlFormat>();
@@ -188,6 +189,7 @@ namespace Kampose.Test.Builders
         }
 
         [TestCase(DocConvention.DevOps, "devOps")]
+        [TestCase(DocConvention.GitLab, "gitLab")]
         public void Build_ConfiguredConvention_ExposesCanonicalNameToTemplates(DocConvention convention, string expected)
         {
             using var context = CreateContext<MarkdownFormat>();

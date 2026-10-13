@@ -318,3 +318,52 @@ pages:
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
 ```
+
+### Pipeline with Wiki Publishing
+
+Publish documentation directly to the project's GitLab Wiki. Update your `kampose.json` to use the `gitLab` convention:
+
+```json
+{
+  "convention": "gitLab",
+  "outputDirectory": ".doc-site",
+  "assemblies": ["src/**/bin/Release/**/*.dll"],
+  "theme": "classic",
+  "audit": {
+    "options": ["recommended"],
+    "stopOnIssues": true
+  }
+}
+```
+
+The `gitLab` convention writes the home topic to `home.md`, the page GitLab Wiki serves as the front page, and the built-in Markdown theme starts each page with a front matter `title` that GitLab displays instead of the file name. See the [Configuration Guide](configuration.md#convention) for more details about conventions.
+
+The wiki is a separate Git repository, so the job needs a token that can push to it:
+
+1. Create a [project access token](https://docs.gitlab.com/user/project/settings/project_access_tokens/) with the Developer role and the `write_repository` scope.
+2. Add the token as a masked CI/CD variable named `WIKI_ACCESS_TOKEN`.
+
+Replace the `pages` job of the basic pipeline with the following job:
+
+```yaml
+# Only publish to wiki on main branch (not on merge requests)
+wiki:
+  stage: deploy
+  image: mcr.microsoft.com/dotnet/sdk:10.0
+  needs:
+    - documentation
+  script:
+    - git clone "https://wiki-bot:${WIKI_ACCESS_TOKEN}@${CI_SERVER_HOST}/${CI_PROJECT_PATH}.wiki.git" wiki
+    - cp -r .doc-site/* wiki/
+    - cd wiki
+    - git config user.email "wiki-bot@noreply.${CI_SERVER_HOST}"
+    - git config user.name "Wiki Bot"
+    - git add .
+    - git diff --cached --quiet || git commit -m "Update documentation from ${CI_COMMIT_SHORT_SHA}"
+    - git push origin HEAD
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+```
+
+> [!NOTE]
+> The wiki repository URL is the project path followed by `.wiki.git`. If your GitLab instance uses a different URL or port, copy the URL from **Wiki actions** > **Clone repository** on the wiki page. Project access tokens on GitLab.com require the Premium or Ultimate tier. On the Free tier of GitLab.com, use a personal access token with the `write_repository` scope of a user who has at least the Developer role.

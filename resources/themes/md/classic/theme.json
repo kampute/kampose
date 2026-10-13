@@ -3,7 +3,7 @@
   "metadata": {
     "format": "md",
     "name": "Classic",
-    "description": "Markdown theme for Azure DevOps Wiki output, with configurable page framing and optional child-topic links.",
+    "description": "Markdown theme for Azure DevOps Wiki and GitLab Wiki output, with configurable page framing and optional child-topic links.",
     "version": "1.1.0",
     "author": "Kambiz Khojasteh",
     "license": "MIT",

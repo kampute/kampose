@@ -12,6 +12,7 @@
     --color-background: #ffffff;
     --color-alt-background: #f8f9fa;
     --color-surface: #ffffff;
+    --color-note-background: #f5f0ff;
 
     /* Text colors */
     --color-text: #212529;
@@ -19,7 +20,6 @@
     --color-heading: #1a1a1a;
 
     /* Interactive elements */
-    --color-input-background: #ffffff;
     --color-border: #dee2e6;
     --color-shadow: rgba(0, 0, 0, 0.08);
 
@@ -36,15 +36,12 @@
     --color-code-text: #2a2e36;
 
     /* Status colors */
-    --color-hint-background: #ebffea;
     --color-hint: #087204;
-    --color-information-background: #e7f3ff;
+    --color-hover-background: #e7f3ff;
     --color-information: #0066cc;
     --color-note-background: #f5f0ff;
     --color-note: #6f42c1;
-    --color-important-background: #fff3cd;
     --color-important: #856404;
-    --color-security-background: #f8d7da;
     --color-security: #721c24;
   }
 

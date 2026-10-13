@@ -8,7 +8,9 @@ namespace Kampose.Support
     using Kampute.DocToolkit.Formatters;
     using Kampute.DocToolkit.Routing;
     using Markdig;
+    using Markdig.Extensions.Alerts;
     using Markdig.Renderers;
+    using Markdig.Renderers.Html;
     using Markdig.Renderers.Html.Inlines;
     using Markdig.Syntax.Inlines;
     using System;
@@ -22,7 +24,7 @@ namespace Kampose.Support
     public sealed partial class MarkdownToHtmlTransformer : ITextTransformer
     {
         private readonly MarkdownPipeline pipeline;
-        private readonly UrlReplacementExtension urlReplacementExtension = new();
+        private readonly HtmlRenderingExtension htmlRenderingExtension = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MarkdownToHtmlTransformer"/> class.
@@ -30,7 +32,7 @@ namespace Kampose.Support
         public MarkdownToHtmlTransformer()
         {
             var pipelineBuilder = new MarkdownPipelineBuilder().UseAdvancedExtensions();
-            pipelineBuilder.Extensions.Add(urlReplacementExtension);
+            pipelineBuilder.Extensions.Add(htmlRenderingExtension);
             pipeline = pipelineBuilder.Build();
         }
 
@@ -56,7 +58,7 @@ namespace Kampose.Support
             });
 
             // Transform Markdown to HTML
-            urlReplacementExtension.UrlTransformer = urlTransformer;
+            htmlRenderingExtension.UrlTransformer = urlTransformer;
             using var writer = Kampute.DocToolkit.Support.StringBuilderPool.Shared.GetWriter();
             Markdown.ToHtml(processedMarkdown, writer, pipeline);
             var html = writer.ToString();
@@ -87,9 +89,9 @@ namespace Kampose.Support
         }
 
         /// <summary>
-        /// Extension for replacing URLs in Markdown links.
+        /// Extension for customizing HTML rendering of Markdown content.
         /// </summary>
-        private sealed class UrlReplacementExtension : IMarkdownExtension
+        private sealed class HtmlRenderingExtension : IMarkdownExtension
         {
             /// <summary>
             /// The URL mapper to use for replacing URLs in Markdown links.
@@ -103,17 +105,97 @@ namespace Kampose.Support
             public void Setup(MarkdownPipelineBuilder pipeline) { }
 
             /// <summary>
-            /// Replaces the default link renderer with a custom renderer that handles URL replacements.
+            /// Replaces the default alert and link renderers with Kampose-specific renderers.
             /// </summary>
             /// <param name="pipeline">The pipeline to configure.</param>
             /// <param name="renderer">The Markdown renderer to configure.</param>
             public void Setup(MarkdownPipeline pipeline, IMarkdownRenderer renderer)
             {
-                if (UrlTransformer is not null && UrlTransformer.MayTransformUrls && renderer is HtmlRenderer htmlRenderer)
+                if (renderer is not HtmlRenderer htmlRenderer)
+                    return;
+
+                htmlRenderer.ObjectRenderers.Replace<AlertBlockRenderer>(new NoteAlertBlockRenderer());
+
+                if (UrlTransformer is not null && UrlTransformer.MayTransformUrls)
                 {
                     htmlRenderer.ObjectRenderers.Replace<LinkInlineRenderer>(new CustomInlineLinkRenderer(UrlTransformer));
                     htmlRenderer.ObjectRenderers.Replace<AutolinkInlineRenderer>(new CustomAutoLinkInlineRenderer(UrlTransformer));
                 }
+            }
+        }
+
+        /// <summary>
+        /// Renders GitHub alerts using the same HTML contract as XML documentation note elements.
+        /// </summary>
+        private sealed class NoteAlertBlockRenderer : HtmlObjectRenderer<AlertBlock>
+        {
+            /// <summary>
+            /// Writes the alert using the same blockquote structure as an XML documentation note.
+            /// </summary>
+            /// <param name="renderer">The HTML renderer to write to.</param>
+            /// <param name="alert">The alert block to render.</param>
+            protected override void Write(HtmlRenderer renderer, AlertBlock alert)
+            {
+                var kind = alert.Kind.ToString().ToLowerInvariant();
+                var title = char.ToUpperInvariant(kind[0]) + kind[1..];
+                var attributes = CreateNoteAttributes(alert, kind, title);
+
+                renderer.EnsureLine();
+                renderer.Write("<blockquote");
+                renderer.WriteAttributes(attributes);
+                renderer.WriteLine(">");
+                renderer.Write("<div class=\"note-title\" aria-hidden=\"true\">");
+                renderer.WriteEscape(title);
+                renderer.WriteLine("</div>");
+                renderer.WriteLine("<div class=\"note-content\">");
+                renderer.WriteChildren(alert);
+                renderer.WriteLine("</div>");
+                renderer.WriteLine("</blockquote>");
+            }
+
+            /// <summary>
+            /// Creates note attributes while preserving custom attributes attached to the alert.
+            /// </summary>
+            private static HtmlAttributes CreateNoteAttributes(AlertBlock alert, string kind, string title)
+            {
+                var attributes = new HtmlAttributes();
+                var sourceAttributes = alert.TryGetAttributes();
+
+                if (sourceAttributes is not null)
+                {
+                    attributes.Id = sourceAttributes.Id;
+
+                    if (sourceAttributes.Classes is not null)
+                    {
+                        foreach (var className in sourceAttributes.Classes)
+                        {
+                            if (!className.Equals("markdown-alert", StringComparison.Ordinal) &&
+                                !className.Equals($"markdown-alert-{kind}", StringComparison.Ordinal))
+                            {
+                                attributes.AddClass(className);
+                            }
+                        }
+                    }
+
+                    if (sourceAttributes.Properties is not null)
+                    {
+                        foreach (var property in sourceAttributes.Properties)
+                        {
+                            if (!property.Key.Equals("role", StringComparison.OrdinalIgnoreCase) &&
+                                !property.Key.Equals("data-type", StringComparison.OrdinalIgnoreCase) &&
+                                !property.Key.Equals("aria-label", StringComparison.OrdinalIgnoreCase))
+                            {
+                                attributes.AddProperty(property.Key, property.Value ?? string.Empty);
+                            }
+                        }
+                    }
+                }
+
+                attributes.AddClass("note");
+                attributes.AddProperty("role", "note");
+                attributes.AddProperty("data-type", kind);
+                attributes.AddProperty("aria-label", title);
+                return attributes;
             }
         }
 

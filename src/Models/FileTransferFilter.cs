@@ -8,24 +8,25 @@ namespace Kampose.Models
     using Kampose.Support;
 
     /// <summary>
-    /// Represents a filter for transferring files based on glob patterns.
+    /// Selects files using glob patterns and assigns their transfer destination.
     /// </summary>
     public sealed class FileTransferFilter
     {
         /// <summary>
-        /// Gets the glob patterns for filtering files to be transferred.
+        /// Gets the glob patterns that select source files.
         /// </summary>
         /// <value>
-        /// The glob patterns used to filter files to be transferred.
+        /// Case-insensitive glob patterns relative to the transfer operation's source directory.
+        /// A pattern prefixed with <c>!</c> excludes matching files.
         /// </value>
         public FileGlobFilter Source { get; } = [];
 
         /// <summary>
-        /// Gets or sets the path where the filtered files will be transferred.
+        /// Gets or sets the destination path for matching files.
         /// </summary>
         /// <value>
-        /// The path where the filtered files will be transferred. Depends on the context of the transfer operation,
-        /// it could be an absolute or a relative file or directory path.
+        /// A destination whose interpretation depends on the operation. Configuration assets use an output directory,
+        /// while theme script and style bundles use an output-relative file path.
         /// </value>
         public string TargetPath { get; set; } = string.Empty;
     }

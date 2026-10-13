@@ -11,68 +11,70 @@ namespace Kampose.Models
     using System.IO;
 
     /// <summary>
-    /// Represents the configuration for a theme.
+    /// Defines a theme's inheritance, metadata, templates, resources, and configurable parameters.
     /// </summary>
     public sealed class ThemeConfiguration
     {
         /// <summary>
-        /// Gets or sets the theme that this theme is based on.
+        /// Gets or sets the parent theme inherited by this theme.
         /// </summary>
         /// <value>
-        /// The identifier of the theme that this theme is based on, or <see langword="null"/> if the theme is standalone.
+        /// The directory name of the parent theme, or <see langword="null"/> if this theme is standalone.
         /// </value>
         /// <remarks>
-        /// The identifier of a theme is its directory name, which is typically the name of the theme also.
-        /// Use this to implement theme inheritance or to extend existing themes with customizations.
+        /// Templates, bundles, assets, and parameter definitions in this theme take precedence over inherited
+        /// entries with the same name or target path. A standalone theme must define at least one
+        /// <see cref="Templates"/> pattern.
         /// </remarks>
         public string? Base { get; set; }
 
         /// <summary>
-        /// Gets the metadata for the theme.
+        /// Gets descriptive metadata for the theme.
         /// </summary>
         /// <value>
-        /// The metadata for the theme.
+        /// Information about the theme that is exposed to templates.
         /// </value>
         /// <remarks>
-        /// Metadata is informational only and not used by the application logic. Use it to provide details
-        /// such as author, version, and description for documentation or UI display.
+        /// Metadata does not control theme loading or output selection.
         /// </remarks>
         public ThemeMetadata Metadata { get; } = new();
 
         /// <summary>
-        /// Gets the configuration parameters for the theme.
+        /// Gets the parameter definitions supported by the theme.
         /// </summary>
         /// <value>
-        /// A dictionary of theme parameters and their metadata.
+        /// A case-insensitive dictionary that defines parameter types, descriptions, and fallback values.
         /// </value>
         /// <remarks>
-        /// Parameters are accessible as variables in the theme's templates and as properties of the global
-        /// <c>kampose.config</c> object in the theme's JavaScript files. Use parameters to make your theme
-        /// customizable.
+        /// Resolved non-<see langword="null"/> values are exposed by name to Handlebars templates and, when
+        /// the theme produces a script bundle, through <c>window.kampose.config</c>.
         /// </remarks>
         public Dictionary<string, ThemeParameter> Parameters { get; } = new(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
-        /// Gets the glob patterns for the template files of the theme.
+        /// Gets the glob patterns that select the theme's Handlebars templates.
         /// </summary>
         /// <value>
-        /// The glob patterns for the template files of the theme.
+        /// Case-insensitive patterns relative to the theme directory.
         /// </value>
         /// <remarks>
-        /// These patterns are used to locate template files in the theme's directory. You can use exclusion
-        /// patterns by prefixing them with an exclamation mark (!).
+        /// Patterns without an extension are treated as <c>.hbs</c> patterns. Each matching template is
+        /// registered by filename without its extension. Prefix a pattern with <c>!</c> to exclude matches.
         /// </remarks>
         public FileGlobFilter Templates { get; } = [];
 
         /// <summary>
-        /// Gets the glob patterns for the JavaScript files of the theme.
+        /// Gets the rule used to build the theme's JavaScript bundle.
         /// </summary>
         /// <value>
-        /// The glob patterns for the JavaScript files (.js) of the theme.
+        /// The source patterns and output-relative target path for the JavaScript bundle. The target path defaults
+        /// to <c>script.js</c>.
         /// </value>
         /// <remarks>
-        /// All matching JavaScript files will be minified and bundled into a single output file.
-        /// The <c>TargetPath</c> property specifies the name of the output file.
+        /// Source patterns are relative to the theme directory and default to the <c>.js</c> extension when
+        /// none is specified. Matching files are concatenated and minified into
+        /// <see cref="FileTransferFilter.TargetPath"/>. The first generated script bundle also receives the
+        /// global <c>window.kampose</c> data used by theme scripts.
         /// </remarks>
         public FileTransferFilter Scripts { get; } = new()
         {
@@ -80,14 +82,16 @@ namespace Kampose.Models
         };
 
         /// <summary>
-        /// Gets the glob patterns for the stylesheet files of the theme.
+        /// Gets the rule used to build the theme's stylesheet bundle.
         /// </summary>
         /// <value>
-        /// The patterns for the stylesheet files (.css) of the theme.
+        /// The source patterns and output-relative target path for the stylesheet bundle. The target path defaults
+        /// to <c>styles.css</c>.
         /// </value>
         /// <remarks>
-        /// All matching CSS files will be minified and bundled into a single output file.
-        /// The <c>TargetPath</c> property specifies the name of the output file.
+        /// Source patterns are relative to the theme directory and default to the <c>.css</c> extension when
+        /// none is specified. Matching files are concatenated and minified into
+        /// <see cref="FileTransferFilter.TargetPath"/>.
         /// </remarks>
         public FileTransferFilter Styles { get; } = new()
         {
@@ -95,14 +99,14 @@ namespace Kampose.Models
         };
 
         /// <summary>
-        /// Gets the glob patterns for the asset files of the theme.
+        /// Gets the glob patterns that select the theme's static assets.
         /// </summary>
         /// <value>
-        /// The glob patterns for the asset files of the theme.
+        /// Case-insensitive patterns relative to the theme directory.
         /// </value>
         /// <remarks>
-        /// Asset files matching these patterns will be copied to the output directory as-is, preserving
-        /// their original folder structure.
+        /// Matching files are copied unchanged while preserving paths relative to the theme directory.
+        /// This theme takes precedence when an inherited theme provides the same relative path.
         /// </remarks>
         public FileGlobFilter Assets { get; } = [];
 

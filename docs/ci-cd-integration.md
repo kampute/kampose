@@ -15,6 +15,7 @@ The examples in this guide assume a standard .NET project structure:
 - Project source code in `src/` directory
 - Build output in `bin/Release/` directories
 - XML documentation files generated alongside assemblies
+- Kampose installed as a local tool, with `.config/dotnet-tools.json` committed to the repository
 
 ### Configuration File
 
@@ -22,7 +23,6 @@ All examples use this `kampose.json` configuration file in the repository root:
 
 ```json
 {
-  "$schema": "https://kampute.github.io/kampose/json-schemas/configuration.schema.json",
   "convention": "dotNet",
   "outputDirectory": ".doc-site",
   "assemblies": ["src/**/bin/Release/**/*.dll"],
@@ -45,21 +45,28 @@ This configuration:
 
 Kampose is built with .NET 10.0 and requires the .NET 10.0 SDK to be installed. The workflow examples install .NET 10.0 for this purpose. If your project targets a different .NET version (e.g., .NET 8.0), you can install multiple SDK versions in the same pipeline.
 
-## Version Pinning
+## Tool Installation
 
-The workflow examples in this guide install the latest version of Kampose:
+Install Kampose as a local tool of the repository you are documenting, so the version it runs is recorded in source control rather than chosen by whichever machine happens to run the build.
 
-```shell
-dotnet tool install --global kampose
-```
-
-While this is convenient for getting started, it's recommended to pin to a specific version in production pipelines:
+Run these once in your repository root, then commit the file they produce:
 
 ```shell
-dotnet tool install --global kampose --version 1.1.0
+dotnet new tool-manifest
+dotnet tool install kampose --version 1.1.0
 ```
 
-Pinning to a specific version prevents builds from failing unexpectedly if a newer version introduces breaking changes. When you're ready to upgrade, you can test the new version in a separate branch before updating your main pipeline.
+That writes `.config/dotnet-tools.json`, which records the exact version. Every pipeline example below restores that version instead of installing one:
+
+```shell
+dotnet tool restore
+dotnet tool run kampose build
+```
+
+> [!IMPORTANT]
+> Pinning makes pipeline behavior repeatable and prevents an untested Kampose release from changing your build. Because the pin lives in the committed manifest, your local builds and your pipeline always run the same version. Change the version in the manifest on a branch to test an upgrade before merging it.
+
+To move to a later release, run `dotnet tool update kampose --version <new-version>` in the repository and commit the changed manifest.
 
 ## GitHub Actions
 
@@ -101,11 +108,13 @@ jobs:
     - name: Test Solution
       run: dotnet test --no-restore --no-build -c Release --verbosity minimal
 
-    - name: Install Kampose for Documentation Generation
-      run: dotnet tool install --global kampose
+    - name: Restore Kampose for Documentation Generation
+      run: |
+        dotnet tool restore
+        dotnet tool run kampose --version
 
     - name: Generate Documentation
-      run: kampose build
+      run: dotnet tool run kampose build
 
     # Only deploy to GitHub Pages on main branch (not on PRs)
     - name: Deploy Documentation to GitHub Pages
@@ -154,10 +163,12 @@ steps:
   - script: dotnet test --no-restore --no-build -c Release --verbosity minimal
     displayName: 'Test Solution'
 
-  - script: dotnet tool install --global kampose
-    displayName: 'Install Kampose for Documentation Generation'
+  - script: |
+      dotnet tool restore
+      dotnet tool run kampose --version
+    displayName: 'Restore Kampose for Documentation Generation'
 
-  - script: kampose build
+  - script: dotnet tool run kampose build
     displayName: 'Generate Documentation'
 
   # Only publish artifact on main branch (not on PRs)
@@ -175,7 +186,6 @@ Publish documentation directly to Azure DevOps Wiki. Update your `kampose.json` 
 
 ```json
 {
-  "$schema": "https://kampute.github.io/kampose/json-schemas/configuration.schema.json",
   "convention": "devOps",
   "outputDirectory": ".doc-site",
   "assemblies": ["src/**/bin/Release/**/*.dll"],
@@ -220,10 +230,12 @@ steps:
   - script: dotnet test --no-restore --no-build -c Release --verbosity minimal
     displayName: 'Test Solution'
 
-  - script: dotnet tool install --global kampose
-    displayName: 'Install Kampose for Documentation Generation'
+  - script: |
+      dotnet tool restore
+      dotnet tool run kampose --version
+    displayName: 'Restore Kampose for Documentation Generation'
 
-  - script: kampose build
+  - script: dotnet tool run kampose build
     displayName: 'Generate Documentation'
 
   # Only publish to wiki on main branch (not on PRs)
@@ -284,9 +296,9 @@ documentation:
   needs:
     - build
   script:
-    - dotnet tool install --global kampose
-    - export PATH="$PATH:$HOME/.dotnet/tools"
-    - kampose build
+    - dotnet tool restore
+    - dotnet tool run kampose --version
+    - dotnet tool run kampose build
   artifacts:
     paths:
       - .doc-site/

@@ -56,7 +56,6 @@ Follow these simple steps to generate your first API documentation with Kampose.
 
 ```json
 {
-    "$schema": "https://kampute.github.io/kampose/json-schemas/configuration.schema.json",
     "convention": "dotNet",
     "outputDirectory": "docs",
     "assemblies": ["bin/Release/**/*.dll"],

@@ -49,7 +49,8 @@ Each theme documents its available settings, including their purpose and usage. 
 
 The following excerpt demonstrates basic theme configuration:
 
-> Note: This is an excerpt (not the entire configuration).
+> [!NOTE]
+> This is a focused configuration excerpt. A complete configuration also requires `outputDirectory`.
 
 ```json
 {

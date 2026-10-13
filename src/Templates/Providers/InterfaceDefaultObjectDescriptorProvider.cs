@@ -100,7 +100,7 @@ namespace Kampose.Templates.Providers
             /// <param name="type">The type the descriptor will be associated with.</param>
             /// <returns>An object descriptor that uses this accessor.</returns>
             public ObjectDescriptor ToDescriptor(Type type)
-                => new(type, this, (descriptor, instance) => PropertyMap.Get(instance), descriptor => new EnumerableIterator<IEnumerable>(), []);
+                => new(type, this, (descriptor, instance) => PropertyMap.Get(instance)!, descriptor => new EnumerableIterator<IEnumerable>(), []);
         }
 
         /// <summary>

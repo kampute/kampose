@@ -4,6 +4,11 @@
   "type": "object",
   "description": "Represents the configuration for a theme.",
   "properties": {
+    "$schema": {
+      "type": "string",
+      "format": "uri-reference",
+      "description": "Not recommended in theme configuration files. Retained only for compatibility. The canonical hosted schema represents the latest Kampose release and may not match an installed or pinned version, and installation-relative schema paths are not portable. Kampose does not use this value during loading. Editors and agents should instead validate out of band using the schema matching every effective Kampose version."
+    },
     "base": {
       "type": [
         "string",

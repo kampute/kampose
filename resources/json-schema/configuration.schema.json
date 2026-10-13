@@ -4,6 +4,11 @@
   "type": "object",
   "description": "Represents the configuration for the documentation generation process.",
   "properties": {
+    "$schema": {
+      "type": "string",
+      "format": "uri-reference",
+      "description": "Not recommended in configuration files. Retained only for compatibility. The canonical hosted schema represents the latest Kampose release and may not match an installed or pinned version, and installation-relative schema paths are not portable. Kampose does not use this value during generation. Editors and agents should instead validate out of band using the schema matching every effective Kampose version."
+    },
     "baseDirectory": {
       "type": [
         "string",
@@ -140,8 +145,11 @@
       "type": "string",
       "enum": [
         "dotNet",
+        "dotnet",
         "docFx",
-        "devOps"
+        "docfx",
+        "devOps",
+        "devops"
       ],
       "description": "The convention value that determines the site conventions (URL patterns and page grouping) used when generating documentation. This property is required for configuration to be valid.",
       "default": "dotNet"

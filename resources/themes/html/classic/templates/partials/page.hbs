@@ -50,7 +50,8 @@
       </header>
       {{/if}}
 
-      {{> (concat 'page_content_' pageType)}}
+{{!-- Keep at column 0: indentation here is prefixed to every line of the partial's output and breaks code blocks. --}}
+{{> (concat 'page_content_' pageType)}}
 
       {{#if (or pageFooter pageFooterRight)}}
       <footer class="content-footer" role="contentinfo">

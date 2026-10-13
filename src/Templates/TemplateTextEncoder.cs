@@ -26,13 +26,15 @@ namespace Kampose.Templates
         /// <summary>
         /// Encodes the specified text for inclusion in a template.
         /// </summary>
-        /// <param name="text">The text to encode.</param>
+        /// <param name="text">The text to encode, or <see langword="null"/> to write nothing.</param>
         /// <param name="target">The target <see cref="TextWriter"/> to which the encoded text will be written.</param>
-        /// <exception cref="ArgumentNullException">Thrown when <paramref name="text"/> or <paramref name="target"/> is <see langword="null"/>.</exception>
-        public void Encode(string text, TextWriter target)
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="target"/> is <see langword="null"/>.</exception>
+        public void Encode(string? text, TextWriter target)
         {
-            ArgumentNullException.ThrowIfNull(text);
             ArgumentNullException.ThrowIfNull(target);
+
+            if (text is null)
+                return;
 
             encoder.Encode(text, target);
         }
@@ -40,13 +42,15 @@ namespace Kampose.Templates
         /// <summary>
         /// Encodes the specified text for inclusion in a template.
         /// </summary>
-        /// <param name="text">The text to encode.</param>
+        /// <param name="text">The text to encode, or <see langword="null"/> to write nothing.</param>
         /// <param name="target">The target <see cref="TextWriter"/> to which the encoded text will be written.</param>
-        /// <exception cref="ArgumentNullException">Thrown when <paramref name="text"/> or <paramref name="target"/> is <see langword="null"/>.</exception>
-        public void Encode(StringBuilder text, TextWriter target)
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="target"/> is <see langword="null"/>.</exception>
+        public void Encode(StringBuilder? text, TextWriter target)
         {
-            ArgumentNullException.ThrowIfNull(text);
             ArgumentNullException.ThrowIfNull(target);
+
+            if (text is null)
+                return;
 
             foreach (var chunk in text.GetChunks())
                 encoder.Encode(chunk.Span, target);
@@ -56,13 +60,15 @@ namespace Kampose.Templates
         /// Encodes the specified text for inclusion in a template.
         /// </summary>
         /// <typeparam name="T">The type of text to encode.</typeparam>
-        /// <param name="text">The text to encode.</param>
+        /// <param name="text">The text to encode, or <see langword="null"/> to write nothing.</param>
         /// <param name="target">The target <see cref="TextWriter"/> to which the encoded text will be written.</param>
-        /// <exception cref="ArgumentNullException">Thrown when <paramref name="text"/> or <paramref name="target"/> is <see langword="null"/>.</exception>
-        public void Encode<T>(T text, TextWriter target) where T : IEnumerator<char>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="target"/> is <see langword="null"/>.</exception>
+        public void Encode<T>(T? text, TextWriter target) where T : IEnumerator<char>
         {
-            ArgumentNullException.ThrowIfNull(text);
             ArgumentNullException.ThrowIfNull(target);
+
+            if (text is null)
+                return;
 
             const int BufferSize = 1024;
             Span<char> buffer = stackalloc char[BufferSize];

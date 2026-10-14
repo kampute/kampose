@@ -7,6 +7,7 @@ namespace Kampose.Test.Outputs
 {
     using Kampose.Outputs;
     using Kampose.Reporters;
+    using Kampute.DocToolkit;
     using NUnit.Framework;
     using System;
     using System.IO;
@@ -42,6 +43,71 @@ namespace Kampose.Test.Outputs
             {
                 Assert.That(() => output.CopyFile(Path.Combine(testDirectory, "missing.svg"), targetPath), Throws.InstanceOf<IOException>());
                 Assert.That(output.GeneratedFiles.Contains(targetPath), Is.False);
+            }
+        }
+
+        [Test]
+        public void PageWriter_HtmlPage_RecordsAnchorsWhenDisposed()
+        {
+            var output = new DryRunDocumentationOutput(outputDirectory);
+
+            using (var writer = ((FileSystemDocumentWriterFactory)output.CreatePageWriterFactory()).CreateTextWriter("page.html"))
+            {
+                writer.Write("<meta name=\"description\" content=\"x\" /><h2 id=\"intro\">Intro</h2>");
+                writer.Write("<a name='legacy'></a><div data-id=\"data\" id=\"a&amp;b\"></div><code>id=&quot;sample&quot;</code>");
+            }
+
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(output.GeneratedFiles.TryGetAnchors("page.html", out var anchors), Is.True);
+                Assert.That(anchors, Is.EquivalentTo(new[] { "intro", "legacy", "a&b" }));
+            }
+        }
+
+        [Test]
+        public void PageWriter_HtmlPageWithUnquotedAttributes_RecordsAnchors()
+        {
+            var output = new DryRunDocumentationOutput(outputDirectory);
+
+            using (var writer = ((FileSystemDocumentWriterFactory)output.CreatePageWriterFactory()).CreateTextWriter("page.html"))
+                writer.Write("<h2 id=intro>Intro</h2><a name=legacy></a><a data-name=\"data\" href=\"#intro\"></a>");
+
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(output.GeneratedFiles.TryGetAnchors("page.html", out var anchors), Is.True);
+                Assert.That(anchors, Is.EquivalentTo(new[] { "intro", "legacy" }));
+            }
+        }
+
+        [Test]
+        public void PageWriter_HtmlPageDisposedTwice_KeepsRecordedAnchors()
+        {
+            var output = new DryRunDocumentationOutput(outputDirectory);
+
+            var writer = ((FileSystemDocumentWriterFactory)output.CreatePageWriterFactory()).CreateTextWriter("page.html");
+            writer.Write("<h2 id=\"intro\">Intro</h2>");
+            writer.Dispose();
+            writer.Dispose();
+
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(output.GeneratedFiles.TryGetAnchors("page.html", out var anchors), Is.True);
+                Assert.That(anchors, Is.EquivalentTo(new[] { "intro" }));
+            }
+        }
+
+        [Test]
+        public void PageWriter_MarkdownPage_RecordsNoAnchors()
+        {
+            var output = new DryRunDocumentationOutput(outputDirectory);
+
+            using (var writer = ((FileSystemDocumentWriterFactory)output.CreatePageWriterFactory()).CreateTextWriter("page.md"))
+                writer.Write("<a id=\"intro\"></a>");
+
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(output.GeneratedFiles.Contains("page.md"), Is.True);
+                Assert.That(output.GeneratedFiles.TryGetAnchors("page.md", out _), Is.False);
             }
         }
 

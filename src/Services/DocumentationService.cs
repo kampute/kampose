@@ -248,7 +248,7 @@ namespace Kampose.Services
                 return;
 
             var unverifiedUrls = context.UrlReferences
-                .Where(urlRef => !UriHelper.IsQueryOrFragmentOnly(urlRef.SourceUrl))
+                .Where(urlRef => !urlRef.SourceUrl.StartsWith('?'))
                 .DistinctBy(urlRef => string.Join('\0', [urlRef.ReferencingModel.Url, urlRef.SourceUrl]))
                 .ToList();
 

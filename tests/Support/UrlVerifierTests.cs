@@ -311,6 +311,50 @@ namespace Kampose.Test.Support
             Assert.That(result, Is.EqualTo(UrlVerifier.VerificationResult.Unreachable));
         }
 
+        [TestCase("page.html#intro", UrlVerifier.VerificationResult.OK)]
+        [TestCase("page.html#caf%C3%A9", UrlVerifier.VerificationResult.OK)]
+        [TestCase("page.html#top", UrlVerifier.VerificationResult.OK)]
+        [TestCase("page.html#", UrlVerifier.VerificationResult.OK)]
+        [TestCase("page.html#missing", UrlVerifier.VerificationResult.Unresolved)]
+        [TestCase("page.html#Intro", UrlVerifier.VerificationResult.Unresolved)]
+        public void VerifyUrl_RelativeUri_FragmentOfPageWithRecordedAnchors_VerifiesFragment(string url, UrlVerifier.VerificationResult expectedResult)
+        {
+            var verifier = new UrlVerifier(context, generatedFiles, null);
+            generatedFiles.Add(Path.Combine(baseDir, "page.html"));
+            generatedFiles.SetAnchors(Path.Combine(baseDir, "page.html"), ["intro", "caf\u00E9"]);
+            var urlReference = new UrlReference(model, string.Empty, url);
+
+            var result = verifier.VerifyUrl(urlReference);
+
+            Assert.That(result, Is.EqualTo(expectedResult));
+        }
+
+        [TestCase("../page.html#intro", UrlVerifier.VerificationResult.OK)]
+        [TestCase("../page.html#missing", UrlVerifier.VerificationResult.Unresolved)]
+        public void VerifyUrl_TargetUrlWithFragment_VerifiesFragment(string targetUrl, UrlVerifier.VerificationResult expectedResult)
+        {
+            var verifier = new UrlVerifier(context, generatedFiles, null);
+            generatedFiles.Add(Path.Combine(baseDir, "page.html"));
+            generatedFiles.SetAnchors(Path.Combine(baseDir, "page.html"), ["intro"]);
+            var urlReference = new UrlReference(model, "dir", "page", new Uri(targetUrl, UriKind.Relative));
+
+            var result = verifier.VerifyUrl(urlReference);
+
+            Assert.That(result, Is.EqualTo(expectedResult));
+        }
+
+        [Test]
+        public void VerifyUrl_RelativeUri_FragmentOfPageWithoutRecordedAnchors_ReturnsOK()
+        {
+            var verifier = new UrlVerifier(context, generatedFiles, null);
+            generatedFiles.Add(Path.Combine(baseDir, "page.html"));
+            var urlReference = new UrlReference(model, string.Empty, "page.html#missing");
+
+            var result = verifier.VerifyUrl(urlReference);
+
+            Assert.That(result, Is.EqualTo(UrlVerifier.VerificationResult.OK));
+        }
+
         private static Mock<HttpMessageHandler> SetupHttpClient(UrlVerifier verifier, HttpStatusCode statusCode)
         {
             var messageHandlerMock = new Mock<HttpMessageHandler>();

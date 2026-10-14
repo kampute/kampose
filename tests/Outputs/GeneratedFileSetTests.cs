@@ -50,6 +50,31 @@ namespace Kampose.Test.Outputs
             Assert.That(files.Count, Is.EqualTo(1));
         }
 
+        [Test]
+        public void TryGetAnchors_FileWithRecordedAnchors_ReturnsCaseSensitiveAnchors()
+        {
+            var files = new GeneratedFileSet(outputDir);
+
+            files.SetAnchors(Path.Combine(outputDir, "page.html"), ["intro"]);
+
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(files.TryGetAnchors("page.html", out var anchors), Is.True);
+                Assert.That(anchors, Is.EquivalentTo(new[] { "intro" }));
+                Assert.That(anchors!.Contains("Intro"), Is.False);
+            }
+        }
+
+        [Test]
+        public void TryGetAnchors_FileWithoutRecordedAnchors_ReturnsFalse()
+        {
+            var files = new GeneratedFileSet(outputDir);
+
+            files.Add("page.md");
+
+            Assert.That(files.TryGetAnchors("page.md", out _), Is.False);
+        }
+
         [TestCase("../outside.html")]
         [TestCase(".")]
         public void Add_PathNotBelowOutputDirectory_ThrowsArgumentException(string path)

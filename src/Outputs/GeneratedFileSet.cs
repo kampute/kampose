@@ -8,6 +8,8 @@ namespace Kampose.Outputs
     using Kampute.DocToolkit.Support;
     using System;
     using System.Collections.Concurrent;
+    using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
 
     /// <summary>
@@ -20,6 +22,7 @@ namespace Kampose.Outputs
     public sealed class GeneratedFileSet
     {
         private readonly ConcurrentDictionary<string, byte> paths = new(StringComparer.Ordinal);
+        private readonly ConcurrentDictionary<string, IReadOnlySet<string>> anchors = new(StringComparer.Ordinal);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GeneratedFileSet"/> class.
@@ -76,6 +79,44 @@ namespace Kampose.Outputs
 
             var key = GetKey(path);
             return key is not null && paths.ContainsKey(key);
+        }
+
+        /// <summary>
+        /// Records the anchors that a produced file defines.
+        /// </summary>
+        /// <param name="path">The path of the produced file, either absolute or relative to <see cref="OutputDirectory"/>.</param>
+        /// <param name="anchorNames">The names that a URL fragment can use to refer to a location in the file. Names are compared case-sensitively.</param>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="path"/> is <see langword="null"/>, empty, or outside <see cref="OutputDirectory"/>.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="anchorNames"/> is <see langword="null"/>.</exception>
+        /// <remarks>
+        /// Anchors are recorded only for files whose anchors can be determined from their content, such as HTML pages. Recording the
+        /// anchors of a file again replaces the anchors recorded before.
+        /// </remarks>
+        public void SetAnchors(string path, IEnumerable<string> anchorNames)
+        {
+            ArgumentException.ThrowIfNullOrEmpty(path);
+            ArgumentNullException.ThrowIfNull(anchorNames);
+
+            var key = GetKey(path)
+                ?? throw new ArgumentException($"The path '{path}' is outside the output directory '{OutputDirectory}'.", nameof(path));
+
+            anchors[key] = new HashSet<string>(anchorNames, StringComparer.Ordinal);
+        }
+
+        /// <summary>
+        /// Attempts to get the anchors that a produced file defines.
+        /// </summary>
+        /// <param name="path">The path of the file, either absolute or relative to <see cref="OutputDirectory"/>.</param>
+        /// <param name="anchorNames">When this method returns, contains the anchors recorded for the file, if any; otherwise, <see langword="null"/>.</param>
+        /// <returns><see langword="true"/> if anchors were recorded for the file; otherwise, <see langword="false"/>.</returns>
+        public bool TryGetAnchors(string path, [NotNullWhen(true)] out IReadOnlySet<string>? anchorNames)
+        {
+            anchorNames = null;
+            if (string.IsNullOrEmpty(path))
+                return false;
+
+            var key = GetKey(path);
+            return key is not null && anchors.TryGetValue(key, out anchorNames);
         }
 
         /// <summary>

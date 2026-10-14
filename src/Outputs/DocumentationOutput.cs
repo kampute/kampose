@@ -7,8 +7,10 @@ namespace Kampose.Outputs
 {
     using Kampose.Reporters;
     using Kampute.DocToolkit;
+    using Kampute.DocToolkit.Support;
     using System;
     using System.IO;
+    using System.Linq;
 
     /// <summary>
     /// Represents the destination of the files produced by documentation generation.
@@ -61,6 +63,10 @@ namespace Kampose.Outputs
         /// Creates the writer factory used to produce documentation pages.
         /// </summary>
         /// <returns>An <see cref="IDocumentWriterFactory"/> that produces pages through this output.</returns>
+        /// <remarks>
+        /// When an HTML page is complete, the anchors it defines are recorded in <see cref="GeneratedFiles"/>, so that links to
+        /// locations within the page can be verified.
+        /// </remarks>
         public IDocumentWriterFactory CreatePageWriterFactory() => new PageWriterFactory(this);
 
         /// <summary>
@@ -138,7 +144,19 @@ namespace Kampose.Outputs
                 var targetPath = Path.GetFullPath(Path.Combine(OutputFolder, relativePath));
                 var writer = output.CreatePageWriter(targetPath);
                 output.GeneratedFiles.Add(targetPath);
-                return writer;
+                return IsHtmlFile(targetPath)
+                    ? new AnchorRecordingWriter(writer, output.GeneratedFiles, targetPath)
+                    : writer;
+            }
+
+            /// <summary>
+            /// Determines whether the specified file is an HTML page.
+            /// </summary>
+            /// <param name="path">The path of the file.</param>
+            /// <returns><see langword="true"/> if the file has an HTML extension; otherwise, <see langword="false"/>.</returns>
+            private static bool IsHtmlFile(string path)
+            {
+                return FileExtensions.HtmlExtensions.Contains(Path.GetExtension(path), StringComparer.OrdinalIgnoreCase);
             }
         }
     }

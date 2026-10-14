@@ -322,6 +322,26 @@ namespace Kampose.Test.Models
         }
 
         [Test]
+        public void LoadFromFile_WithReferenceWithUnknownProperty_ThrowsValidationException()
+        {
+            var filePath = GenerateJsonFile("reference-unknown-property.json", @"{
+                ""outputDirectory"": ""./output"",
+                ""references"": [
+                    {
+                        ""namespaces"": [""System.*""],
+                        ""strategy"": ""dotNet"",
+                        ""url"": ""https://learn.microsoft.com/dotnet/api/"",
+                        ""extensions"": "".aspx""
+                    }
+                ]
+            }");
+
+            var exception = Assert.Throws<ValidationException>(() => Configuration.LoadFromFile(filePath));
+
+            Assert.That(exception!.Errors, Has.Some.Contains("references"));
+        }
+
+        [Test]
         public void LoadFromFile_WithReferenceWithoutNamespaces_ThrowsValidationException()
         {
             var filePath = GenerateJsonFile("reference-without-namespaces.json", @"{

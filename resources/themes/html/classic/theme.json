@@ -102,7 +102,7 @@
     },
     "externalLinksSamePage": {
       "type": "boolean",
-      "description": "When true, external links navigate in the current tab. When false, they open in a new tab with opener access disabled.",
+      "description": "When true, links to other origins open in the current tab. When false, they open in a new tab that has no access to the linking page and receives no referrer.",
       "defaultValue": false
     },
     "popupAssetNames": {

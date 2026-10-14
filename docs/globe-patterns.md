@@ -28,7 +28,7 @@ The following examples show how to use glob patterns in Kampose configuration fi
 - `src/**/*.dll` matches all assembly files in `src` and its subdirectories.
 - `docs/*` matches all files directly under the `docs` folder.
 - `**/*.xml` matches all XML files anywhere in the project.
-- `!tests/**` excludes all files in any `tests` folder.
+- `!tests/**` excludes all files in the `tests` folder at the root of the base directory. Use `!**/tests/**` to exclude every `tests` folder.
 - `assets/images/*.png` matches all PNG images in `assets/images`.
 - `../shared/**/*.md` matches all Markdown files in a sibling `shared` folder.
 
@@ -37,6 +37,6 @@ The following examples show how to use glob patterns in Kampose configuration fi
 - Patterns are case-insensitive.
 - Exclusion patterns override inclusion patterns if both match the same file.
 - Use forward slashes (`/`) for directory separators, even on Windows.
-- If a pattern does not specify a file extension, Kampose may append a default extension depending on context.
+- When the last segment of a pattern has no file extension, Kampose appends the default extension of the setting: `.dll` for `assemblies`, `.xml` for `xmlDocs`, and `.md` for `topics`. For example, `docs/**` in `topics` matches `docs/**/*.md`. Asset patterns have no default extension.
 
 For more details, see the [Microsoft File Globbing documentation](https://learn.microsoft.com/en-us/dotnet/core/extensions/file-globbing).

@@ -7,6 +7,8 @@ summary: "Reference for standard and extended XML documentation tags supported b
 
 This page lists the XML documentation elements that Kampose renders. Use [Best Practices](best-practices.md) for authoring guidance rather than treating every supported element as required.
 
+In the tables below, **Top-Level** indicates whether a tag is placed directly in a member's documentation comment, like `<summary>`, rather than inside the content of another tag, like `<c>` or `<list>` inside a `<remarks>`.
+
 ## Standard XML Documentation Tags
 
 The following standard XML documentation tags are fully supported:
@@ -19,7 +21,7 @@ The following standard XML documentation tags are fully supported:
 | [`<exception>`](https://learn.microsoft.com/dotnet/csharp/language-reference/xmldoc/recommended-tags#exception) | Yes | Documents an exception that a method or property may throw. | `<exception cref="ArgumentNullException">...</exception>` |
 | [`<include>`](https://learn.microsoft.com/dotnet/csharp/language-reference/xmldoc/recommended-tags#include) | Yes | Allows external XML documentation to be included within the current documentation file. | `<include file="docs.xml" path="doc/member[@name='T:MyType']/*" />` |
 | [`<inheritdoc>`](https://learn.microsoft.com/dotnet/csharp/language-reference/xmldoc/recommended-tags#inheritdoc) | Yes | Inherits documentation from a base class or implemented interface. | `<inheritdoc cref="BaseClass.Method" />` |
-| [`<list>`](https://learn.microsoft.com/dotnet/csharp/language-reference/xmldoc/recommended-tags#list) | Yes | Defines a list within documentation, such as bullet points, numbered lists, or table to structure information. | `<list type="bullet">...</list>` |
+| [`<list>`](https://learn.microsoft.com/dotnet/csharp/language-reference/xmldoc/recommended-tags#list) | No | Defines a list within documentation, such as bullet points, numbered lists, or table to structure information. | `<list type="bullet">...</list>` |
 | [`<para>`](https://learn.microsoft.com/dotnet/csharp/language-reference/xmldoc/recommended-tags#para) | No | Inserts a paragraph break within documentation. | `<para>This is a new paragraph.</para>` |
 | [`<param>`](https://learn.microsoft.com/dotnet/csharp/language-reference/xmldoc/recommended-tags#param) | Yes | Describes a parameter of a constructor, method, or index property. | `<param name="value">The input value</param>` |
 | [`<paramref>`](https://learn.microsoft.com/dotnet/csharp/language-reference/xmldoc/recommended-tags#paramref) | No | Refers to a specific method parameter within documentation. | `When <paramref name="count"/> is negative...` |

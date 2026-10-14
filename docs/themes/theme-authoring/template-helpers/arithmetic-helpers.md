@@ -7,6 +7,8 @@ summary: "Reference for numeric Handlebars helpers that increment, decrement, ad
 
 Arithmetic helpers provide basic mathematical operations for integer values.
 
+Each argument must be an integer or a string that holds an integer, such as `"7"`; a fractional literal such as `2.5` causes a rendering error. `div` discards the remainder, and dividing by zero with `div` or `mod` also causes a rendering error.
+
 | Helper          | Purpose                                 | Parameters         | Returns   |
 |-----------------|-----------------------------------------|--------------------|-----------|
 | [`inc`](#inc)   | Increments a numeric value by one       | `value`            | `number`  |

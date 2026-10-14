@@ -31,7 +31,7 @@ The theme supports the following customization settings:
 | [`groupTypesByNamespace`](#grouptypesbynamespace)   | boolean  | `false`                     | Determines whether to group types by their namespace in the left sidebar.                                                |
 | [`showTypeMembersSummary`](#showtypememberssummary) | boolean  | `false`                     | Determines whether to include a summary of type members in type documentation pages when each member has its own page.   |
 | [`seeAlsoSubtopics`](#seealsosubtopics)             | boolean  | `false`                     | Determines whether to automatically include related subtopics as "See Also" references.                                  |
-| [`externalLinksSamePage`](#externallinksssamepage)  | boolean  | `false`                     | Determines whether external links open in the same page. By default (false), external links open in a new tab.           |
+| [`externalLinksSamePage`](#externallinkssamepage)   | boolean  | `false`                     | Determines whether external links open in the same page. By default (false), external links open in a new tab.           |
 | [`popupAssetNames`](#popupassetnames)               | array    | `["LICENSE", "DISCLAIMER"]` | An array of asset file names that should open in a modal overlay when linked.                                            |
 
 ### `projectName`
@@ -172,7 +172,7 @@ The URI can be relative to the documentation root or an absolute URL. When using
 
 The `scriptUri` setting allows you to specify a custom JavaScript file that will extend the theme's default functionality. This enables you to add interactive features or customize behavior without modifying the base theme.
 
-The custom script is loaded after the theme's default scripts but before the syntax highlighting script. Your script can safely use the same global objects and APIs as the theme.
+The custom script is loaded last, after the theme's default scripts and the syntax highlighting script. Your script can safely use the same global objects and APIs as the theme.
 
 The URI can be relative to the documentation root or an absolute URL. When using relative paths, ensure the JavaScript file is included in your documentation assets.
 
@@ -426,7 +426,7 @@ Set this to `true` to organize types hierarchically by namespace, which can impr
 
 ### `showTypeMembersSummary`
 
-The `showTypeMembersSummary` setting determines whether to include a summary section of type members on type documentation pages. This setting is only relevant when each type member has its own dedicated documentation page (e.g., configured convention is `DotNet`).
+The `showTypeMembersSummary` setting determines whether to include a summary section of type members on type documentation pages. This setting is only relevant when each type member has its own dedicated documentation page (the `dotNet` convention).
 
 When enabled, type pages will include a summary table of the type's members with brief descriptions, providing an overview before users navigate to individual member pages. This can be beneficial if the left sidebar is excluded, as it allows users to see all relevant information at a glance. By default, this setting is `false`, meaning the summary will not be displayed.
 
@@ -478,10 +478,12 @@ The following section will be added at the bottom of "Best Practices" page:
 ```html
 <h2>See Also</h2>
 <ul>
-  <li><a href="best-practices/coding-guidelines.html">Coding Guidelines</a></li>
-  <li><a href="best-practices/testing-strategies.html">Testing Strategies</a></li>
+  <li><a href="coding-guidelines.html">Coding Guidelines</a></li>
+  <li><a href="testing-strategies.html">Testing Strategies</a></li>
 </ul>
 ```
+
+This output assumes the `directory` [topic hierarchy](../configuration.md#topichierarchy), in which the "Best Practices" page is generated as `best-practices/index.html` next to its child topics.
 
 ### `externalLinksSamePage`
 
@@ -533,7 +535,7 @@ For realistic testing, serve the generated documentation through an HTTP(S) serv
 
 ### Example
 
-Install the official dotnet static file server tool and run a simple HTTP server:
+Install the [dotnet-serve](https://github.com/natemcmaster/dotnet-serve) tool and run a simple HTTP server:
 
 ```shell
 # Install once (global tool)

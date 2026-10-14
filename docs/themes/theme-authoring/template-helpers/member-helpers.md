@@ -28,12 +28,12 @@ The definition includes attributes, access modifiers, return type, name, paramet
 ```
 
 **Parameters:**
-- `element` (object) - A documentation model, metadata object, of code reference string that represents a type or type member
+- `element` (object) - A documentation model, metadata object, or code reference string that represents a type or type member
 
 **Examples:**
 ```hbs
 {{#memberDefinition model}}
-{{#memberDefinition 'M:System.DateTime.ToString(System.String)'}}  {{!-- public string ToString(string format) --}}
+{{#memberDefinition 'M:System.String.Contains(System.String)'}}  {{!-- public bool Contains(string value) --}}
 ```
 
 ## `memberSignature`
@@ -53,7 +53,7 @@ The signature includes name and parameters (if any) of the code element formatte
 **Examples:**
 ```hbs
 {{#memberSignature model}}
-{{#memberSignature 'M:System.DateTime.ToString(System.String)'}}  {{!-- ToString(string) --}}
+{{#memberSignature 'M:System.String.Contains(System.String)'}}  {{!-- string.Contains(string) --}}
 ```
 
 ## `memberName`
@@ -76,7 +76,7 @@ Display name string
 **Examples:**
 ```hbs
 {{#memberName model}}
-{{#memberName 'M:System.DateTime.ToString(System.String)'}}  {{!-- DateTime.ToString --}}
+{{#memberName 'M:System.String.Contains(System.String)'}}  {{!-- string.Contains --}}
 ```
 
 ## `memberUrl`
@@ -99,7 +99,7 @@ URI object representing the URL to the documentation page
 **Examples:**
 ```hbs
 {{#memberUrl model}}
-{{#memberUrl 'M:System.DateTime.ToString(System.String)'}}  {{!-- https://learn.microsoft.com/en-us/dotnet/api/system.datetime.tostring#system-datetime-tostring(system-string) --}}
+{{#memberUrl 'M:System.String.Contains(System.String)'}}  {{!-- https://learn.microsoft.com/dotnet/api/system.string.contains#system-string-contains(system-string) --}}
 ```
 
 ## `memberCategory`
@@ -133,5 +133,5 @@ A string representing the category of the member, such as:
 **Examples:**
 ```hbs
 {{#memberCategory model}}
-{{#memberCategory 'M:System.DateTime.ToString(System.String)'}}  {{!-- Method }}
+{{#memberCategory 'M:System.String.Contains(System.String)'}}  {{!-- Method --}}
 ```

@@ -8,7 +8,7 @@ Kampose targets .NET 10.0 and fully supports C# 14 while remaining compatible wi
 
 ## Key Features
 
-- **Zero Configuration Start** - Works out of the box with sensible defaults
+- **Minimal Configuration** - Only an output directory is required; every other setting has a sensible default
 - **Multiple Output Formats** - HTML for websites, Markdown for wikis
 - **CI/CD Ready** - Integrate seamlessly into your build pipelines
 - **Extensible Themes** - Customize appearance to match your brand
@@ -70,7 +70,7 @@ kampose build
 
 See the [Command-Line Interface](https://kampute.github.io/kampose/command-line) guide for additional commands and options.
 
-**Step 4**: Open `docs/index.html` in your browser to view the generated documentation.
+**Step 4**: Open `docs/index.html` in your browser to view the generated documentation. Kampose uses your project's `README.md` as the home page; if the project has no `README.md`, open `docs/api/index.html` instead.
 
 ## Documentation
 

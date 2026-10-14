@@ -9,9 +9,9 @@ General utility functions for common operations including value selection, numer
 
 | Helper                        | Purpose                                                                            | Parameters                            | Returns   |
 |-------------------------------|------------------------------------------------------------------------------------|---------------------------------------|-----------|
-| [`isUndefined`](#isUndefined) | Checks if a value is undefined                                                     | `value`                               | `boolean` |
-| [`isNull`](#isNull)           | Checks if a value is null                                                          | `value`                               | `boolean` |
-| [`isOdd`](#isOdd)             | Checks if an integer number is odd                                                 | `value`                               | `boolean` |
+| [`isUndefined`](#isundefined) | Checks if a value is undefined                                                     | `value`                               | `boolean` |
+| [`isNull`](#isnull)           | Checks if a value is null                                                          | `value`                               | `boolean` |
+| [`isOdd`](#isodd)             | Checks if an integer number is odd                                                 | `value`                               | `boolean` |
 | [`select`](#select)           | Selects a value from choices based on a selector                                   | `selector`, `choice1`, `choice2`, ... | `any`     |
 | [`len`](#len)                 | Returns the length of a string or array                                            | `value`                               | `number`  |
 | [`now`](#now)                 | Returns current date/time with formatting                                          | `format?`                             | `string`  |
@@ -25,7 +25,7 @@ General utility functions for common operations including value selection, numer
 
 Checks if a value is undefined in the current template context.
 
-This is useful do distinguish between a variable that has not been set and one that set to `null` or `false`.
+This is useful to distinguish between a variable that has not been set and one that is set to `null` or `false`.
 
 **Syntax:**
 ```hbs
@@ -40,8 +40,8 @@ This is useful do distinguish between a variable that has not been set and one t
 
 **Examples:**
 ```hbs
-{{#if (isUndefined model.declaredMembers)}}
-  The model is not capable of declaring members.
+{{#if (isUndefined model.nestedTypes)}}
+  The model cannot contain nested types.
 {{/if}}
 ```
 
@@ -62,8 +62,8 @@ Checks if a value is explicitly set to null.
 
 **Examples:**
 ```hbs
-{{#if (isNull model.doc.threadSafety.isStaticSafe)}}
-  No thread safety information for static members
+{{#if (isNull model.declaringType)}}
+  This type is not nested in another type.
 {{/if}}
 ```
 
@@ -119,8 +119,8 @@ The selected value based on the selector and number of choices, or `null` if no 
 {{#select @index "first" "second" "third"}}
 {{!-- Returns "first" if @index is 0, "second" if 1, "third" if 2, null otherwise --}}
 
-{{#select item.status ["pending", "approved", "rejected"]}}
-{{!-- If item.status is 0, returns "pending"; if 1, "approved"; if 2, "rejected" --}}
+{{#select item.status statusNames}}
+{{!-- If statusNames is ["pending", "approved", "rejected"]: returns "pending" when item.status is 0, "approved" when 1, "rejected" when 2 --}}
 
 {{#select 1 "A" "B" "C" "D"}}
 {{!-- Returns "B" (index 1) --}}
@@ -139,14 +139,13 @@ Returns the length of a string or array.
 - `value` (string or array) - The string or array to measure
 
 **Returns:**
-The length of the string or array as a number.
+The length of the string or the number of items in the collection. Any other value, including an undefined variable, causes a rendering error.
 
 **Examples:**
 ```hbs
-{{#len "Hello World"}}           {{!-- 11 --}}
-{{#len [2, 3, 5]}}               {{!-- 3 --}}
-{{#len model.name}}              {{!-- Length of model name string --}}
-{{#len model.directInterfaces}}  {{!-- Length of properties collection --}}
+{{#len "Hello World"}}                        {{!-- 11 --}}
+{{#len model.name}}                           {{!-- Length of model name string --}}
+{{#len model.metadata.implementedInterfaces}} {{!-- Number of interfaces a type implements --}}
 ```
 
 ## `now`
@@ -221,8 +220,7 @@ No return value; renders the resulting content directly.
 {{#literal false}}          {{!-- false --}}
 {{#literal 42}}             {{!-- 42 --}}
 {{#literal -123.45}}        {{!-- -123.45 --}}
-{{#literal '\n'}}           {{!-- '\\n' --}}
-{{#literal "Hello World"}}  {{!-- "&quot;Hello World&quot;" (HTML escaped) --}}
+{{#literal "Hello World"}}  {{!-- "Hello World" --}}
 ```
 
 ## `cref`
@@ -242,8 +240,8 @@ No return value; renders the resulting link directly.
 **Examples:**
 ```hbs
 See also {{#cref "M:System.DateTime.ToString(System.String)"}} for more details.
-{{!-- For HTML output, renders: See also <a href="https://learn.microsoft.com/en-us/dotnet/api/system.datetime.tostring#system-datetime-tostring(system-string)" rel="code-reference">DateTime.ToString(string)</a> for more details. --}}
-{{!-- For Markdown output, renders: See also [DateTime.ToString(string)](https://learn.microsoft.com/en-us/dotnet/api/system.datetime.tostring#system-datetime-tostring(system-string)) for more details. --}}
+{{!-- For HTML output, renders: See also <a href="https://learn.microsoft.com/dotnet/api/system.datetime.tostring#system-datetime-tostring(system-string)" rel="code-reference">DateTime.ToString(string)</a> for more details. --}}
+{{!-- For Markdown output, renders: See also [DateTime.ToString(string)](https://learn.microsoft.com/dotnet/api/system.datetime.tostring#system-datetime-tostring(system-string)) for more details. --}}
 ```
 
 ## `markdown`
@@ -266,8 +264,8 @@ No return value; renders the resulting content directly.
 {{#markdown}}
 This is a paragraph with **bold** text.
 {{/markdown}}
-{{!-- For HTML output, renders: "<p>This is a paragraph with <strong>bold</strong> text.</p> --}}
-{{!-- For Markdown output, renders: "This is a paragraph with **bold** text. --}}
+{{!-- For HTML output, renders: <p>This is a paragraph with <strong>bold</strong> text.</p> --}}
+{{!-- For Markdown output, renders: This is a paragraph with **bold** text. --}}
 ```
 
 ```hbs

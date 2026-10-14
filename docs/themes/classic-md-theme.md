@@ -63,11 +63,14 @@ You can use an array of strings for multi-section headers:
         "pageHeader": [
             "[![Build](https://dev.azure.com/ORG/PROJECT/_apis/build/status/PIPELINE)](https://dev.azure.com/ORG/PROJECT/_build)",
             "[_TOC_]",
-            "> **Note:** This is documentation for version {{version}}."
-        ]
+            "> **Note:** This is documentation for version {{productVersion}}."
+        ],
+        "productVersion": "2.1"
     }
 }
 ```
+
+The `productVersion` setting in this example is a custom value that the theme does not define. Custom settings are available to Handlebars expressions by name.
 
 You can also define your own template variables and use them in the header:
 
@@ -182,6 +185,8 @@ After enabling the `seeAlsoSubtopics` setting, the rendered output for "Best Pra
 ```md
 ## See Also
 
-- [Coding Guidelines](coding-guidelines.md)
-- [Testing Strategies](testing-strategies.md)
+- [Coding Guidelines](Best-Practices/Coding-Guidelines.md)
+- [Testing Strategies](Best-Practices/Testing-Strategies.md)
 ```
+
+The link targets depend on the topic titles and hierarchy, because the `devOps` and `gitLab` conventions name each page after its title and place child topics in a folder named after their parent.

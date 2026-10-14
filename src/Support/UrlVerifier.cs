@@ -11,7 +11,9 @@ namespace Kampose.Support
     using Kampute.DocToolkit.Support;
     using System;
     using System.Collections.Concurrent;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
+    using System.Linq;
     using System.Net.Http;
     using System.Threading;
 
@@ -42,7 +44,8 @@ namespace Kampose.Support
         /// </summary>
         /// <value>
         /// The files generated for the documentation. An internal URL is valid only when it refers to one of these files; files
-        /// that exist in the output directory but were not generated do not count.
+        /// that exist in the output directory but were not generated do not count. When anchors are recorded for the referenced
+        /// file, the fragment of the URL must also name one of them.
         /// </value>
         public GeneratedFileSet GeneratedFiles { get; }
 
@@ -81,19 +84,21 @@ namespace Kampose.Support
             ArgumentNullException.ThrowIfNull(urlReference);
 
             if (UriHelper.IsQueryOrFragmentOnly(urlReference.SourceUrl))
-                return VerificationResult.OK;
+                return TryGetReferencingFile(urlReference, out var referencingFilePath)
+                    ? VerifyFragment(referencingFilePath, urlReference.SourceUrl)
+                    : VerificationResult.OK;
 
             if (urlReference.TargetUrl is not null)
-                return IsFilePresent(urlReference)
-                    ? VerificationResult.OK
+                return TryGetGeneratedFile(urlReference, out var targetFilePath)
+                    ? VerifyFragment(targetFilePath, urlReference.TargetUrl.OriginalString)
                     : VerificationResult.Unreachable;
 
             if (!Uri.TryCreate(urlReference.SourceUrl, UriKind.RelativeOrAbsolute, out var uri))
                 return VerificationResult.Malformed;
 
             if (!uri.IsAbsoluteUri)
-                return IsFilePresent(urlReference.BaseDirectory, uri.ToString())
-                    ? VerificationResult.OK
+                return TryGetGeneratedFile(urlReference.BaseDirectory, uri.ToString(), out var filePath)
+                    ? VerifyFragment(filePath, uri.OriginalString)
                     : VerificationResult.Unreachable;
 
             if (verifyExternalLinks)
@@ -105,12 +110,14 @@ namespace Kampose.Support
         }
 
         /// <summary>
-        /// Checks if the file referenced by the URL was generated for the documentation.
+        /// Attempts to get the generated file that the URL refers to.
         /// </summary>
         /// <param name="urlReference">The URL reference.</param>
+        /// <param name="filePath">When this method returns, contains the full path of the generated file, if found; otherwise, <see langword="null"/>.</param>
         /// <returns><see langword="true"/> if the file was generated; otherwise, <see langword="false"/>.</returns>
-        private bool IsFilePresent(UrlReference urlReference)
+        private bool TryGetGeneratedFile(UrlReference urlReference, [NotNullWhen(true)] out string? filePath)
         {
+            filePath = null;
             if (urlReference.TargetUrl is null || urlReference.TargetUrl.IsAbsoluteUri != (BaseUri is not null))
                 return false;
 
@@ -118,17 +125,20 @@ namespace Kampose.Support
                 ? BaseUri.MakeRelativeUri(urlReference.TargetUrl).ToString()
                 : Path.Combine(urlReference.BaseDirectory, urlReference.TargetUrl.ToString());
 
-            return IsFilePresent(string.Empty, relativeUrlString);
+            return TryGetGeneratedFile(string.Empty, relativeUrlString, out filePath);
         }
 
         /// <summary>
-        /// Checks if a file was generated at the specified document-relative URL.
+        /// Attempts to get the file generated at the specified document-relative URL.
         /// </summary>
         /// <param name="baseDirectory">The directory of the referencing document.</param>
         /// <param name="relativeUrl">The URL relative to the referencing document.</param>
+        /// <param name="filePath">When this method returns, contains the full path of the generated file, if found; otherwise, <see langword="null"/>.</param>
         /// <returns><see langword="true"/> if the file was generated; otherwise, <see langword="false"/>.</returns>
-        private bool IsFilePresent(string baseDirectory, string relativeUrl)
+        private bool TryGetGeneratedFile(string baseDirectory, string relativeUrl, [NotNullWhen(true)] out string? filePath)
         {
+            filePath = null;
+
             var relativeFilePath = UriHelper.GetPathPart(relativeUrl);
             var absoluteBaseDir = GeneratedFiles.OutputDirectory;
             var absoluteFilePath = Path.GetFullPath(Path.Combine(absoluteBaseDir, baseDirectory, relativeFilePath));
@@ -138,10 +148,79 @@ namespace Kampose.Support
                 return false;
 
             if (GeneratedFiles.Contains(absoluteFilePath))
+            {
+                filePath = absoluteFilePath;
                 return true;
+            }
 
-            return Path.GetExtension(absoluteFilePath) != Context.ContentFormatter.FileExtension
-                && GeneratedFiles.Contains(absoluteFilePath + Context.ContentFormatter.FileExtension);
+            if (Path.GetExtension(absoluteFilePath) != Context.ContentFormatter.FileExtension
+                && GeneratedFiles.Contains(absoluteFilePath + Context.ContentFormatter.FileExtension))
+            {
+                filePath = absoluteFilePath + Context.ContentFormatter.FileExtension;
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Attempts to get the generated file of the page in which the URL is referenced.
+        /// </summary>
+        /// <param name="urlReference">The URL reference.</param>
+        /// <param name="filePath">When this method returns, contains the full path of the referencing page, if found; otherwise, <see langword="null"/>.</param>
+        /// <returns><see langword="true"/> if the referencing page was generated; otherwise, <see langword="false"/>.</returns>
+        /// <remarks>
+        /// A model without its own page, such as a member documented on the page of its declaring type, is referenced from the page
+        /// of its nearest ancestor that has one.
+        /// </remarks>
+        private bool TryGetReferencingFile(UrlReference urlReference, [NotNullWhen(true)] out string? filePath)
+        {
+            foreach (var model in urlReference.ReferencingModel.HierarchyPath.Reverse().Prepend(urlReference.ReferencingModel))
+            {
+                if (!model.TryGetDocumentationFile(out var relativePath))
+                    continue;
+
+                var absoluteFilePath = Path.GetFullPath(Path.Combine(GeneratedFiles.OutputDirectory, relativePath));
+                if (GeneratedFiles.Contains(absoluteFilePath))
+                {
+                    filePath = absoluteFilePath;
+                    return true;
+                }
+            }
+
+            filePath = null;
+            return false;
+        }
+
+        /// <summary>
+        /// Verifies that the fragment of the URL names an anchor of the generated file.
+        /// </summary>
+        /// <param name="filePath">The full path of the generated file that the URL refers to.</param>
+        /// <param name="url">The URL whose fragment is verified.</param>
+        /// <returns>
+        /// <see cref="VerificationResult.OK"/> if the URL has no fragment, its fragment refers to the top of the page, no anchors
+        /// were recorded for the file, or the fragment names one of its anchors; otherwise, <see cref="VerificationResult.Unresolved"/>.
+        /// </returns>
+        /// <remarks>
+        /// The fragment is matched case-sensitively, first as written and then with its percent-encoded characters decoded, as browsers
+        /// do. Anchors are recorded only for files whose anchors are known, such as HTML pages.
+        /// </remarks>
+        private VerificationResult VerifyFragment(string filePath, string url)
+        {
+            var fragmentIndex = url.IndexOf('#');
+            if (fragmentIndex == -1)
+                return VerificationResult.OK;
+
+            var fragment = url[(fragmentIndex + 1)..];
+            if (fragment.Length == 0 || fragment.Equals("top", StringComparison.OrdinalIgnoreCase))
+                return VerificationResult.OK;
+
+            if (!GeneratedFiles.TryGetAnchors(filePath, out var anchors))
+                return VerificationResult.OK;
+
+            return anchors.Contains(fragment) || anchors.Contains(Uri.UnescapeDataString(fragment))
+                ? VerificationResult.OK
+                : VerificationResult.Unresolved;
         }
 
         /// <summary>
@@ -201,7 +280,7 @@ namespace Kampose.Support
             Malformed,
 
             /// <summary>
-            /// The URL could not be resolved.
+            /// The URL could not be resolved, such as when its fragment names no anchor of the referenced page.
             /// </summary>
             Unresolved,
 

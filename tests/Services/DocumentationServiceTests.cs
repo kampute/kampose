@@ -85,15 +85,53 @@ namespace Kampose.Test.Services
             Assert.That(() => Generate(config, new FileSystemDocumentationOutput(config.OutputDirectory)), Throws.TypeOf<ValidationException>());
         }
 
+        [TestCase("[Section](#guide)")]
+        [TestCase("[Section](other.md#other)")]
+        public void GenerateDocumentation_HtmlLinkToExistingAnchor_PassesUrlVerification(string link)
+        {
+            WriteTopic(link);
+            WriteTopic("other", "# Other");
+            var config = CreateConfiguration();
+            config.Audit.StopOnIssues = true;
+
+            Assert.That(() => Generate(config, new DryRunDocumentationOutput(config.OutputDirectory)), Throws.Nothing);
+        }
+
+        [TestCase("[Section](#missing)")]
+        [TestCase("[Section](other.md#missing)")]
+        [TestCase("[Section](other.md#Other)")]
+        public void GenerateDocumentation_HtmlLinkToMissingAnchor_FailsUrlVerification(string link)
+        {
+            WriteTopic(link);
+            WriteTopic("other", "# Other");
+            var config = CreateConfiguration();
+            config.Audit.StopOnIssues = true;
+
+            Assert.That(() => Generate(config, new DryRunDocumentationOutput(config.OutputDirectory)), Throws.TypeOf<ValidationException>());
+        }
+
+        [Test]
+        public void GenerateDocumentation_MarkdownLinkToUnknownAnchor_PassesUrlVerification()
+        {
+            WriteTopic("[Section](#missing)");
+            var config = CreateConfiguration();
+            config.Convention = DocConvention.DevOps;
+            config.Audit.StopOnIssues = true;
+
+            Assert.That(() => Generate(config, new DryRunDocumentationOutput(config.OutputDirectory)), Throws.Nothing);
+        }
+
         private static void Generate(Configuration config, DocumentationOutput output)
         {
             using var reporter = new TextWriterActivityReporter(TextWriter.Null);
             new DocumentationService(reporter).GenerateDocumentation(config, output);
         }
 
-        private void WriteTopic(string content)
+        private void WriteTopic(string content) => WriteTopic("guide", $"# Guide\n\n{content}");
+
+        private void WriteTopic(string name, string content)
         {
-            File.WriteAllText(Path.Combine(testDirectory, "docs", "guide.md"), $"# Guide\n\n{content}\n");
+            File.WriteAllText(Path.Combine(testDirectory, "docs", $"{name}.md"), $"{content}\n");
         }
 
         private Configuration CreateConfiguration()

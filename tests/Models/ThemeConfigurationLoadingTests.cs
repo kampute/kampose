@@ -323,6 +323,24 @@ namespace Kampose.Test.Models
         }
 
         [Test]
+        public void LoadFromFile_WithUnknownParameterProperty_ThrowsValidationException()
+        {
+            var filePath = GenerateJsonFile("unknown-param-property.json", @"{
+                ""templates"": [""**/*.hbs""],
+                ""parameters"": {
+                    ""setting"": {
+                        ""type"": ""string"",
+                        ""defualtValue"": ""value""
+                    }
+                }
+            }");
+
+            var exception = Assert.Throws<ValidationException>(() => ThemeConfiguration.LoadFromFile(filePath));
+
+            Assert.That(exception!.Errors, Has.Some.Contains("parameters"));
+        }
+
+        [Test]
         public void LoadFromFile_WithInvalidSchemaDeclaration_ThrowsValidationException()
         {
             var filePath = GenerateJsonFile("theme-with-invalid-schema.json", @"{

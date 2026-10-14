@@ -17,7 +17,7 @@ Auditing can report missing or incomplete XML documentation and verify reference
 
 ### Key Capabilities
 
-- **Multiple Output Formats** - Generate HTML for websites or Markdown for wikis (GitHub, Azure DevOps, GitLab)
+- **Multiple Output Formats** - Generate HTML for websites or Markdown for Azure DevOps and GitLab wikis
 - **Flexible Configuration** - JSON-based configuration with glob patterns for precise control over content discovery and organization
 - **Extensible Themes** - Built-in themes with comprehensive customization options and support for custom theme development
 - **Content Integration** - Combine API documentation with topics, tutorials, and guides, or generate topic-only documentation sites

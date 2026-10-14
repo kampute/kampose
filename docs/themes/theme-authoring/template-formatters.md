@@ -41,7 +41,7 @@ Kampose will render it with links for each component:
 - `Add` links to the `Add` method documentation
 
 The rendered output will look like this:
-> [ICollection](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.icollection-1)<[DateTime](https://learn.microsoft.com/en-us/dotnet/api/system.datetime)>.[Add](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.icollection-1.add)([DateTime](https://learn.microsoft.com/en-us/dotnet/api/system.datetime))
+> [ICollection](https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1)<[DateTime](https://learn.microsoft.com/dotnet/api/system.datetime)>.[Add](https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1.add)([DateTime](https://learn.microsoft.com/dotnet/api/system.datetime))
 
 ### Usage Examples
 

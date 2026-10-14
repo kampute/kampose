@@ -156,17 +156,15 @@ kampose -v
 
 ## Global Options
 
-These options work with any command:
-
-- `--help`, `-h` - Show help information
-- `--version`, `-v` - Show version information
+- `--help`, `-h` - Show general help when used in place of a command, or help for a command when placed after it, as in `kampose build --help`.
+- `--version`, `-v` - Show version information. This option is recognized only in place of a command, as in `kampose --version`; `kampose build --version` reports an unknown option.
 
 ## Exit Codes
 
 Kampose returns these exit codes to indicate what happened:
 
-- `0` - Success
-- `1` - Errors occurred during documentation generation or validation
-- `2` - Invalid command or options
-- `3` - Configuration or theme validation errors
-- `4` - Unexpected errors
+- `0` - Success. Warnings may still have been reported.
+- `1` - The run finished, but errors were reported, such as a page that failed to render or an asset that could not be copied.
+- `2` - Invalid command, option, or argument.
+- `3` - Validation failed: the configuration or theme is invalid, no assemblies matched the `assemblies` patterns, or [`stopOnIssues`](configuration.md#stoponissues) stopped the run because of documentation or link issues.
+- `4` - Any other error, such as a missing configuration file.

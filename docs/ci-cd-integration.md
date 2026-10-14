@@ -126,6 +126,8 @@ jobs:
         keep_files: false
 ```
 
+The deploy step pushes the generated site to the `gh-pages` branch. After the first deployment, select that branch as the publishing source in the repository's **Settings** > **Pages** so GitHub serves the site.
+
 ## Azure Pipelines
 
 ### Basic Pipeline
@@ -174,7 +176,7 @@ steps:
   # Only publish artifact on main branch (not on PRs)
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Documentation Artifact'
-    condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
     inputs:
       pathToPublish: '.doc-site'
       artifactName: 'documentation'
@@ -199,6 +201,13 @@ Publish documentation directly to Azure DevOps Wiki. Update your `kampose.json` 
 
 The `devOps` convention generates documentation optimized for Azure DevOps Wiki integration. See the [Configuration Guide](configuration.md#convention) for more details about conventions.
 
+The wiki is a separate Git repository named after the project, so the pipeline needs permission to push to it:
+
+1. In the wiki repository's security settings, set **Contribute** to **Allow** for the `<project name> Build Service (<organization>)` identity.
+2. On the first run, approve the pipeline's request to access the wiki repository.
+
+The pipeline checks out the wiki repository instead of cloning it in a script, because Azure Pipelines blocks scripts from fetching repositories the pipeline does not reference when **Protect access to repositories in YAML pipelines** is enabled, which is the default for projects created after May 2020.
+
 ```yaml
 # Trigger on pushes to main branch
 trigger:
@@ -216,6 +225,15 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
+  # Run the pipeline steps from the root of this repository
+  - checkout: self
+    workspaceRepo: true
+
+  # Keep the job token in the wiki's Git configuration so the publish step can push
+  - checkout: git://yourproject/yourproject.wiki
+    path: wiki
+    persistCredentials: true
+
   - task: UseDotNet@2
     displayName: 'Install .NET SDK'
     inputs:
@@ -240,17 +258,19 @@ steps:
 
   # Only publish to wiki on main branch (not on PRs)
   - script: |
-      git clone https://$(System.AccessToken)@dev.azure.com/yourorg/yourproject/_git/yourproject.wiki wiki
-      cp -r .doc-site/* wiki/
-      cd wiki
+      cp -r .doc-site/. "$(Pipeline.Workspace)/wiki/"
+      cd "$(Pipeline.Workspace)/wiki"
       git config user.email "pipeline@azuredevops.com"
       git config user.name "Azure Pipeline"
       git add .
-      git commit -m "Update documentation [skip ci]"
-      git push origin HEAD:wikiMaster
+      git diff --cached --quiet || git commit -m "Update documentation [skip ci]"
+      git push origin HEAD:wikiMain
     displayName: 'Publish Documentation to Wiki'
-    condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
 ```
+
+> [!NOTE]
+> Replace `yourproject` with your project name. The wiki branch is `wikiMain` in current Azure DevOps documentation, but wikis created earlier can use `wikiMaster`. Check the branch list of the wiki repository and change the `git push` target if needed.
 
 ## GitLab CI/CD
 
@@ -279,7 +299,7 @@ build:
     - dotnet build --no-restore -c Release
   artifacts:
     paths:
-      - "src/**/bin/Release/"
+      - "**/bin/Release/"
     expire_in: 1 hour
 
 test:

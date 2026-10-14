@@ -19,7 +19,7 @@ themes/
     └── myTheme/
 ```
 
-Each theme resides in its own subdirectory, where the directory name serves as the theme identifier for configuration references and CLI commands.
+Each theme resides in its own subdirectory, where the directory name serves as the theme identifier in the [`theme`](../configuration.md#theme) setting. A theme outside this directory can be used by setting `theme` to the absolute path of its directory.
 
 ## Theme Structure
 
@@ -42,8 +42,8 @@ The `theme.json` file contains all theme settings and must be present in the the
 
 The configuration file supports the following properties:
 
-- **`base`** *(string|null)*
-  Identifier of a parent theme to inherit from. Use `null` for standalone themes.
+- **`base`** *(string|null)* \
+  Directory name of a parent theme to inherit from. Use `null` for standalone themes.
 
 - **`metadata`** *(object|null)* \
   Optional theme information:
@@ -61,7 +61,7 @@ The configuration file supports the following properties:
 - **`scripts`** *(object)* \
   JavaScript bundling configuration:
   - `source` *(array)*: Glob patterns for JavaScript files, relative to the theme root.
-  - `targetPath` *(string)*: Bundle output file path relative to the documentation root (default: `scripts.js`).
+  - `targetPath` *(string)*: Bundle output file path relative to the documentation root (default: `script.js`).
 
 - **`styles`** *(object)* \
   CSS bundling configuration:

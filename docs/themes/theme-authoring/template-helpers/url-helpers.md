@@ -52,7 +52,7 @@ Resolves a path from the documentation root for the page currently being rendere
 - `uri` (string|uri) - A path relative to the documentation root, a `~/` URL, or an already absolute URL
 
 **Returns:**
-A URL string that is either absolute or relative to the current page, depending on the context
+A URL that is either absolute or relative to the current page, depending on the context. A query-only, fragment-only, absolute, or site-root-relative (`/`) value is returned unchanged.
 
 **Examples:**
 ```hbs
@@ -76,10 +76,10 @@ Extract the fragment identifier of a URL for linking to specific sections.
 ```
 
 **Parameters:**
-- `string` (string|uri) - The URI to extract the fragment identifier from
+- `url` (string|uri) - The URL to extract the fragment identifier from
 
 **Returns:**
-URL fragment string (without # prefix)
+URL fragment string (without # prefix), or `null` if the URL has no fragment
 
 **Examples:**
 ```hbs

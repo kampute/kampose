@@ -43,10 +43,10 @@ String representation of the object
 **Examples:**
 ```hbs
 {{#format 42}}                    {{!-- "42" --}}
-{{#format 3.14159 "F2"}}          {{!-- "3.14" --}}
+{{#format 1234567 "N0"}}          {{!-- "1,234,567" --}}
 {{#format true}}                  {{!-- "True" --}}
 {{#format null}}                  {{!-- "" --}}
-{{#format topic}}                 {{!-- String value of topic, which is its title --}}
+{{#format model.modelType}}       {{!-- The model type, such as "Class" --}}
 ```
 
 ## `split`
@@ -99,7 +99,7 @@ Concatenated string
 ```hbs
 {{#concat "Hello" " " "World"}}             {{!-- "Hello World" --}}
 {{#concat model.namespace "." model.name}}  {{!-- "MyApp.MyClass" --}}
-{{#concat ["a", "b"]}}                      {{!-- "ab" --}}
+{{#concat (split "a,b" ",")}}               {{!-- "ab" --}}
 ```
 
 ## `upperCase`

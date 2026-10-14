@@ -34,7 +34,7 @@ summary: Configure and run Kampose for a .NET project.
 
 `title` supplies the display title and `summary` supplies a short description. Kampose derives the topic identifier from the source file name.
 
-The built-in themes use the title and summary in generated pages and navigation. Custom front-matter values remain available to custom topic templates through `model.source.frontMatter`.
+The built-in themes use the title in generated pages and navigation, and the Classic HTML theme also writes the summary to the page's description metadata. Custom front-matter values remain available to custom topic templates through `model.source.frontMatter`.
 
 ## Highlight Important Information with Alerts
 

@@ -85,9 +85,9 @@ General utility functions for common operations including value selection, numer
 
 | Helper                                                           | Purpose                                                                            | Parameters                            | Returns   |
 |------------------------------------------------------------------|------------------------------------------------------------------------------------|---------------------------------------|-----------|
-| [`isUndefined`](template-helpers/utility-helpers.md#isUndefined) | Checks if a value is undefined                                                     | `value`                               | `boolean` |
-| [`isNull`](template-helpers/utility-helpers.md#isNull)           | Checks if a value is null                                                          | `value`                               | `boolean` |
-| [`isOdd`](template-helpers/utility-helpers.md#isOdd)             | Checks if an integer number is odd                                                 | `value`                               | `boolean` |
+| [`isUndefined`](template-helpers/utility-helpers.md#isundefined) | Checks if a value is undefined                                                     | `value`                               | `boolean` |
+| [`isNull`](template-helpers/utility-helpers.md#isnull)           | Checks if a value is null                                                          | `value`                               | `boolean` |
+| [`isOdd`](template-helpers/utility-helpers.md#isodd)             | Checks if an integer number is odd                                                 | `value`                               | `boolean` |
 | [`select`](template-helpers/utility-helpers.md#select)           | Selects a value from choices based on a selector                                   | `selector`, `choice1`, `choice2`, ... | `any`     |
 | [`len`](template-helpers/utility-helpers.md#len)                 | Returns the length of a string or array                                            | `value`                               | `number`  |
 | [`now`](template-helpers/utility-helpers.md#now)                 | Returns current date/time with formatting                                          | `format?`                             | `string`  |

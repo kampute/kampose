@@ -21,7 +21,7 @@ The following table summarizes the available HTML themes:
 
 ### Installing New Themes
 
-To install an HTML theme, copy its directory into the `themes/html/` directory of the Kampose installation. The directory name is the theme identifier.
+To use a custom HTML theme, set [`theme`](configuration.md#theme) to the absolute path of the theme directory. Alternatively, copy the theme directory into the `themes/html/` directory of the Kampose installation and use the directory name as the theme identifier. A theme copied into the installation is removed when Kampose is updated or reinstalled.
 
 ## Markdown-Based Themes (DevOps/GitLab Conventions)
 
@@ -37,7 +37,7 @@ The following table summarizes the available Markdown themes:
 
 ### Installing New Themes
 
-To install a Markdown theme, copy its directory into the `themes/md/` directory of the Kampose installation. The directory name is the theme identifier.
+To use a custom Markdown theme, set [`theme`](configuration.md#theme) to the absolute path of the theme directory. Alternatively, copy the theme directory into the `themes/md/` directory of the Kampose installation and use the directory name as the theme identifier. A theme copied into the installation is removed when Kampose is updated or reinstalled.
 
 ## Theme Configuration
 

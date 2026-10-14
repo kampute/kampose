@@ -36,7 +36,7 @@ Any other value is considered **truthy** and will evaluate to `true`.
 
 ## `eq`
 
-Tests if two values are equal.
+Tests if two values are equal. Values of different types are not converted before comparison, so `1` and `"1"` are not equal.
 
 **Syntax:**
 ```hbs
@@ -105,6 +105,8 @@ Tests if the first value is less than the second.
 - `value1` (comparable) - First value to compare
 - `value2` (comparable) - Second value to compare
 
+Both values must be comparable with each other, such as two numbers or two strings; otherwise, rendering fails. The same applies to `le`, `gt`, and `ge`.
+
 **Returns:**
 `true` if value1 < value2, `false` otherwise
 
@@ -114,7 +116,7 @@ Tests if the first value is less than the second.
   <span class="limited-display">{{this}}</span>
 {{/if}}
 
-{{#if (lt model.parameters.count 3)}}
+{{#if (lt model.metadata.parameters.count 3)}}
   <span class="simple-method">Simple</span>
 {{/if}}
 ```
@@ -137,7 +139,7 @@ Tests if the first value is less than or equal to the second.
 
 **Examples:**
 ```hbs
-{{#if (le model.declaredMembers.count 10)}}
+{{#if (le (len model.members) 10)}}
   <div class="show-all">
 {{else}}
   <div class="show-summary">
@@ -162,7 +164,7 @@ Tests if the first value is greater than the second.
 
 **Examples:**
 ```hbs
-{{#if (gt model.declaredMethods.length 0)}}
+{{#if (gt model.methods.count 0)}}
   <section class="methods">
     <h2>Methods</h2>
 {{/if}}
@@ -190,7 +192,7 @@ Tests if the first value is greater than or equal to the second.
 
 **Examples:**
 ```hbs
-{{#if (ge model.metadata.nestedTypes 1)}}
+{{#if (ge model.nestedTypes.count 1)}}
   <div class="nested-types">
 {{/if}}
 
@@ -273,7 +275,7 @@ Logical AND operation.
 
 **Examples:**
 ```hbs
-{{#if (and model.metadata.isPublic model.isIndexer)}}
+{{#if (and model.metadata.isPublic model.metadata.isIndexer)}}
   <div class="documented-public-index-property">
 {{/if}}
 
@@ -301,7 +303,7 @@ Logical OR operation.
 
 **Examples:**
 ```hbs
-{{#if (or model.isStatic model.isReadOnly)}}
+{{#if (or model.metadata.isStatic model.metadata.isReadOnly)}}
   <div class="special-member">
 {{/if}}
 

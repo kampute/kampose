@@ -169,12 +169,12 @@
               "object"
             ],
             "description": "Fallback used when themeSettings does not provide a non-null value. Its JSON type must match type; null means the parameter is omitted from template and script data unless configured."
-          },
-          "additionalProperties": false
+          }
         },
         "required": [
           "type"
         ],
+        "additionalProperties": false,
         "allOf": [
           {
             "if": {
